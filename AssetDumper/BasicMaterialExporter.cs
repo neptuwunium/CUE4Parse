@@ -70,17 +70,10 @@ public class BasicMaterialData {
 public class BasicMaterialExporter : ExporterBase {
     private BasicMaterialData MaterialData { get; }
 
-    private BasicMaterialExporter(ExporterOptions options) {
-        Options = options;
-        MaterialData = new BasicMaterialData();
-    }
-
-    public BasicMaterialExporter(UMaterialInterface? unrealMaterial, ExporterOptions options) : this(options) {
-        if (unrealMaterial == null) return;
+    public BasicMaterialExporter(UMaterialInterface unrealMaterial, ExporterOptions options) : base(unrealMaterial, options) {
+        MaterialData = new BasicMaterialData { Name = unrealMaterial.Name };
         
         ProcessMaterial(unrealMaterial);
-
-        MaterialData.Name = unrealMaterial.Name;
     }
 
     private void ProcessMaterial(UMaterialInterface unrealMaterial) {
@@ -113,7 +106,7 @@ public class BasicMaterialExporter : ExporterBase {
                     }
 
                     foreach (var textureParameterValue in materialInstanceConstant.TextureParameterValues) {
-                        MaterialData.MergeTexture(textureParameterValue.ParameterInfo.Name.Text, textureParameterValue.ParameterValue.ResolvedObject?.GetPathName());
+                        MaterialData.MergeTexture(textureParameterValue.ParameterInfo.Name.Text, GetExportSavePath(textureParameterValue.ParameterValue.ResolvedObject));
                     }
 
                     foreach (var vectorParameterValue in materialInstanceConstant.VectorParameterValues) {
@@ -127,7 +120,7 @@ public class BasicMaterialExporter : ExporterBase {
             }
             case UMaterial { CachedExpressionData: null } material: {
                 foreach (var texture in material.ReferencedTextures) {
-                    MaterialData.MergeTexture(texture.Name, texture.GetPathName(), false);
+                    MaterialData.MergeTexture(texture.Name, GetExportSavePath(texture), false);
                 }
 
                 break;
@@ -193,10 +186,10 @@ public class BasicMaterialExporter : ExporterBase {
                 var texture = textureValues[index];
                 switch (texture) {
                     case FPackageIndex packageIndex:
-                        MaterialData.MergeTexture(textureParameter.Name.Text, packageIndex.ResolvedObject?.GetPathName());
+                        MaterialData.MergeTexture(textureParameter.Name.Text, GetExportSavePath(packageIndex.ResolvedObject));
                         break;
                     case FSoftObjectPath softObjectPath when softObjectPath.TryLoad(out var textureObj):
-                        MaterialData.MergeTexture(textureParameter.Name.Text, textureObj.GetPathName());
+                        MaterialData.MergeTexture(textureParameter.Name.Text, GetExportSavePath(textureObj));
                         break;
                 }
             }

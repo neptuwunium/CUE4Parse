@@ -121,7 +121,7 @@ public static class WorldConverter {
                 OrigY = estDim,
                 ComponentSize = size,
                 Scale = heightScale,
-                Path = ExporterBase.GetExportSavePath(heightmap.Load()),
+                Path = ExporterBase.GetExportSavePath(heightmap.ResolvedObject),
             });
 
             var heightTex = heightmap.Load<UTexture2D>();
@@ -163,7 +163,7 @@ public static class WorldConverter {
                     Type = index + 1,
                     ComponentSize = size,
                     Scale = weightScale,
-                    Path = ExporterBase.GetExportSavePath(weightmap.Load()),
+                    Path = ExporterBase.GetExportSavePath(weightmap.ResolvedObject),
                 });
             }
         }
@@ -197,7 +197,7 @@ public static class WorldConverter {
 
         var materials = new List<(string Name, string Path)>();
         if (meshIndex is { IsNull: false }) {
-            mesh = ExporterBase.GetExportSavePath(meshIndex.Load());
+            mesh = ExporterBase.GetExportSavePath(meshIndex.ResolvedObject);
 
             if (meshIndex.TryLoad(out var meshObj)) {
                 var meshMaterials = meshObj switch {
@@ -207,13 +207,13 @@ public static class WorldConverter {
                 };
 
                 foreach (var material in meshMaterials ?? []) {
-                    materials.Add((material!.Name.Text, ExporterBase.GetExportSavePath(material.Load())));
+                    materials.Add((material!.Name.Text, ExporterBase.GetExportSavePath(material)));
                 }
 
                 var actorMaterials = component.TemplatedGetOrDefault("OverrideMaterials", Array.Empty<FPackageIndex?>());
                 for (var materialIndex = 0; materialIndex < actorMaterials.Length; materialIndex++) {
                     var actorMaterialIndex = actorMaterials[materialIndex];
-                    materials[materialIndex] = (actorMaterialIndex!.Name, ExporterBase.GetExportSavePath(actorMaterialIndex.Load()));
+                    materials[materialIndex] = (actorMaterialIndex!.Name, ExporterBase.GetExportSavePath(actorMaterialIndex.ResolvedObject));
                 }
             }
         }

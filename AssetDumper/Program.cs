@@ -79,6 +79,18 @@ public static class Program {
 		// Globals.AllowLargeFiles = true;
 
 		OodleHelper.LoadOodleDll(Environment.CurrentDirectory);
+		switch (Environment.OSVersion.Platform) {
+			case PlatformID.MacOSX:
+				ZlibHelper.Initialize("libz-ng.dylib");
+				break;
+			case PlatformID.Unix:
+				ZlibHelper.Initialize("libz-ng.so");
+				break;
+			default:
+				ZlibHelper.DownloadDll();
+				ZlibHelper.Initialize("libz-ng.dll");
+				break;
+		}
 
 		var target = Path.GetFullPath(flags.OutputPath);
 		var targetBaseDir = new DirectoryInfo(Path.Combine(target, "Content"));
