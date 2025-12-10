@@ -56,12 +56,12 @@
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
       <Pack>false</Pack>
     </Content>
-    <Content Include="$(CMakeBuildDir)/CUE4Parse-Natives.so" Condition=" '$([System.Runtime.InteropServices.RuntimeInformation]::IsOSPlatform($([System.Runtime.InteropServices.OSPlatform]::Linux)))' ">
+    <Content Include="..\CUE4Parse-Natives\build\CUE4Parse-Natives.so" Condition=" '$([System.Runtime.InteropServices.RuntimeInformation]::IsOSPlatform($([System.Runtime.InteropServices.OSPlatform]::Linux)))' ">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
       <PackagePath>lib/$(TargetFramework)</PackagePath>
       <PackageCopyToOutput>true</PackageCopyToOutput>
     </Content>
-    <Content Include="$(CMakeBuildDir)/CUE4Parse-Natives.dylib" Condition=" '$([System.Runtime.InteropServices.RuntimeInformation]::IsOSPlatform($([System.Runtime.InteropServices.OSPlatform]::OSX)))' ">
+    <Content Include="..\CUE4Parse-Natives\build\CUE4Parse-Natives.dylib" Condition=" '$([System.Runtime.InteropServices.RuntimeInformation]::IsOSPlatform($([System.Runtime.InteropServices.OSPlatform]::OSX)))' ">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
       <PackagePath>lib/$(TargetFramework)</PackagePath>
       <PackageCopyToOutput>true</PackageCopyToOutput>
