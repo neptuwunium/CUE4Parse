@@ -13,7 +13,7 @@ namespace CUE4Parse {
 	#if DEBUG
 		public const MethodImplOptions MethodOptions = 0;
 	#else
-        public const MethodImplOptions MethodOptions = MethodImplOptions.AggressiveInlining
+		public const MethodImplOptions MethodOptions = MethodImplOptions.AggressiveInlining;
 	#endif
 	}
 }
