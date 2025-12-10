@@ -15,7 +15,7 @@ public class WorldLandscape {
     public int DimY;
     public int Type; // 0 = height, 1+ weightmaps.
 
-    public float[] Heightmap = Array.Empty<float>();
+    public float[] Heightmap = [];
     public int OrigX;
     public int OrigY;
 

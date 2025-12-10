@@ -1,7 +1,6 @@
 ﻿using AssetDumper.Worlds.PSW;
 using CUE4Parse_Conversion;
 using CUE4Parse_Conversion.Textures;
-using CUE4Parse.UE4.Assets;
 using CUE4Parse.UE4.Assets.Exports;
 using CUE4Parse.UE4.Assets.Exports.Component.SkeletalMesh;
 using CUE4Parse.UE4.Assets.Exports.Component.StaticMesh;
@@ -29,7 +28,7 @@ public static class WorldConverter {
         var actorIds = new List<string>();
 
         foreach (var actorIndex in level.Actors) {
-            if (actorIndex.IsNull) {
+            if (actorIndex == null || actorIndex.IsNull) {
                 continue;
             }
 
@@ -62,7 +61,7 @@ public static class WorldConverter {
             }
 
             var handled = new HashSet<string>();
-            UObject? targetObj = actorObject;
+            var targetObj = actorObject;
             while (targetObj != null) {
                 foreach (var property in targetObj.Properties) {
                     if (property.Tag is not ObjectProperty objectProperty) {
@@ -97,8 +96,8 @@ public static class WorldConverter {
             }
 
             var size = landscapeComponent.TemplatedGetOrDefault("ComponentSizeQuads", 8);
-            var x = landscapeComponent.TemplatedGetOrDefault<int>("SectionBaseX") - (int) landscapeSectionOffset.X;
-            var y = landscapeComponent.TemplatedGetOrDefault<int>("SectionBaseY") - (int) landscapeSectionOffset.Y;
+            var x = landscapeComponent.TemplatedGetOrDefault<int>("SectionBaseX") - landscapeSectionOffset.X;
+            var y = landscapeComponent.TemplatedGetOrDefault<int>("SectionBaseY") - landscapeSectionOffset.Y;
 
             var heightScale = landscapeComponent.TemplatedGetOrDefault("HeightmapScaleBias", new FVector4(1, 1, 1, 1));
             var weightScale = landscapeComponent.TemplatedGetOrDefault("WeightmapScaleBias", new FVector4(1, 1, 1, 1));
@@ -201,12 +200,11 @@ public static class WorldConverter {
             mesh = ExporterBase.GetExportSavePath(meshIndex.Load());
 
             if (meshIndex.TryLoad(out var meshObj)) {
-                var meshMaterials = default(ResolvedObject?[]);
-                if (meshObj is UStaticMesh staticMesh) {
-                    meshMaterials = staticMesh.Materials;
-                } else if (meshObj is USkeletalMesh skeletalMesh) {
-                    meshMaterials = skeletalMesh.Materials;
-                }
+                var meshMaterials = meshObj switch {
+                    UStaticMesh staticMesh => staticMesh.Materials,
+                    USkeletalMesh skeletalMesh => skeletalMesh.Materials,
+                    _ => default,
+                };
 
                 foreach (var material in meshMaterials ?? []) {
                     materials.Add((material!.Name.Text, ExporterBase.GetExportSavePath(material.Load())));
@@ -279,7 +277,7 @@ public static class WorldConverter {
                 Temperature = component.TemplatedGetOrDefault("Temperature", 7000.0f),
                 ShadowBias = component.TemplatedGetOrDefault("ShadowBias", 0.5f),
                 Intensity = component.TemplatedGetOrDefault("Intensity", 1.0f),
-                LightSourceAngle = component.TemplatedGetOrDefault("LightSourceAngle", 2.0f)
+                LightSourceAngle = component.TemplatedGetOrDefault("LightSourceAngle", 2.0f),
             };
 
             if (component.ExportType.EndsWith("RectLightComponent")) {

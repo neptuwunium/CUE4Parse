@@ -7,7 +7,7 @@ public enum WorldLightType {
     Directional,
     Point,
     Spot,
-    Rect
+    Rect,
 }
 
 public class WorldLight {

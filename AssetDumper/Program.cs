@@ -38,6 +38,7 @@ using Serilog.Events;
 
 namespace AssetDumper;
 
+[SuppressMessage("ReSharper", "UnusedMember.Global")]
 public enum EComponentCreationMethod {
 	/** A component that is part of a native class. */
 	Native,
@@ -52,6 +53,8 @@ public enum EComponentCreationMethod {
 	Instance,
 }
 
+[SuppressMessage("ReSharper", "UnusedMember.Global")]
+[SuppressMessage("ReSharper", "UnusedAutoPropertyAccessor.Global")]
 public record UnrealVersionInfo {
 	public int MajorVersion { get; set; }
 	public int MinorVersion { get; set; }
@@ -165,10 +168,12 @@ public static class Program {
 					foreach (var key in keys) {
 						var valid = reader.TestAesKeyCustom(key);
 
-						if (valid) {
-							Log.Information("Validated Key {Guid}={Key}", reader.EncryptionKeyGuid, key);
-							foundKeys[reader.EncryptionKeyGuid] = key;
+						if (!valid) {
+							continue;
 						}
+						
+						Log.Information("Validated Key {Guid}={Key}", reader.EncryptionKeyGuid, key);
+						foundKeys[reader.EncryptionKeyGuid] = key;
 					}
 				}
 
@@ -261,12 +266,14 @@ public static class Program {
 
 			if (flags.SaveRaw) {
 				foreach (var subType in new[] { "uasset", "uexp", "uptnl", "ubulk" }) {
-					if (Provider.Files.TryGetValue(gameFile.PathWithoutExtension + "." + subType, out var subFile)) {
-						var rawPath = Path.Combine(target, "Raw", Path.ChangeExtension(normalizedGamePath, subType));
-						rawPath.EnsureDirectoryExists();
-						var data = await subFile.ReadAsync();
-						await File.WriteAllBytesAsync(rawPath, data);
+					if (!Provider.Files.TryGetValue(gameFile.PathWithoutExtension + "." + subType, out var subFile)) {
+						continue;
 					}
+					
+					var rawPath = Path.Combine(target, "Raw", Path.ChangeExtension(normalizedGamePath, subType));
+					rawPath.EnsureDirectoryExists();
+					var data = await subFile.ReadAsync();
+					await File.WriteAllBytesAsync(rawPath, data);
 				}
 			}
 
@@ -453,25 +460,29 @@ public static class Program {
 											}
 
 											foreach (var (locale, _entry) in eventData.EventLanguageMap) {
-												if (_entry is { } entry) {
-													if (flags.TrackWwiseEvents) {
-														var allDebug = entry.Media.Select(x => x.DebugName.PlainText)
-																			.Concat(entry.ExternalSources.Select(x => x.DebugName.PlainText))
-																			.Concat(entry.SoundBanks.Select(x => x.DebugName.PlainText))
-																			.Concat(entry.SwitchContainerLeaves.SelectMany(x => x.Media).Select(x => x.DebugName.PlainText))
-																			.Concat(entry.SwitchContainerLeaves.SelectMany(x => x.ExternalSources).Select(x => x.DebugName.PlainText))
-																			.Concat(entry.SwitchContainerLeaves.SelectMany(x => x.SoundBanks).Select(x => x.DebugName.PlainText));
+												if (_entry is not { } entry) {
+													continue;
+												}
+												
+												if (flags.TrackWwiseEvents) {
+													var allDebug = entry.Media.Select(x => x.DebugName.PlainText)
+																		.Concat(entry.ExternalSources.Select(x => x.DebugName.PlainText))
+																		.Concat(entry.SoundBanks.Select(x => x.DebugName.PlainText))
+																		.Concat(entry.SwitchContainerLeaves.SelectMany(x => x.Media).Select(x => x.DebugName.PlainText))
+																		.Concat(entry.SwitchContainerLeaves.SelectMany(x => x.ExternalSources).Select(x => x.DebugName.PlainText))
+																		.Concat(entry.SwitchContainerLeaves.SelectMany(x => x.SoundBanks).Select(x => x.DebugName.PlainText));
 
-														foreach (var media in allDebug) {
-															wwiseNames.Add(media);
-														}
+													foreach (var media in allDebug) {
+														wwiseNames.Add(media);
 													}
+												}
 
-													if (flags.RenameWwiseAudio) {
-														foreach (var media in entry.Media) {
-															wwiseRename[media.MediaPathName.PlainText] = locale.LanguageName.PlainText + "/" + media.DebugName.PlainText.Replace('\\', '/').Replace(':', '_').Replace("..", "_", StringComparison.Ordinal);
-														}
-													}
+												if (!flags.RenameWwiseAudio) {
+													continue;
+												}
+													
+												foreach (var media in entry.Media) {
+													wwiseRename[media.MediaPathName.PlainText] = locale.LanguageName.PlainText + "/" + media.DebugName.PlainText.Replace('\\', '/').Replace(':', '_').Replace("..", "_", StringComparison.Ordinal);
 												}
 											}
 										}

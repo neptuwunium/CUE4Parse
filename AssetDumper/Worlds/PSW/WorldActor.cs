@@ -12,7 +12,7 @@ public class WorldActor {
     public FVector Position;
     public FQuat Rotation;
     public FVector Scale;
-    public List<(string, string)> Materials { get; set; } = [];
+    public List<(string, string)> Materials { get; init; } = [];
 
     public void Serialize(FArchiveWriter Ar, (int Start, int Count) materialIndex) {
         Ar.Write(Name ?? "None", 256);

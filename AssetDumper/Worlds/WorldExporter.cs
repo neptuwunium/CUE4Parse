@@ -9,7 +9,7 @@ using SixLabors.ImageSharp.PixelFormats;
 namespace AssetDumper.Worlds;
 
 public class WorldExporter : ExporterBase {
-    public readonly string WorldName;
+    private readonly string WorldName;
 
     public WorldExporter(UWorld world, ETexturePlatform platform, ExporterOptions options) : base(world, options) {
         WorldName = world.Owner?.Name ?? world.Name;
@@ -74,12 +74,12 @@ public class WorldExporter : ExporterBase {
         }
 
         FileData = Ar.GetBuffer();
-        LandscapeHeights = landscapes.Where(x => x.Heightmap.Any()).DistinctBy(x => x.Path)
+        LandscapeHeights = landscapes.Where(x => x.Heightmap.Length != 0).DistinctBy(x => x.Path)
                                      .ToDictionary(x => x.Path!, x => (x.Heightmap, x.OrigX, x.OrigY));
     }
 
-    public byte[] FileData { get; }
-    public Dictionary<string, (float[], int, int)> LandscapeHeights { get; }
+    private byte[] FileData { get; }
+    private Dictionary<string, (float[], int, int)> LandscapeHeights { get; }
 
     public override bool TryWriteToDir(DirectoryInfo baseDirectory, out string label, out string savedFileName) {
         savedFileName = FixAndCreatePath(baseDirectory, GetExportSavePath() + ".psw");

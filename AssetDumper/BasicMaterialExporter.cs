@@ -1,3 +1,4 @@
+using System.Diagnostics.CodeAnalysis;
 using CUE4Parse_Conversion;
 using CUE4Parse.UE4.Assets.Exports.Material;
 using CUE4Parse.UE4.Assets.Objects;
@@ -8,11 +9,15 @@ using Newtonsoft.Json;
 
 namespace AssetDumper;
 
+[SuppressMessage("ReSharper", "UnusedAutoPropertyAccessor.Global")]
 public record BasicTexture(string Path) {
     public float SamplingScale { get; set; } = 1.0f;
     public int UVChannelIndex { get; set; }
 }
 
+[SuppressMessage("ReSharper", "CollectionNeverQueried.Global")]
+[SuppressMessage("ReSharper", "AutoPropertyCanBeMadeGetOnly.Global")]
+[SuppressMessage("ReSharper", "UnusedAutoPropertyAccessor.Global")]
 public class BasicMaterialData {
     public Dictionary<string, BasicTexture> Textures { get; } = [];
     public Dictionary<string, float> Scalars { get; } = [];
@@ -65,7 +70,7 @@ public class BasicMaterialData {
 public class BasicMaterialExporter : ExporterBase {
     private BasicMaterialData MaterialData { get; }
 
-    public BasicMaterialExporter(ExporterOptions options) {
+    private BasicMaterialExporter(ExporterOptions options) {
         Options = options;
         MaterialData = new BasicMaterialData();
     }
@@ -130,10 +135,12 @@ public class BasicMaterialExporter : ExporterBase {
         }
 
         foreach (var materialInfo in unrealMaterial.TextureStreamingData) {
-            if (MaterialData.Textures.TryGetValue(materialInfo.TextureName.Text, out var texture)) {
-                texture.SamplingScale = materialInfo.SamplingScale;
-                texture.UVChannelIndex = materialInfo.UVChannelIndex;
+            if (!MaterialData.Textures.TryGetValue(materialInfo.TextureName.Text, out var texture)) {
+                continue;
             }
+            
+            texture.SamplingScale = materialInfo.SamplingScale;
+            texture.UVChannelIndex = materialInfo.UVChannelIndex;
         }
 
         if (unrealMaterial.TryGetValue<FPackageIndex>(out var subsurfImport, "SubsurfaceProfile") &&
@@ -200,11 +207,13 @@ public class BasicMaterialExporter : ExporterBase {
         }
 
         currentIndex = (int) EMaterialParameterType.StaticSwitch;
-        if (runtimeEntries[currentIndex].TryGetValue(out FMaterialParameterInfo[] switchParameterInfos, "ParameterInfos", "ParameterInfoSet")
-            && materialParameters.TryGetValue(out bool[] staticSwitchValues, "StaticSwitchValues")) {
-            for (var index = 0; index < switchParameterInfos.Length; index++) {
-                MaterialData.Switches[switchParameterInfos[index].Name.Text] = staticSwitchValues[index];
-            }
+        if (!runtimeEntries[currentIndex].TryGetValue(out FMaterialParameterInfo[] switchParameterInfos, "ParameterInfos", "ParameterInfoSet")
+            || !materialParameters.TryGetValue(out bool[] staticSwitchValues, "StaticSwitchValues")) {
+            return;
+        }
+        
+        for (var index = 0; index < switchParameterInfos.Length; index++) {
+            MaterialData.Switches[switchParameterInfos[index].Name.Text] = staticSwitchValues[index];
         }
     }
 

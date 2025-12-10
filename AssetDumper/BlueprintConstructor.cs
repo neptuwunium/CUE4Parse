@@ -9,7 +9,7 @@ public static class BlueprintConstructor {
     public static FStructFallback GetMergedStruct(UObject blueprint) {
         var fallback = new FStructFallback();
         while (true) {
-            MergeStruct(fallback, blueprint);
+            fallback.MergeStruct(blueprint);
 
             if (blueprint.Class != null) {
                 if (blueprint.Class.TryGetValue(out UObject simpleConstructionScript, "SimpleConstructionScript")) {
@@ -49,7 +49,7 @@ public static class BlueprintConstructor {
         return fallback;
     }
 
-    public static void MergeStruct(this FStructFallback fallback, IPropertyHolder mergee) {
+    private static void MergeStruct(this FStructFallback fallback, IPropertyHolder mergee) {
         foreach (var property in mergee.Properties) {
             var localProperty = fallback.Properties.FirstOrDefault(x => x.Name.Text == property.Name.Text);
 
@@ -67,7 +67,7 @@ public static class BlueprintConstructor {
             }
 
             if (property.Tag is StructProperty { Value.StructType: FStructFallback substruct } && localProperty.Tag is StructProperty { Value.StructType: FStructFallback localSubstruct }) {
-                MergeStruct(localSubstruct, substruct);
+                localSubstruct.MergeStruct(substruct);
             }
         }
     }
