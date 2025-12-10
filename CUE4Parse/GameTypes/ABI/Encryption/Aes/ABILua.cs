@@ -83,9 +83,7 @@ public static class ABILua
         if (sizecode > 0)
         {
             var enc = new byte[sizecode * 4];
-            int read = Ar.Read(enc, 0, enc.Length);
-            if (read != enc.Length)
-                throw new EndOfStreamException();
+            Ar.ReadExactly(enc);
 
             var dec = DecryptBlock(enc);
 

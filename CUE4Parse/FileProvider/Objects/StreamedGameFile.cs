@@ -22,10 +22,8 @@ namespace CUE4Parse.FileProvider.Objects
         public override byte[] Read()
         {
             var data = new byte[Size];
-            var _ = _baseStream.Seek(_position, SeekOrigin.Begin);
-            var bytesRead = _baseStream.Read(data, 0, data.Length);
-            if (bytesRead != Size)
-                throw new FileLoadException("Read operation mismatch: bytesRead ≠ Size");
+            _baseStream.Seek(_position, SeekOrigin.Begin);
+            _baseStream.ReadExactly(data);
             return data;
         }
     }
