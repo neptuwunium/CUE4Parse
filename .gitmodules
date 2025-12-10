@@ -7,3 +7,6 @@
 [submodule "Pepper"]
 	path = Pepper
 	url = https://github.com/yretenai/Pepper.git
+[submodule "BCDecNet"]
+	path = BCDecNet
+	url = https://github.com/yretenai/BCDecNet.git

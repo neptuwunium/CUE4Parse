@@ -4,6 +4,7 @@ using System.Linq;
 using System.Runtime.InteropServices;
 using AssetRipper.TextureDecoder.Bc;
 using AssetRipper.TextureDecoder.Rgb.Formats;
+using BCDecNet;
 using CUE4Parse.Compression;
 using CUE4Parse.UE4.Assets.Exports.Texture;
 using CUE4Parse.UE4.Exceptions;
@@ -17,6 +18,7 @@ namespace CUE4Parse_Conversion.Textures;
 public static class TextureDecoder
 {
     public static bool UseAssetRipperTextureDecoder { get; set; } = false;
+    public static bool UseBCDecNet { get; set; } = true;
 
     public static CTexture? Decode(this UTexture texture, int maxMipSize, ETexturePlatform platform = ETexturePlatform.DesktopMobile) => texture.DecodeMip(texture.GetMipIndexByMaxSize(maxMipSize), platform);
     public static CTexture? Decode(this UTexture texture, ETexturePlatform platform = ETexturePlatform.DesktopMobile) => texture.DecodeMip(texture.GetFirstMipIndex(), platform);
@@ -257,6 +259,10 @@ public static class TextureDecoder
                 {
                     Bc1.Decompress<ColorRGBA<byte>, byte>(bytes, sizeX, sizeY, out data);
                 }
+                else if (UseBCDecNet) {
+                    data = new byte[sizeX * sizeY * 4];
+                    BCDec.DecompressBC1(bytes, data, sizeX , sizeY);
+                }
                 else
                 {
                     data = DXTDecoder.DXT1(bytes, sizeX, sizeY, sizeZ);
@@ -268,6 +274,10 @@ public static class TextureDecoder
                 if (UseAssetRipperTextureDecoder)
                 {
                     Bc3.Decompress<ColorRGBA<byte>, byte>(bytes, sizeX, sizeY, out data);
+                }
+                else if (UseBCDecNet) {
+                    data = new byte[sizeX * sizeY * 4];
+                    BCDec.DecompressBC3(bytes, data, sizeX , sizeY);
                 }
                 else
                 {
@@ -302,11 +312,16 @@ public static class TextureDecoder
 
                 break;
             case EPixelFormat.PF_BC4:
+                colorType = EPixelFormat.PF_B8G8R8A8;
                 if (UseAssetRipperTextureDecoder)
                     Bc4.Decompress<ColorBGRA<byte>, byte>(bytes, sizeX, sizeY, out data);
+                else if (UseBCDecNet) {
+                    data = new byte[sizeX * sizeY * 4];
+                    BCDec.DecompressBC4(bytes, data, sizeX , sizeY, false);
+                    colorType = EPixelFormat.PF_R8G8B8A8;
+                }
                 else
                     data = BCDecoder.BC4(bytes, sizeX, sizeY, sizeZ);
-                colorType = EPixelFormat.PF_B8G8R8A8;
                 break;
             case EPixelFormat.PF_BC5:
                 if (UseAssetRipperTextureDecoder)
@@ -318,9 +333,15 @@ public static class TextureDecoder
                 colorType = EPixelFormat.PF_B8G8R8A8;
                 break;
             case EPixelFormat.PF_BC6H:
+                colorType = EPixelFormat.PF_FloatRGBA; //TODO idk
                 if (UseAssetRipperTextureDecoder)
                 {
                     Bc6h.Decompress<ColorRGBA<float>, float>(bytes, sizeX, sizeY, false, out data);
+                }
+                else if (UseBCDecNet) {
+                    data = new byte[sizeX * sizeY * 12];
+                    BCDec.DecompressBC6HFloat(bytes, data, sizeX , sizeY, false);
+                    colorType = EPixelFormat.PF_FloatRGB;
                 }
                 else
                 {
@@ -328,14 +349,18 @@ public static class TextureDecoder
                     // Rgb565 DETEX_PIXEL_FORMAT_FLOAT_RGBX16 or Rgb565 DETEX_PIXEL_FORMAT_FLOAT_BGRX16
                     data = DetexHelper.DecodeDetexLinear(bytes, sizeX, sizeY, true, DetexTextureFormat.DETEX_TEXTURE_FORMAT_BPTC_FLOAT, DetexPixelFormat.DETEX_PIXEL_FORMAT_FLOAT_RGBX16);
                 }
-                colorType = EPixelFormat.PF_FloatRGBA; //TODO idk
                 break;
             case EPixelFormat.PF_BC7:
+                colorType = EPixelFormat.PF_B8G8R8A8;
                 if (UseAssetRipperTextureDecoder)
                     Bc7.Decompress<ColorBGRA<byte>, byte>(bytes, sizeX, sizeY, out data);
+                else if (UseBCDecNet) {
+                    data = new byte[sizeX * sizeY * 4];
+                    BCDec.DecompressBC7(bytes, data, sizeX , sizeY);
+                    colorType = EPixelFormat.PF_R8G8B8A8;
+                }
                 else
                     data = DetexHelper.DecodeDetexLinear(bytes, sizeX, sizeY * sizeZ, false, DetexTextureFormat.DETEX_TEXTURE_FORMAT_BPTC, DetexPixelFormat.DETEX_PIXEL_FORMAT_BGRA8);
-                colorType = EPixelFormat.PF_B8G8R8A8;
                 break;
             case EPixelFormat.PF_ETC1:
                 data = DetexHelper.DecodeDetexLinear(bytes, sizeX, sizeY, false, DetexTextureFormat.DETEX_TEXTURE_FORMAT_ETC1, DetexPixelFormat.DETEX_PIXEL_FORMAT_BGRA8);

@@ -76,6 +76,10 @@ public static class DetexHelper
                 return true;
             }
 
+            if (!OperatingSystem.IsWindows()) {
+                return false;
+            }
+
             await using var stream = Assembly.GetExecutingAssembly().GetManifestResourceStream(MANIFEST_URL);
             if (stream == null)
             {

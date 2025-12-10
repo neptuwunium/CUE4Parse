@@ -1,4 +1,5 @@
 <Solution>
+  <Project Path="BCDecNet/BCDecNet/BCDecNet.csproj" />
   <Project Path="CUE4Parse-Conversion/CUE4Parse-Conversion.csproj" />
   <Project Path="CUE4Parse.Example/CUE4Parse.Example.csproj" />
   <Project Path="CUE4Parse.Tests/CUE4Parse.Tests.csproj" />
