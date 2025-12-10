@@ -1,3 +1,9 @@
 [submodule "CUE4Parse-Natives/ACL/external/acl"]
 	path = CUE4Parse-Natives/ACL/external/acl
 	url = https://github.com/nfrechette/acl.git
+[submodule "DragonLib"]
+	path = DragonLib
+	url = https://github.com/yretenai/DragonLib.git
+[submodule "Pepper"]
+	path = Pepper
+	url = https://github.com/yretenai/Pepper.git

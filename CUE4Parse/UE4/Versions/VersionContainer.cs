@@ -52,13 +52,13 @@ namespace CUE4Parse.UE4.Versions
         public readonly Dictionary<string, bool> Options = new();
         public readonly Dictionary<string, KeyValuePair<string, string>> MapStructTypes = new();
 
-        private readonly IDictionary<string, bool>? _optionOverrides;
-        private readonly IDictionary<string, KeyValuePair<string, string>>? _mapStructTypesOverrides;
+        public IDictionary<string, bool>? OptionOverrides;
+        public IDictionary<string, KeyValuePair<string, string>>? MapStructTypesOverrides;
 
         public VersionContainer(EGame game = GAME_UE4_LATEST, ETexturePlatform platform = ETexturePlatform.DesktopMobile, FPackageFileVersion ver = default, FCustomVersionContainer? customVersions = null, IDictionary<string, bool>? optionOverrides = null, IDictionary<string, KeyValuePair<string, string>>? mapStructTypesOverrides = null)
         {
-            _optionOverrides = optionOverrides;
-            _mapStructTypesOverrides = mapStructTypesOverrides;
+            OptionOverrides = optionOverrides;
+            MapStructTypesOverrides = mapStructTypesOverrides;
 
             Game = game;
             Ver = ver;
@@ -100,8 +100,8 @@ namespace CUE4Parse.UE4.Versions
             Options["SkeletalMesh.KeepMobileMinLODSettingOnDesktop"] = false;
             Options["StaticMesh.KeepMobileMinLODSettingOnDesktop"] = false;
 
-            if (_optionOverrides == null) return;
-            foreach (var (key, value) in _optionOverrides)
+            if (OptionOverrides == null) return;
+            foreach (var (key, value) in OptionOverrides)
             {
                 Options[key] = value;
             }
@@ -125,8 +125,8 @@ namespace CUE4Parse.UE4.Versions
                 : new KeyValuePair<string, string>("Guid", "MovieSceneTrackIdentifier");
             MapStructTypes["UserParameterRedirects"] = new KeyValuePair<string, string>("NiagaraVariable", "NiagaraVariable");
 
-            if (_mapStructTypesOverrides == null) return;
-            foreach (var (key, value) in _mapStructTypesOverrides)
+            if (MapStructTypesOverrides == null) return;
+            foreach (var (key, value) in MapStructTypesOverrides)
             {
                 MapStructTypes[key] = value;
             }
@@ -140,6 +140,6 @@ namespace CUE4Parse.UE4.Versions
             set => Options[optionKey] = value;
         }
 
-        public object Clone() => new VersionContainer(Game, Platform, Ver, CustomVersions, _optionOverrides, _mapStructTypesOverrides) { bExplicitVer = bExplicitVer };
+        public object Clone() => new VersionContainer(Game, Platform, Ver, CustomVersions, OptionOverrides, MapStructTypesOverrides) { bExplicitVer = bExplicitVer };
     }
 }

@@ -7,6 +7,8 @@ namespace CUE4Parse.UE4.Versions;
 [JsonConverter(typeof(EGameConverter))]
 public enum EGame : uint
 {
+    GAME_AUTODETECT = 0,
+    
     // bytes: 04.NN.FF.XX : 04/05=UE4/5, NN=UE4 subversion, FF=Flags (curently not used), XX=game (0=base engine)
     GAME_UE4_0 = GameUtils.GameUe4Base + (0 << 16),
     GAME_UE4_1 = GameUtils.GameUe4Base + (1 << 16),

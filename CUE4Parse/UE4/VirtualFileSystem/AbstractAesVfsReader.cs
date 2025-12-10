@@ -29,12 +29,20 @@ public abstract partial class AbstractAesVfsReader : AbstractVfsReader, IAesVfsR
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
     public bool TestAesKey(FAesKey key) => !IsEncrypted || TestAesKey(MountPointCheckBytes(), key);
 
+    [MethodImpl(MethodImplOptions.AggressiveInlining)]
+    public bool TestAesKeyCustom(FAesKey key) => !IsEncrypted || TestAesKeyCustom(MountPointCheckBytes(), key);
+
     public abstract byte[] MountPointCheckBytes();
 
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
     public static bool TestAesKey(byte[] bytes, FAesKey key)
     {
         return IsValidIndex(bytes.Decrypt(key));
+    }
+
+    [MethodImpl(MethodImplOptions.AggressiveInlining)]
+    public bool TestAesKeyCustom(byte[] bytes, FAesKey key) {
+        return IsValidIndex(CustomEncryption != null ? CustomEncryption(bytes, 0, bytes.Length, true, this) : bytes.Decrypt(key));
     }
 
     [MethodImpl(MethodImplOptions.AggressiveInlining)]

@@ -2,27 +2,28 @@
 using System.Collections.Generic;
 using System.Numerics;
 using SharpGLTF.Geometry.VertexTypes;
+using SharpGLTF.Memory;
 using SharpGLTF.Schema2;
 
 namespace CUE4Parse_Conversion.Meshes.glTF
 {
     public struct VertexColorXTextureX: IVertexMaterial, IEquatable<VertexColorXTextureX>
     {
+        public void Add(in VertexMaterialDelta delta) => throw new NotImplementedException();
         public int MaxColors => 1; // Do we need more?
         public int MaxTextCoords => Constants.MAX_MESH_UV_SETS;
 
-        [VertexAttribute("COLOR_0", EncodingType.UNSIGNED_BYTE, true)]
         public Vector4 Color;
 
         // public List<Vector2> TexCoords;
-        [VertexAttribute("TEXCOORD_0")] public Vector2 TexCoord0;
-        [VertexAttribute("TEXCOORD_1")] public Vector2 TexCoord1;
-        [VertexAttribute("TEXCOORD_2")] public Vector2 TexCoord2;
-        [VertexAttribute("TEXCOORD_3")] public Vector2 TexCoord3;
-        [VertexAttribute("TEXCOORD_4")] public Vector2 TexCoord4;
-        [VertexAttribute("TEXCOORD_5")] public Vector2 TexCoord5;
-        [VertexAttribute("TEXCOORD_6")] public Vector2 TexCoord6;
-        [VertexAttribute("TEXCOORD_7")] public Vector2 TexCoord7;
+        public Vector2 TexCoord0;
+        public Vector2 TexCoord1;
+        public Vector2 TexCoord2;
+        public Vector2 TexCoord3;
+        public Vector2 TexCoord4;
+        public Vector2 TexCoord5;
+        public Vector2 TexCoord6;
+        public Vector2 TexCoord7;
 
         public VertexColorXTextureX(Vector4 color, List<Vector2> texCoords)
         {
@@ -59,6 +60,8 @@ namespace CUE4Parse_Conversion.Meshes.glTF
                 case 7: TexCoord7 = coord; break;
             }
         }
+
+        public VertexMaterialDelta Subtract(IVertexMaterial baseValue) => throw new NotImplementedException();
 
         public Vector2 GetTexCoord(int index)
         {
@@ -104,6 +107,22 @@ namespace CUE4Parse_Conversion.Meshes.glTF
                 other.TexCoord5 == TexCoord5 &&
                 other.TexCoord6 == TexCoord6 &&
                 other.TexCoord7 == TexCoord7;
+        }
+
+        private static Dictionary<string, AttributeFormat> EncodingFormat = new() {
+            ["COLOR_0"] = new AttributeFormat(DimensionType.VEC4, EncodingType.UNSIGNED_BYTE, true),
+            ["TEXCOORD_0"] = new AttributeFormat(DimensionType.VEC2, EncodingType.FLOAT),
+            ["TEXCOORD_1"] = new AttributeFormat(DimensionType.VEC2, EncodingType.FLOAT),
+            ["TEXCOORD_2"] = new AttributeFormat(DimensionType.VEC2, EncodingType.FLOAT),
+            ["TEXCOORD_3"] = new AttributeFormat(DimensionType.VEC2, EncodingType.FLOAT),
+            ["TEXCOORD_4"] = new AttributeFormat(DimensionType.VEC2, EncodingType.FLOAT),
+            ["TEXCOORD_5"] = new AttributeFormat(DimensionType.VEC2, EncodingType.FLOAT),
+            ["TEXCOORD_6"] = new AttributeFormat(DimensionType.VEC2, EncodingType.FLOAT),
+            ["TEXCOORD_7"] = new AttributeFormat(DimensionType.VEC2, EncodingType.FLOAT),
+        };
+
+        public IEnumerable<KeyValuePair<string, AttributeFormat>> GetEncodingAttributes() {
+            return EncodingFormat;
         }
     }
 }

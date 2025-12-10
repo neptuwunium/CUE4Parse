@@ -23,6 +23,7 @@ namespace CUE4Parse.UE4.VirtualFileSystem
         public bool IsEncrypted { get; }
         public int EncryptedFileCount { get; }
         public bool TestAesKey(FAesKey key);
+        public bool TestAesKeyCustom(FAesKey key);
         public byte[] MountPointCheckBytes();
 
         public void MountTo(FileProviderDictionary files, StringComparer pathComparer, FAesKey? key, EventHandler<int>? vfsMounted = null);

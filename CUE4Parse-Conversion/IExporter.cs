@@ -35,6 +35,7 @@ namespace CUE4Parse_Conversion
         public bool ExportMorphTargets;
         public bool ExportMaterials;
         public bool ExportHdrTexturesAsHdr;
+        public bool ExportMaterialTextures;
 
         public ExporterOptions()
         {
