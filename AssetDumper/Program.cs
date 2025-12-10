@@ -531,31 +531,31 @@ public static class Program {
 										}
 										case UMaterialInterface material when !flags.NoMaterial: {
 											targetPath.EnsureDirectoryExists();
-											var exporter = new BasicMaterialExporter(material, exportOptions, $".{exportIndex}");
+											var exporter = new BasicMaterialExporter(material, exportOptions);
 											exporter.TryWriteToDir(targetBaseDir, out _, out _);
 											break;
 										}
 										case USkeletalMesh skeletalMesh when !flags.NoMeshes: {
 											targetPath.EnsureDirectoryExists();
-											var exporter = new MeshExporter(skeletalMesh, exportOptions, $".{exportIndex}");
+											var exporter = new MeshExporter(skeletalMesh, exportOptions);
 											exporter.TryWriteToDir(targetBaseDir, out _, out _);
 											break;
 										}
 										case USkeleton skeleton when !flags.NoMeshes: {
 											targetPath.EnsureDirectoryExists();
-											var exporter = new MeshExporter(skeleton, exportOptions, $".{exportIndex}");
+											var exporter = new MeshExporter(skeleton, exportOptions);
 											exporter.TryWriteToDir(targetBaseDir, out _, out _);
 											break;
 										}
 										case UStaticMesh staticMesh when !flags.NoMeshes: {
 											targetPath.EnsureDirectoryExists();
-											var exporter = new MeshExporter(staticMesh, exportOptions, $".{exportIndex}");
+											var exporter = new MeshExporter(staticMesh, exportOptions);
 											exporter.TryWriteToDir(targetBaseDir, out _, out _);
 											break;
 										}
 										case UWorld world when !flags.NoWorlds: {
 											targetPath.EnsureDirectoryExists();
-											var exporter = new WorldExporter(world, flags.Platform, exportOptions, $".{exportIndex}");
+											var exporter = new WorldExporter(world, flags.Platform, exportOptions);
 											exporter.TryWriteToDir(targetBaseDir, out _, out _);
 											break;
 										}

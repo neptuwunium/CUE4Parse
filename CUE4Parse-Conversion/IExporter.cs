@@ -100,6 +100,19 @@ namespace CUE4Parse_Conversion
             return path[0] == '/' ? path[1..] : path;
         }
 
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public static string GetExportSavePath(UObject? export)
+        {
+            if (export == null) {
+                return "None";
+            }
+            
+            var p = export.GetPathName();
+            var packagePath = (export.Owner?.Provider?.FixPath(p) ?? p).SubstringBeforeLast('.');
+            var exportName = p.SubstringAfterLast('.');
+            return GetExportSavePath(packagePath, exportName);
+        }
+
         protected string FixAndCreatePath(DirectoryInfo baseDirectory, string fullPath, string? ext = null)
         {
             if (fullPath.StartsWith('/')) fullPath = fullPath[1..];

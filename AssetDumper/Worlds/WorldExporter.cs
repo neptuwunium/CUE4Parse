@@ -3,7 +3,6 @@ using CUE4Parse_Conversion.ActorX;
 using CUE4Parse.UE4.Assets.Exports.Texture;
 using CUE4Parse.UE4.Objects.Engine;
 using CUE4Parse.UE4.Writers;
-using CUE4Parse.Utils;
 using SixLabors.ImageSharp;
 using SixLabors.ImageSharp.PixelFormats;
 
@@ -12,9 +11,8 @@ namespace AssetDumper.Worlds;
 public class WorldExporter : ExporterBase {
     public readonly string WorldName;
 
-    public WorldExporter(UWorld world, ETexturePlatform platform, ExporterOptions options, string? suffix = null) : base(world, options) {
+    public WorldExporter(UWorld world, ETexturePlatform platform, ExporterOptions options) : base(world, options) {
         WorldName = world.Owner?.Name ?? world.Name;
-        WorldName += suffix ?? "";
 
         var (actors, lights, landscapes) = WorldConverter.ConvertWorld(world, platform);
 
@@ -84,23 +82,21 @@ public class WorldExporter : ExporterBase {
     public Dictionary<string, (float[], int, int)> LandscapeHeights { get; }
 
     public override bool TryWriteToDir(DirectoryInfo baseDirectory, out string label, out string savedFileName) {
-        savedFileName = WorldName.SubstringAfterLast('/');
+        savedFileName = FixAndCreatePath(baseDirectory, GetExportSavePath() + ".psw");
         label = WorldName;
         if (!baseDirectory.Exists || FileData.Length <= 0) {
             return false;
         }
 
-        var filePath = FixAndCreatePath(baseDirectory, WorldName + ".psw");
-        File.WriteAllBytes(filePath, FileData);
-        savedFileName = Path.GetFileName(filePath);
-        if (!File.Exists(filePath)) {
+        File.WriteAllBytes(savedFileName, FileData);
+        if (!File.Exists(savedFileName)) {
             return false;
         }
 
         foreach (var (path, (height, x, y)) in LandscapeHeights) {
-            filePath = FixAndCreatePath(baseDirectory, path);
+            var filePath = FixAndCreatePath(baseDirectory, path);
             // unfortunately SKColorType.Rgba16161616 is "To be added", so we have to introduce another dependency.
-            using var image = Image.LoadPixelData<RgbaVector>(height.Select(heightPoint => new RgbaVector(heightPoint, heightPoint, heightPoint, heightPoint)).ToArray(), x, y);
+            using var image = Image.LoadPixelData(height.Select(heightPoint => new RgbaVector(heightPoint, heightPoint, heightPoint, heightPoint)).ToArray(), x, y);
             image.SaveAsPng(filePath + ".png");
         }
 

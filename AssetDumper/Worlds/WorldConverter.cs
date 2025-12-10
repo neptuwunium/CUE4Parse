@@ -1,4 +1,5 @@
 ﻿using AssetDumper.Worlds.PSW;
+using CUE4Parse_Conversion;
 using CUE4Parse_Conversion.Textures;
 using CUE4Parse.UE4.Assets;
 using CUE4Parse.UE4.Assets.Exports;
@@ -107,15 +108,6 @@ public static class WorldConverter {
                 continue;
             }
 
-            var outerMost = heightmap.ResolvedObject;
-            if (outerMost == null) {
-                continue;
-            }
-
-            while (outerMost.Outer != null) {
-                outerMost = outerMost.Outer;
-            }
-
             var landscapeId = landscapes.Count;
 
             var estDim = size + 1;
@@ -130,7 +122,7 @@ public static class WorldConverter {
                 OrigY = estDim,
                 ComponentSize = size,
                 Scale = heightScale,
-                Path = outerMost.Name.Text + $".{heightmap.ResolvedObject!.ExportIndex}",
+                Path = ExporterBase.GetExportSavePath(heightmap.Load()),
             });
 
             var heightTex = heightmap.Load<UTexture2D>();
@@ -165,15 +157,6 @@ public static class WorldConverter {
                     continue;
                 }
 
-                outerMost = weightmap.ResolvedObject;
-                if (outerMost == null) {
-                    continue;
-                }
-
-                while (outerMost.Outer != null) {
-                    outerMost = outerMost.Outer;
-                }
-
                 landscapes.Add(new WorldLandscape {
                     ActorId = actorId,
                     TileX = x,
@@ -181,7 +164,7 @@ public static class WorldConverter {
                     Type = index + 1,
                     ComponentSize = size,
                     Scale = weightScale,
-                    Path = outerMost.Name.Text + $".{weightmap.ResolvedObject!.ExportIndex}",
+                    Path = ExporterBase.GetExportSavePath(weightmap.Load()),
                 });
             }
         }
@@ -215,14 +198,7 @@ public static class WorldConverter {
 
         var materials = new List<(string Name, string Path)>();
         if (meshIndex is { IsNull: false }) {
-            var outerMost = meshIndex.ResolvedObject;
-            if (outerMost != null) {
-                while (outerMost.Outer != null) {
-                    outerMost = outerMost.Outer;
-                }
-
-                mesh = outerMost.Name.Text + $".{meshIndex.ResolvedObject!.ExportIndex}";
-            }
+            mesh = ExporterBase.GetExportSavePath(meshIndex.Load());
 
             if (meshIndex.TryLoad(out var meshObj)) {
                 var meshMaterials = default(ResolvedObject?[]);
@@ -233,28 +209,13 @@ public static class WorldConverter {
                 }
 
                 foreach (var material in meshMaterials ?? []) {
-                    var outerMostMaterial = material;
-                    if (outerMostMaterial != null) {
-                        while (outerMostMaterial.Outer != null) {
-                            outerMostMaterial = outerMostMaterial.Outer;
-                        }
-
-                        materials.Add((material!.Name.Text, outerMostMaterial.Name.Text + $".{material!.ExportIndex}"));
-                    }
+                    materials.Add((material!.Name.Text, ExporterBase.GetExportSavePath(material.Load())));
                 }
 
                 var actorMaterials = component.TemplatedGetOrDefault("OverrideMaterials", Array.Empty<FPackageIndex?>());
                 for (var materialIndex = 0; materialIndex < actorMaterials.Length; materialIndex++) {
                     var actorMaterialIndex = actorMaterials[materialIndex];
-
-                    var outerMostMaterial = actorMaterialIndex?.ResolvedObject;
-                    if (outerMostMaterial != null) {
-                        while (outerMostMaterial.Outer != null) {
-                            outerMostMaterial = outerMostMaterial.Outer;
-                        }
-
-                        materials[materialIndex] = (actorMaterialIndex!.Name, outerMostMaterial.Name.Text + $".{actorMaterialIndex!.ResolvedObject!.ExportIndex}");
-                    }
+                    materials[materialIndex] = (actorMaterialIndex!.Name, ExporterBase.GetExportSavePath(actorMaterialIndex.Load()));
                 }
             }
         }

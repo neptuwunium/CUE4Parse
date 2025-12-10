@@ -25,7 +25,7 @@ namespace CUE4Parse_Conversion.Meshes
         public readonly List<Mesh> MeshLods;
         public readonly List<DNAExporter> DNAAssets = [];
 
-        public MeshExporter(USkeleton originalSkeleton, ExporterOptions options, string suffix = "") : base(originalSkeleton, options)
+        public MeshExporter(USkeleton originalSkeleton, ExporterOptions options) : base(originalSkeleton, options)
         {
             MeshLods = new List<Mesh>();
 
@@ -55,12 +55,12 @@ namespace CUE4Parse_Conversion.Meshes
                     throw new ArgumentOutOfRangeException(nameof(Options.MeshFormat), Options.MeshFormat, null);
             }
 
-            MeshLods.Add(new Mesh($"{GetExportSavePath()}{suffix}.{ext}", Ar.GetBuffer(), new List<MaterialExporter2>()));
+            MeshLods.Add(new Mesh($"{GetExportSavePath()}.{ext}", Ar.GetBuffer(), new List<MaterialExporter2>()));
         }
 
-        public MeshExporter(UStaticMesh originalMesh, ExporterOptions options, string suffix = "") : this(originalMesh, null, options){}
+        public MeshExporter(UStaticMesh originalMesh, ExporterOptions options) : this(originalMesh, null, options){}
 
-        public MeshExporter(UStaticMesh originalMesh, USplineMeshComponent? splineMeshComponent, ExporterOptions options, string suffix = "") : base(originalMesh, options)
+        public MeshExporter(UStaticMesh originalMesh, USplineMeshComponent? splineMeshComponent, ExporterOptions options) : base(originalMesh, options)
         {
             MeshLods = new List<Mesh>();
 
@@ -116,15 +116,15 @@ namespace CUE4Parse_Conversion.Meshes
 
                 if (Options.LodFormat == ELodFormat.FirstLod)
                 {
-                    MeshLods.Add(new Mesh($"{path}{suffix}.{ext}", Ar.GetBuffer(), materialExports ?? new List<MaterialExporter2>()));
+                    MeshLods.Add(new Mesh($"{path}.{ext}", Ar.GetBuffer(), materialExports ?? new List<MaterialExporter2>()));
                     break;
                 }
 
-                MeshLods.Add(new Mesh($"{path}_LOD{i}{suffix}.{ext}", Ar.GetBuffer(), materialExports ?? new List<MaterialExporter2>()));
+                MeshLods.Add(new Mesh($"{path}_LOD{i}.{ext}", Ar.GetBuffer(), materialExports ?? new List<MaterialExporter2>()));
             }
         }
 
-        public MeshExporter(USkeletalMesh originalMesh, ExporterOptions options, string suffix = "") : base(originalMesh, options)
+        public MeshExporter(USkeletalMesh originalMesh, ExporterOptions options) : base(originalMesh, options)
         {
             MeshLods = new List<Mesh>();
 
@@ -200,12 +200,12 @@ namespace CUE4Parse_Conversion.Meshes
 
                 if (Options.LodFormat == ELodFormat.FirstLod)
                 {
-                    MeshLods.Add(new Mesh($"{GetExportSavePath()}{suffix}.{ext}", Ar.GetBuffer(), materialExports ?? new List<MaterialExporter2>()));
+                    MeshLods.Add(new Mesh($"{GetExportSavePath()}.{ext}", Ar.GetBuffer(), materialExports ?? new List<MaterialExporter2>()));
                     break;
                 }
                 else
                 {
-                    MeshLods.Add(new Mesh($"{GetExportSavePath()}_LOD{i}{suffix}.{ext}", Ar.GetBuffer(), materialExports ?? new List<MaterialExporter2>()));
+                    MeshLods.Add(new Mesh($"{GetExportSavePath()}_LOD{i}.{ext}", Ar.GetBuffer(), materialExports ?? new List<MaterialExporter2>()));
                 }
                 i++;
             }

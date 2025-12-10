@@ -64,20 +64,15 @@ public class BasicMaterialData {
 
 public class BasicMaterialExporter : ExporterBase {
     private BasicMaterialData MaterialData { get; }
-    private string InternalPath { get; } = string.Empty;
-    private string Suffix { get; }
 
-    public BasicMaterialExporter(ExporterOptions options, string? suffix = null) {
+    public BasicMaterialExporter(ExporterOptions options) {
         Options = options;
-        Suffix = suffix ?? string.Empty;
         MaterialData = new BasicMaterialData();
     }
 
-    public BasicMaterialExporter(UMaterialInterface? unrealMaterial, ExporterOptions options, string? suffix = null) : this(options, suffix) {
+    public BasicMaterialExporter(UMaterialInterface? unrealMaterial, ExporterOptions options) : this(options) {
         if (unrealMaterial == null) return;
-
-        InternalPath = unrealMaterial.Owner?.Name ?? unrealMaterial.Name;
-
+        
         ProcessMaterial(unrealMaterial);
 
         MaterialData.Name = unrealMaterial.Name;
@@ -218,7 +213,7 @@ public class BasicMaterialExporter : ExporterBase {
         savedFilePath = string.Empty;
         if (!baseDirectory.Exists) return false;
 
-        savedFilePath = FixAndCreatePath(baseDirectory, InternalPath + Suffix, "json");
+        savedFilePath = FixAndCreatePath(baseDirectory, GetExportSavePath(), "json");
         File.WriteAllText(savedFilePath, JsonConvert.SerializeObject(MaterialData, Formatting.Indented));
         label = Path.GetFileName(savedFilePath);
         return true;
