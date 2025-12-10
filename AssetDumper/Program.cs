@@ -4,6 +4,7 @@ using System.Text;
 using AssetDumper.Worlds;
 using CUE4Parse_Conversion;
 using CUE4Parse_Conversion.Animations;
+using CUE4Parse_Conversion.Landscape;
 using CUE4Parse_Conversion.Meshes;
 using CUE4Parse_Conversion.Sounds;
 using CUE4Parse_Conversion.Textures;
@@ -12,6 +13,7 @@ using CUE4Parse.Compression;
 using CUE4Parse.Encryption.Aes;
 using CUE4Parse.FileProvider;
 using CUE4Parse.MappingsProvider;
+using CUE4Parse.UE4.Assets.Exports.Actor;
 using CUE4Parse.UE4.Assets.Exports.Animation;
 using CUE4Parse.UE4.Assets.Exports.Engine;
 using CUE4Parse.UE4.Assets.Exports.Internationalization;
@@ -445,7 +447,6 @@ public static class Program {
 						try {
 							var package = await Provider.LoadPackageAsync(path);
 							var name = package.Name.TrimStart('/', '\\');
-							var targetPath = Path.Combine(target, "Content", name);
 							targetJsonPath = Path.Combine(target, "Json", name + ".json");
 							var exports = package.GetExports().ToArray();
 
@@ -461,11 +462,12 @@ public static class Program {
 
 							for (var exportIndex = 0; exportIndex < exports.Length; exportIndex++) {
 								var export = exports[exportIndex];
+								var targetPath = Path.Combine(target, "Content", ExporterBase.GetExportSavePath(export));
 
-								if (export.ExportType == "AkAudioEvent") {
+								if (export is UAkAudioEvent akAudioEvent) {
 									wwiseNames.Add(export.Name);
 
-									if (export is UAkAudioEvent akAudioEvent && (flags.RenameWwiseAudio || flags.TrackWwiseEvents)) {
+									if (flags.RenameWwiseAudio || flags.TrackWwiseEvents) {
 										if (akAudioEvent.EventCookedData is { } eventData) {
 											if (flags.TrackWwiseEvents) {
 												wwiseNames.Add(eventData.DebugName.PlainText);
@@ -508,7 +510,7 @@ public static class Program {
 											if (texture != null) {
 												targetPath.EnsureDirectoryExists();
 												var data = texture.Encode(flags.TextureFormat, false, out var texExt);
-												await using var fs = new FileStream(targetPath + $".{exportIndex}.{texExt}", FileMode.Create, FileAccess.ReadWrite);
+												await using var fs = new FileStream(targetPath + $".{texExt}", FileMode.Create, FileAccess.ReadWrite);
 												fs.Write(data);
 											}
 
@@ -518,7 +520,7 @@ public static class Program {
 										//     var texture = animated2d.FileBlob;
 										//     if (texture.Length > 0 && animated2d.FileType != AnimatedTextureType.None) {
 										//         targetPath.EnsureDirectoryExists();
-										//         await using var fs = new FileStream(targetPath + $".{exportIndex}.{animated2d.FileType.ToString("G").ToLower()}", FileMode.Create, FileAccess.ReadWrite);
+										//         await using var fs = new FileStream(targetPath + $".{animated2d.FileType.ToString("G").ToLower()}", FileMode.Create, FileAccess.ReadWrite);
 										//         await fs.WriteAsync(texture);
 										//     }
 										//
@@ -528,7 +530,7 @@ public static class Program {
 											export.Decode(true, out var format, out var data);
 											if (data != null && !string.IsNullOrEmpty(format)) {
 												targetPath.EnsureDirectoryExists();
-												await using var stream = new FileStream(targetPath + $".{exportIndex}.{format}", FileMode.Create, FileAccess.ReadWrite);
+												await using var stream = new FileStream(targetPath + $".{format}", FileMode.Create, FileAccess.ReadWrite);
 												await stream.WriteAsync(data, CancellationToken.None);
 											}
 
@@ -582,14 +584,20 @@ public static class Program {
 											exporter.TryWriteToDir(targetBaseDir, out _, out _);
 											break;
 										}
+										case ALandscape landscape when !flags.NoWorlds: {
+											targetPath.EnsureDirectoryExists();
+											var exporter = new LandscapeExporter(landscape, null, exportOptions);
+											exporter.TryWriteToDir(targetBaseDir, out _, out _);
+											break;
+										}
 										case UDataTable dataTable when !flags.NoDataTable: {
 											targetPath.EnsureDirectoryExists();
-											await File.WriteAllTextAsync($"{targetPath}.{exportIndex}.json", JsonConvert.SerializeObject(dataTable, Formatting.Indented, new JsonSerializerSettings { StringEscapeHandling = StringEscapeHandling.EscapeNonAscii, Converters = { new StringEnumConverter() } }));
+											await File.WriteAllTextAsync($"{targetPath}.json", JsonConvert.SerializeObject(dataTable, Formatting.Indented, new JsonSerializerSettings { StringEscapeHandling = StringEscapeHandling.EscapeNonAscii, Converters = { new StringEnumConverter() } }));
 											break;
 										}
 										case UStringTable stringTable when !flags.NoStringTable: {
 											targetPath.EnsureDirectoryExists();
-											await File.WriteAllTextAsync($"{targetPath}.{exportIndex}.json", JsonConvert.SerializeObject(stringTable, Formatting.Indented, new JsonSerializerSettings { StringEscapeHandling = StringEscapeHandling.EscapeNonAscii, Converters = { new StringEnumConverter() } }));
+											await File.WriteAllTextAsync($"{targetPath}.json", JsonConvert.SerializeObject(stringTable, Formatting.Indented, new JsonSerializerSettings { StringEscapeHandling = StringEscapeHandling.EscapeNonAscii, Converters = { new StringEnumConverter() } }));
 											break;
 										}
 										default: {
@@ -601,7 +609,7 @@ public static class Program {
 													break;
 												}
 
-												var targetBpPath = Path.Combine(target, "Blueprint", normalizedGamePath + $".{exportIndex}.json");
+												var targetBpPath = Path.Combine(target, "Blueprint", normalizedGamePath + $".json");
 												targetBpPath.EnsureDirectoryExists();
 												var merged = BlueprintConstructor.GetMergedStruct(export);
 												await File.WriteAllTextAsync(targetBpPath, JsonConvert.SerializeObject(merged, Formatting.Indented, new JsonSerializerSettings { StringEscapeHandling = StringEscapeHandling.EscapeNonAscii, Converters = { new StringEnumConverter() } }));
@@ -691,7 +699,7 @@ public static class Program {
 					var path = Path.Combine(target, "Wwise", realPath.Replace('\\', '/'));
 					path.EnsureDirectoryExists();
 					path = Path.ChangeExtension(path, Path.GetExtension(gamePath));
-					File.Copy(Path.Combine(target, "Content", gamePath), path, true);
+					File.Move(Path.Combine(target, "Content", gamePath), path, true);
 				} catch (Exception e) {
 					Log.Error(e, "Failed renaming audio");
 				}

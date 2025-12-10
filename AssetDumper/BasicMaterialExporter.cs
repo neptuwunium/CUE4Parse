@@ -153,7 +153,7 @@ public class BasicMaterialExporter : ExporterBase {
         }
 
         var currentIndex = 0; // Scalar
-        if (runtimeEntries[currentIndex++] is {} scalarEntries && scalarEntries.TryGetValue(out FMaterialParameterInfo[] scalarParameterInfos, "ParameterInfos", "ParameterInfoSet") &&
+        if (runtimeEntries.Length > currentIndex && runtimeEntries[currentIndex++] is {} scalarEntries && scalarEntries.TryGetValue(out FMaterialParameterInfo[] scalarParameterInfos, "ParameterInfos", "ParameterInfoSet") &&
             materialParameters.TryGetValue(out float[] scalarValues, "ScalarValues")) {
             for (var index = 0; index < scalarParameterInfos.Length; index++) {
                 var scalarParameter = scalarParameterInfos[index];
@@ -161,7 +161,7 @@ public class BasicMaterialExporter : ExporterBase {
             }
         }
 
-        if (runtimeEntries[currentIndex++] is {} vectorEntries && vectorEntries.TryGetValue(out FMaterialParameterInfo[] vectorParameterInfos, "ParameterInfos", "ParameterInfoSet") &&
+        if (runtimeEntries.Length > currentIndex && runtimeEntries[currentIndex++] is {} vectorEntries && vectorEntries.TryGetValue(out FMaterialParameterInfo[] vectorParameterInfos, "ParameterInfos", "ParameterInfoSet") &&
             materialParameters.TryGetValue(out FLinearColor[] vectorValues, "VectorValues")) {
             for (var index = 0; index < vectorParameterInfos.Length; index++) {
                 var vectorParameter = vectorParameterInfos[index];
@@ -170,7 +170,7 @@ public class BasicMaterialExporter : ExporterBase {
         }
 
         if (game > EGame.GAME_UE5_0) {
-            if (runtimeEntries[currentIndex++] is {} doubleVectorEntries && doubleVectorEntries.TryGetValue(out FMaterialParameterInfo[] doubleVectorParameterInfos, "ParameterInfos", "ParameterInfoSet") &&
+            if (runtimeEntries.Length > currentIndex && runtimeEntries[currentIndex++] is {} doubleVectorEntries && doubleVectorEntries.TryGetValue(out FMaterialParameterInfo[] doubleVectorParameterInfos, "ParameterInfos", "ParameterInfoSet") &&
                 materialParameters.TryGetValue(out FVector4[] doubleVectorValues, "DoubleVectorValues")) {
                 for (var index = 0; index < doubleVectorParameterInfos.Length; index++) {
                     var doubleVectorParameter = doubleVectorParameterInfos[index];
@@ -179,7 +179,7 @@ public class BasicMaterialExporter : ExporterBase {
             }
         }
 
-        if (runtimeEntries[currentIndex] is {} textureEntries && textureEntries.TryGetValue(out FMaterialParameterInfo[] textureParameterInfos, "ParameterInfos", "ParameterInfoSet") &&
+        if (runtimeEntries.Length > currentIndex && runtimeEntries[currentIndex] is {} textureEntries && textureEntries.TryGetValue(out FMaterialParameterInfo[] textureParameterInfos, "ParameterInfos", "ParameterInfoSet") &&
             materialParameters.TryGetValue(out object[] textureValues, "TextureValues")) {
             for (var index = 0; index < textureParameterInfos.Length; index++) {
                 var textureParameter = textureParameterInfos[index];
@@ -200,7 +200,7 @@ public class BasicMaterialExporter : ExporterBase {
         }
 
         currentIndex = (int) EMaterialParameterType.StaticSwitch;
-        if (!(runtimeEntries[currentIndex] is {} staticSwitchEntries && staticSwitchEntries.TryGetValue(out FMaterialParameterInfo[] switchParameterInfos, "ParameterInfos", "ParameterInfoSet"))
+        if (!(runtimeEntries.Length > currentIndex && runtimeEntries[currentIndex] is {} staticSwitchEntries && staticSwitchEntries.TryGetValue(out FMaterialParameterInfo[] switchParameterInfos, "ParameterInfos", "ParameterInfoSet"))
             || !materialParameters.TryGetValue(out bool[] staticSwitchValues, "StaticSwitchValues")) {
             return;
         }

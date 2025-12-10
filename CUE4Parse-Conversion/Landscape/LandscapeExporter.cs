@@ -36,7 +36,7 @@ public class LandscapeExporter : ExporterBase
 
     internal Mesh[]? _processedFiles;
 
-    public LandscapeExporter(ALandscapeProxy landscape, ULandscapeComponent[] components, ExporterOptions options, ELandscapeExportFlags flags = ELandscapeExportFlags.All) : base(landscape, options)
+    public LandscapeExporter(ALandscapeProxy landscape, ULandscapeComponent[]? components, ExporterOptions options, ELandscapeExportFlags flags = ELandscapeExportFlags.All) : base(landscape, options)
     {
         _flags = flags;
         LandscapeGuid = landscape.LandscapeGuid;

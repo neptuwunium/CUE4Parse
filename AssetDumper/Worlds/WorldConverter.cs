@@ -1,7 +1,7 @@
 ﻿using AssetDumper.Worlds.PSW;
 using CUE4Parse_Conversion;
-using CUE4Parse_Conversion.Textures;
 using CUE4Parse.UE4.Assets.Exports;
+using CUE4Parse.UE4.Assets.Exports.Actor;
 using CUE4Parse.UE4.Assets.Exports.Component.SkeletalMesh;
 using CUE4Parse.UE4.Assets.Exports.Component.StaticMesh;
 using CUE4Parse.UE4.Assets.Exports.SkeletalMesh;
@@ -41,8 +41,10 @@ public static class WorldConverter {
 
             var root = actorObject.TemplatedGetOrDefault<UObject?>("RootComponent");
             if (actorObject.ExportType is "Landscape" or "LandscapeStreamingProxy" or "LandscapeProxy") {
-                var actorId = CreateActor(root, name, actorIds, actors, lights);
-                CreateLandscape(actorId, actorObject, landscapes, platform);
+                _ = CreateActor(root, name, actorIds, actors, lights);
+                if (actorObject is ALandscape) {
+                    // todo.
+                }
                 continue;
             }
 
@@ -87,88 +89,6 @@ public static class WorldConverter {
         return (actors, lights, landscapes);
     }
 
-    private static void CreateLandscape(int actorId, UObject actorObject, List<WorldLandscape> landscapes, ETexturePlatform platform) {
-        var landscapeComponents = actorObject.TemplatedGetOrDefault("LandscapeComponents", Array.Empty<UObject?>());
-        var landscapeSectionOffset = actorObject.TemplatedGetOrDefault<FIntPoint>("LandscapeSectionOffset");
-        foreach (var landscapeComponent in landscapeComponents) {
-            if (landscapeComponent == null) {
-                continue;
-            }
-
-            var size = landscapeComponent.TemplatedGetOrDefault("ComponentSizeQuads", 8);
-            var x = landscapeComponent.TemplatedGetOrDefault<int>("SectionBaseX") - landscapeSectionOffset.X;
-            var y = landscapeComponent.TemplatedGetOrDefault<int>("SectionBaseY") - landscapeSectionOffset.Y;
-
-            var heightScale = landscapeComponent.TemplatedGetOrDefault("HeightmapScaleBias", new FVector4(1, 1, 1, 1));
-            var weightScale = landscapeComponent.TemplatedGetOrDefault("WeightmapScaleBias", new FVector4(1, 1, 1, 1));
-
-            var heightmap = landscapeComponent.TemplatedGetOrDefault<FPackageIndex?>("HeightmapTexture");
-            if (heightmap == null || heightmap.IsNull) {
-                continue;
-            }
-
-            var landscapeId = landscapes.Count;
-
-            var estDim = size + 1;
-            landscapes.Add(new WorldLandscape {
-                ActorId = actorId,
-                TileX = x,
-                TileY = y,
-                Type = 0,
-                DimX = 1,
-                DimY = 1,
-                OrigX = estDim,
-                OrigY = estDim,
-                ComponentSize = size,
-                Scale = heightScale,
-                Path = ExporterBase.GetExportSavePath(heightmap.ResolvedObject),
-            });
-
-            var heightTex = heightmap.Load<UTexture2D>();
-            if (heightTex != null) {
-                landscapes[landscapeId].DimX = heightTex.PlatformData.SizeX / estDim;
-                landscapes[landscapeId].DimY = heightTex.PlatformData.SizeY / estDim;
-                landscapes[landscapeId].OrigX = heightTex.PlatformData.SizeX;
-                landscapes[landscapeId].OrigY = heightTex.PlatformData.SizeY;
-
-                var texHeightData = heightTex.Decode(platform);
-                if (texHeightData == null) {
-                    continue;
-                }
-
-                var pixels = texHeightData.Data;
-                var heightData = new float[pixels.Length];
-                for (var i = 0; i < pixels.Length; i++) {
-                    var pixel = pixels[i];
-                    var rgb = (uint) pixel;
-
-                    heightData[i] = Math.Clamp((rgb & 0xFFFFFF) / 16777216f, 0f, 1f);
-                }
-
-                landscapes[landscapeId].Heightmap = heightData;
-                landscapes[landscapeId].Path += "_HEIGHT";
-            }
-
-            var weightmaps = landscapeComponent.TemplatedGetOrDefault("WeightmapTextures", Array.Empty<FPackageIndex?>());
-            for (var index = 0; index < weightmaps.Length; index++) {
-                var weightmap = weightmaps[index];
-                if (weightmap == null || weightmap.IsNull) {
-                    continue;
-                }
-
-                landscapes.Add(new WorldLandscape {
-                    ActorId = actorId,
-                    TileX = x,
-                    TileY = y,
-                    Type = index + 1,
-                    ComponentSize = size,
-                    Scale = weightScale,
-                    Path = ExporterBase.GetExportSavePath(weightmap.ResolvedObject),
-                });
-            }
-        }
-    }
-
     private static int CreateActor(UObject? component, string? name, List<string> actorIds, List<WorldActor> actors, List<WorldLight> lights, bool strict = false) {
         if (component == null) {
             return -1;
@@ -207,7 +127,7 @@ public static class WorldConverter {
                 };
 
                 foreach (var material in meshMaterials ?? []) {
-                    materials.Add((material!.Name.Text, ExporterBase.GetExportSavePath(material)));
+                    materials.Add((material?.Name.Text ?? "None", ExporterBase.GetExportSavePath(material)));
                 }
 
                 var actorMaterials = component.TemplatedGetOrDefault("OverrideMaterials", Array.Empty<FPackageIndex?>());
