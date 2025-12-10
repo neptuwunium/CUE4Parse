@@ -133,7 +133,12 @@ public static class WorldConverter {
                 var actorMaterials = component.TemplatedGetOrDefault("OverrideMaterials", Array.Empty<FPackageIndex?>());
                 for (var materialIndex = 0; materialIndex < actorMaterials.Length; materialIndex++) {
                     var actorMaterialIndex = actorMaterials[materialIndex];
-                    materials[materialIndex] = (actorMaterialIndex!.Name, ExporterBase.GetExportSavePath(actorMaterialIndex.ResolvedObject));
+                    var upd = (actorMaterialIndex!.Name, ExporterBase.GetExportSavePath(actorMaterialIndex.ResolvedObject));
+                    if (materialIndex >= materials.Count) {
+                        materials.Add(upd);
+                    } else {
+                        materials[materialIndex] = upd;
+                    }
                 }
             }
         }
