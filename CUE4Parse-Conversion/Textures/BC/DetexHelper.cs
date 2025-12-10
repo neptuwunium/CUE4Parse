@@ -47,7 +47,7 @@ public static class DetexHelper
     /// <summary>
     /// Decode the encoded data using the Detex library.
     /// </summary>
-    [MethodImpl(MethodImplOptions.AggressiveInlining)]
+    [MethodImpl(CUE4Parse.Globals.MethodOptions)]
     public static byte[] DecodeDetexLinear(byte[] inp, int width, int height, bool isFloat, DetexTextureFormat inputFormat, DetexPixelFormat outputPixelFormat)
     {
         if (Instance is null)

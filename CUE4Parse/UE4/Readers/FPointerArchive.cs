@@ -19,7 +19,7 @@ namespace CUE4Parse.UE4.Readers
             Length = length;
         }
         
-        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        [MethodImpl(CUE4Parse.Globals.MethodOptions)]
         public override int Read(byte[] buffer, int offset, int count)
         {
             unsafe
@@ -87,7 +87,7 @@ namespace CUE4Parse.UE4.Readers
             }
         }
 
-        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        [MethodImpl(CUE4Parse.Globals.MethodOptions)]
         public override long Seek(long offset, SeekOrigin origin)
         {
             Position = origin switch
@@ -104,7 +104,7 @@ namespace CUE4Parse.UE4.Readers
         public override long Length { get; }
         public override long Position { get; set; }
         public override string Name { get; }
-        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        [MethodImpl(CUE4Parse.Globals.MethodOptions)]
         public override T Read<T>()
         {
             unsafe
@@ -116,7 +116,7 @@ namespace CUE4Parse.UE4.Readers
             }
         }
         
-        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        [MethodImpl(CUE4Parse.Globals.MethodOptions)]
         public override byte[] ReadBytes(int length)
         {
             CheckReadSize(length);
@@ -125,14 +125,14 @@ namespace CUE4Parse.UE4.Readers
             return buffer;
         }
 
-        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        [MethodImpl(CUE4Parse.Globals.MethodOptions)]
         public override unsafe void Serialize(byte* ptr, int length)
         {
             Unsafe.CopyBlockUnaligned(ref ptr[0], ref _ptr[Position], (uint) length);
             Position += length;
         }
 
-        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        [MethodImpl(CUE4Parse.Globals.MethodOptions)]
         public override T[] ReadArray<T>(int length)
         {
             unsafe
@@ -145,7 +145,7 @@ namespace CUE4Parse.UE4.Readers
             }
         }
 
-        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        [MethodImpl(CUE4Parse.Globals.MethodOptions)]
         public override void ReadArray<T>(T[] array)
         {
             if (array.Length == 0) return;

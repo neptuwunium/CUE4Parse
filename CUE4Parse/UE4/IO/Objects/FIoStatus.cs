@@ -35,7 +35,7 @@ namespace CUE4Parse.UE4.IO.Objects
         }
 
         public override string ToString() { return $"{ErrorMessage} ({ErrorCode})"; }
-        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        [MethodImpl(CUE4Parse.Globals.MethodOptions)]
         public FIoStatusException ToException() { return new FIoStatusException(this); }
     }
 

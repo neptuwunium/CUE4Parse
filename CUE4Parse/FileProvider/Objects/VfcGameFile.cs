@@ -26,7 +26,7 @@ namespace CUE4Parse.FileProvider.Objects
         public override bool IsEncrypted => false;
         public override CompressionMethod CompressionMethod => CompressionMethod.None;
 
-        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        [MethodImpl(CUE4Parse.Globals.MethodOptions)]
         public override byte[] Read()
         {
             var offset = 0;

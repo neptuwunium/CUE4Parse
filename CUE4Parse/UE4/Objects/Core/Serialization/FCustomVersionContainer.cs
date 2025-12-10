@@ -58,7 +58,7 @@ public class FCustomVersionContainer
         }
     }
 
-    [MethodImpl(MethodImplOptions.AggressiveInlining)]
+    [MethodImpl(CUE4Parse.Globals.MethodOptions)]
     public int GetVersion(FGuid customKey)
     {
         for (var i = 0; i < Versions.Length; i++)

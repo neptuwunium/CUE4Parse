@@ -366,7 +366,7 @@ namespace CUE4Parse.UE4.Objects.Core.Math
             };
         }
 
-        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        [MethodImpl(CUE4Parse.Globals.MethodOptions)]
         public FBox TransformBy(FTransform m) => TransformBy(m.ToMatrixWithScale());
 
         public override string ToString() => $"IsValid={IsValid != 0}, Min={Min}, Max={Max}";

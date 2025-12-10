@@ -11,13 +11,13 @@ public static class Aes
 
     private static readonly AesProvider Provider;
 
-    [MethodImpl(MethodImplOptions.AggressiveInlining)]
+    [MethodImpl(CUE4Parse.Globals.MethodOptions)]
     public static byte[] Decrypt(this byte[] encrypted, FAesKey key)
     {
         return Provider.CreateDecryptor(key.Key, null).TransformFinalBlock(encrypted, 0, encrypted.Length);
     }
 
-    [MethodImpl(MethodImplOptions.AggressiveInlining)]
+    [MethodImpl(CUE4Parse.Globals.MethodOptions)]
     public static byte[] Decrypt(this byte[] encrypted, int beginOffset, int count, FAesKey key)
     {
         return Provider.CreateDecryptor(key.Key, null).TransformFinalBlock(encrypted, beginOffset, count);

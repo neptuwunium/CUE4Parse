@@ -15,7 +15,7 @@ namespace CUE4Parse_Conversion.Textures.ASTC
             Position = 0;
         }
 
-        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        [MethodImpl(CUE4Parse.Globals.MethodOptions)]
         public short ReadBits(int Length)
         {
             int RetValue = 0;
@@ -30,7 +30,7 @@ namespace CUE4Parse_Conversion.Textures.ASTC
             return (short)RetValue;
         }
 
-        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        [MethodImpl(CUE4Parse.Globals.MethodOptions)]
         public int ReadBits(int Start, int End)
         {
             int RetValue = 0;
@@ -44,13 +44,13 @@ namespace CUE4Parse_Conversion.Textures.ASTC
             return RetValue;
         }
 
-        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        [MethodImpl(CUE4Parse.Globals.MethodOptions)]
         public int ReadBit(int Index)
         {
             return Convert.ToInt32(BitsArray[Index]);
         }
 
-        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        [MethodImpl(CUE4Parse.Globals.MethodOptions)]
         public void WriteBits(int Value, int Length)
         {
             for (int i = Position; i < Position + Length; i++)
@@ -60,7 +60,7 @@ namespace CUE4Parse_Conversion.Textures.ASTC
             Position += Length;
         }
 
-        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        [MethodImpl(CUE4Parse.Globals.MethodOptions)]
         public byte[] ToByteArray()
         {
             byte[] RetArray = new byte[(BitsArray.Length + 7) / 8];
@@ -68,7 +68,7 @@ namespace CUE4Parse_Conversion.Textures.ASTC
             return RetArray;
         }
 
-        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        [MethodImpl(CUE4Parse.Globals.MethodOptions)]
         public static int Replicate(int Value, int NumberBits, int ToBit)
         {
             if (NumberBits == 0) return 0;
@@ -94,7 +94,7 @@ namespace CUE4Parse_Conversion.Textures.ASTC
             return RetValue;
         }
 
-        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        [MethodImpl(CUE4Parse.Globals.MethodOptions)]
         public static int PopCnt(int Number)
         {
             int Counter;
@@ -105,7 +105,7 @@ namespace CUE4Parse_Conversion.Textures.ASTC
             return Counter;
         }
 
-        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        [MethodImpl(CUE4Parse.Globals.MethodOptions)]
         public static void Swap<T>(ref T lhs, ref T rhs)
         {
             T Temp = lhs;
@@ -113,7 +113,7 @@ namespace CUE4Parse_Conversion.Textures.ASTC
             rhs = Temp;
         }
 
-        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        [MethodImpl(CUE4Parse.Globals.MethodOptions)]
         public static void BitTransferSigned(ref int a, ref int b)
         {
             b >>= 1;

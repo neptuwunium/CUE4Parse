@@ -28,30 +28,30 @@ public readonly struct FUIntVector : IUStruct
 
     public override string ToString() => $"{nameof(X)}: {X}, {nameof(Y)}: {Y}, {nameof(Z)}: {Z}";
 
-    [MethodImpl(MethodImplOptions.AggressiveInlining)]
+    [MethodImpl(CUE4Parse.Globals.MethodOptions)]
     public static FUIntVector operator +(FUIntVector a, FUIntVector b) => new(a.X + b.X, a.Y + b.Y, a.Z + b.Z);
-    [MethodImpl(MethodImplOptions.AggressiveInlining)]
+    [MethodImpl(CUE4Parse.Globals.MethodOptions)]
     public static FUIntVector operator +(FUIntVector a, uint bias) => new(a.X + bias, a.Y + bias, a.Z + bias);
-    [MethodImpl(MethodImplOptions.AggressiveInlining)]
+    [MethodImpl(CUE4Parse.Globals.MethodOptions)]
     public static FVector operator +(FUIntVector a, FVector b) => new FVector(a.X + b.X, a.Y + b.Y, a.Z + b.Z);
-    [MethodImpl(MethodImplOptions.AggressiveInlining)]
+    [MethodImpl(CUE4Parse.Globals.MethodOptions)]
     public static FVector operator +(FUIntVector a, float bias) => new FVector(a.X + bias, a.Y + bias, a.Z + bias);
 
-    [MethodImpl(MethodImplOptions.AggressiveInlining)]
+    [MethodImpl(CUE4Parse.Globals.MethodOptions)]
     public static FUIntVector operator *(FUIntVector a, FUIntVector b) => new(a.X * b.X, a.Y * b.Y, a.Z * b.Z);
-    [MethodImpl(MethodImplOptions.AggressiveInlining)]
+    [MethodImpl(CUE4Parse.Globals.MethodOptions)]
     public static FUIntVector operator *(FUIntVector a, uint bias) => new(a.X * bias, a.Y * bias, a.Z * bias);
-    [MethodImpl(MethodImplOptions.AggressiveInlining)]
+    [MethodImpl(CUE4Parse.Globals.MethodOptions)]
     public static FVector operator *(FUIntVector a, FVector b) => new FVector(a.X * b.X, a.Y * b.Y, a.Z * b.Z);
-    [MethodImpl(MethodImplOptions.AggressiveInlining)]
+    [MethodImpl(CUE4Parse.Globals.MethodOptions)]
     public static FVector operator *(FUIntVector a, float bias) => new FVector(a.X * bias, a.Y * bias, a.Z * bias);
 
-    [MethodImpl(MethodImplOptions.AggressiveInlining)]
+    [MethodImpl(CUE4Parse.Globals.MethodOptions)]
     public static FUIntVector operator /(FUIntVector a, FUIntVector b) => new(a.X / b.X, a.Y / b.Y, a.Z / b.Z);
-    [MethodImpl(MethodImplOptions.AggressiveInlining)]
+    [MethodImpl(CUE4Parse.Globals.MethodOptions)]
     public static FUIntVector operator /(FUIntVector a, uint bias) => new(a.X / bias, a.Y / bias, a.Z / bias);
-    [MethodImpl(MethodImplOptions.AggressiveInlining)]
+    [MethodImpl(CUE4Parse.Globals.MethodOptions)]
     public static FVector operator /(FUIntVector a, FVector b) => new FVector(a.X / b.X, a.Y / b.Y, a.Z / b.Z);
-    [MethodImpl(MethodImplOptions.AggressiveInlining)]
+    [MethodImpl(CUE4Parse.Globals.MethodOptions)]
     public static FVector operator /(FUIntVector a, float bias) => new FVector(a.X / bias, a.Y / bias, a.Z / bias);
 }

@@ -21,15 +21,15 @@ public readonly struct FLevelSequenceObjectReferenceMap : IUStruct, IReadOnlyDic
     public IEnumerable<FLevelSequenceLegacyObjectReference> Values => Map.Values.AsEnumerable();
     public int Count => Map.Count;
 
-    [MethodImpl(MethodImplOptions.AggressiveInlining)]
+    [MethodImpl(CUE4Parse.Globals.MethodOptions)]
     public bool ContainsKey(FGuid key) => Map.ContainsKey(key);
 
-    [MethodImpl(MethodImplOptions.AggressiveInlining)]
+    [MethodImpl(CUE4Parse.Globals.MethodOptions)]
     public IEnumerator<KeyValuePair<FGuid, FLevelSequenceLegacyObjectReference>> GetEnumerator() => Map.GetEnumerator();
 
-    [MethodImpl(MethodImplOptions.AggressiveInlining)]
+    [MethodImpl(CUE4Parse.Globals.MethodOptions)]
     public bool TryGetValue(FGuid key, out FLevelSequenceLegacyObjectReference value) => Map.TryGetValue(key, out value);
 
-    [MethodImpl(MethodImplOptions.AggressiveInlining)]
+    [MethodImpl(CUE4Parse.Globals.MethodOptions)]
     IEnumerator IEnumerable.GetEnumerator() => ((IEnumerable) Map).GetEnumerator();
 }

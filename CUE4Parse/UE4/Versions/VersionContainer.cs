@@ -134,9 +134,9 @@ namespace CUE4Parse.UE4.Versions
 
         public bool this[string optionKey]
         {
-            [MethodImpl(MethodImplOptions.AggressiveInlining)]
+            [MethodImpl(CUE4Parse.Globals.MethodOptions)]
             get => Options[optionKey];
-            [MethodImpl(MethodImplOptions.AggressiveInlining)]
+            [MethodImpl(CUE4Parse.Globals.MethodOptions)]
             set => Options[optionKey] = value;
         }
 

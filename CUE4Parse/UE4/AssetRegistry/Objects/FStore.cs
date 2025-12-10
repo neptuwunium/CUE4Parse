@@ -90,7 +90,7 @@ namespace CUE4Parse.UE4.AssetRegistry.Objects
 
     public static class FPartialMapHandle
     {
-        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        [MethodImpl(CUE4Parse.Globals.MethodOptions)]
         public static FMapHandle MakeFullHandle(FStore store, ulong mapSize)
         {
             return new (mapSize >> 63 > 0u, store, (ushort)(mapSize >> 32), (uint)mapSize);

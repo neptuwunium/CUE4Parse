@@ -147,7 +147,7 @@ namespace CUE4Parse.FileProvider
             }
         }
 
-        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        [MethodImpl(CUE4Parse.Globals.MethodOptions)]
         protected bool TryGetGameFile(string path, IReadOnlyDictionary<string, GameFile> collection, [MaybeNullWhen(false)] out GameFile file)
         {
             var fixedPath = FixPath(path);
@@ -166,7 +166,7 @@ namespace CUE4Parse.FileProvider
                 ? file
                 : throw new KeyNotFoundException($"There is no game file with the path \"{path}\"");
 
-        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        [MethodImpl(CUE4Parse.Globals.MethodOptions)]
         public bool TryGetGameFile(string path, [MaybeNullWhen(false)] out GameFile file)
         {
             try
@@ -515,19 +515,19 @@ namespace CUE4Parse.FileProvider
         }
 
         #region SaveAsset Methods
-        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        [MethodImpl(CUE4Parse.Globals.MethodOptions)]
         public byte[] SaveAsset(string path) => SaveAsset(this[path]);
 
-        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        [MethodImpl(CUE4Parse.Globals.MethodOptions)]
         public byte[] SaveAsset(GameFile file) => file.Read();
 
-        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        [MethodImpl(CUE4Parse.Globals.MethodOptions)]
         public Task<byte[]> SaveAssetAsync(string path) => SaveAssetAsync(this[path]);
 
-        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        [MethodImpl(CUE4Parse.Globals.MethodOptions)]
         public async Task<byte[]> SaveAssetAsync(GameFile file) => await file.ReadAsync().ConfigureAwait(false);
 
-        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        [MethodImpl(CUE4Parse.Globals.MethodOptions)]
         public bool TrySaveAsset(string path, [MaybeNullWhen(false)] out byte[] data)
         {
             if (TryGetGameFile(path, out var file))
@@ -539,7 +539,7 @@ namespace CUE4Parse.FileProvider
             return false;
         }
 
-        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        [MethodImpl(CUE4Parse.Globals.MethodOptions)]
         public bool TrySaveAsset(GameFile file, [MaybeNullWhen(false)] out byte[] data)
         {
             data = file.SafeRead();
@@ -548,13 +548,13 @@ namespace CUE4Parse.FileProvider
         #endregion
 
         #region CreateReader Methods
-        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        [MethodImpl(CUE4Parse.Globals.MethodOptions)]
         public FArchive CreateReader(string path) => this[path].CreateReader();
 
-        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        [MethodImpl(CUE4Parse.Globals.MethodOptions)]
         public Task<FArchive> CreateReaderAsync(string path) => this[path].CreateReaderAsync();
 
-        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        [MethodImpl(CUE4Parse.Globals.MethodOptions)]
         public bool TryCreateReader(string path, [MaybeNullWhen(false)] out FArchive reader)
         {
             reader = null;
@@ -568,7 +568,7 @@ namespace CUE4Parse.FileProvider
         #endregion
 
         #region LoadPackage Methods
-        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        [MethodImpl(CUE4Parse.Globals.MethodOptions)]
         public IPackage LoadPackage(string path) => LoadPackage(this[path]);
         public virtual IPackage LoadPackage(GameFile file)
         {
@@ -590,7 +590,7 @@ namespace CUE4Parse.FileProvider
             }
         }
 
-        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        [MethodImpl(CUE4Parse.Globals.MethodOptions)]
         public Task<IPackage> LoadPackageAsync(string path) => LoadPackageAsync(this[path]);
         public virtual async Task<IPackage> LoadPackageAsync(GameFile file)
         {
@@ -613,7 +613,7 @@ namespace CUE4Parse.FileProvider
             }
         }
 
-        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        [MethodImpl(CUE4Parse.Globals.MethodOptions)]
         public bool TryLoadPackage(string path, [MaybeNullWhen(false)] out IPackage package)
         {
             if (TryGetGameFile(path, out var file))
@@ -642,7 +642,7 @@ namespace CUE4Parse.FileProvider
             return packages.Count > 0;
         }
 
-        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        [MethodImpl(CUE4Parse.Globals.MethodOptions)]
         public bool TryLoadPackage(GameFile file, [MaybeNullWhen(false)] out IPackage package)
         {
             try
@@ -658,7 +658,7 @@ namespace CUE4Parse.FileProvider
         #endregion
 
         #region SavePackage Methods
-        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        [MethodImpl(CUE4Parse.Globals.MethodOptions)]
         public IReadOnlyDictionary<string, byte[]> SavePackage(string path) => SavePackage(this[path]);
         public IReadOnlyDictionary<string, byte[]> SavePackage(GameFile file)
         {
@@ -672,7 +672,7 @@ namespace CUE4Parse.FileProvider
             return dict;
         }
 
-        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        [MethodImpl(CUE4Parse.Globals.MethodOptions)]
         public async Task<IReadOnlyDictionary<string, byte[]>> SavePackageAsync(string path) => await SavePackageAsync(this[path]).ConfigureAwait(false);
         public async Task<IReadOnlyDictionary<string, byte[]>> SavePackageAsync(GameFile file)
         {
@@ -686,7 +686,7 @@ namespace CUE4Parse.FileProvider
             return dict;
         }
 
-        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        [MethodImpl(CUE4Parse.Globals.MethodOptions)]
         public bool TrySavePackage(string path, [MaybeNullWhen(false)] out IReadOnlyDictionary<string, byte[]> data)
         {
             if (TryGetGameFile(path, out var file))
@@ -698,7 +698,7 @@ namespace CUE4Parse.FileProvider
             return false;
         }
 
-        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        [MethodImpl(CUE4Parse.Globals.MethodOptions)]
         public bool TrySavePackage(GameFile file, [MaybeNullWhen(false)] out IReadOnlyDictionary<string, byte[]> data)
         {
             try
@@ -730,16 +730,16 @@ namespace CUE4Parse.FileProvider
             return (path, objectName);
         }
 
-        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        [MethodImpl(CUE4Parse.Globals.MethodOptions)]
         public UObject LoadPackageObject(string path) => LoadPackageObject<UObject>(path);
 
-        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        [MethodImpl(CUE4Parse.Globals.MethodOptions)]
         public T LoadPackageObject<T>(string path) where T : UObject => LoadPackageObject<T>(GetPathName(path));
 
-        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        [MethodImpl(CUE4Parse.Globals.MethodOptions)]
         public UObject LoadPackageObject(string path, string objectName) => LoadPackageObject<UObject>(path, objectName);
 
-        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        [MethodImpl(CUE4Parse.Globals.MethodOptions)]
         public T LoadPackageObject<T>(string path, string objectName) where T : UObject => LoadPackageObject<T>((path, objectName));
 
         private T LoadPackageObject<T>(ValueTuple<string, string> pathName) where T : UObject
@@ -751,16 +751,16 @@ namespace CUE4Parse.FileProvider
             return package.GetExport<T>(pathName.Item2);
         }
 
-        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        [MethodImpl(CUE4Parse.Globals.MethodOptions)]
         public async Task<UObject> LoadPackageObjectAsync(string path) => await LoadPackageObjectAsync<UObject>(path).ConfigureAwait(false);
 
-        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        [MethodImpl(CUE4Parse.Globals.MethodOptions)]
         public async Task<T> LoadPackageObjectAsync<T>(string path) where T : UObject => await LoadPackageObjectAsync<T>(GetPathName(path)).ConfigureAwait(false);
 
-        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        [MethodImpl(CUE4Parse.Globals.MethodOptions)]
         public async Task<UObject> LoadPackageObjectAsync(string path, string objectName) => await LoadPackageObjectAsync<UObject>(path, objectName).ConfigureAwait(false);
 
-        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        [MethodImpl(CUE4Parse.Globals.MethodOptions)]
         public async Task<T> LoadPackageObjectAsync<T>(string path, string objectName) where T : UObject => await LoadPackageObjectAsync<T>((path, objectName)).ConfigureAwait(false);
 
         private async Task<T> LoadPackageObjectAsync<T>(ValueTuple<string, string> pathName) where T : UObject
@@ -772,16 +772,16 @@ namespace CUE4Parse.FileProvider
             return package.GetExport<T>(pathName.Item2);
         }
 
-        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        [MethodImpl(CUE4Parse.Globals.MethodOptions)]
         public UObject? SafeLoadPackageObject(string path) => SafeLoadPackageObject<UObject>(path);
 
-        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        [MethodImpl(CUE4Parse.Globals.MethodOptions)]
         public T? SafeLoadPackageObject<T>(string path) where T : UObject => SafeLoadPackageObject<T>(GetPathName(path));
 
-        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        [MethodImpl(CUE4Parse.Globals.MethodOptions)]
         public UObject? SafeLoadPackageObject(string path, string objectName) => SafeLoadPackageObject<UObject>(path, objectName);
 
-        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        [MethodImpl(CUE4Parse.Globals.MethodOptions)]
         public T? SafeLoadPackageObject<T>(string path, string objectName) where T : UObject => SafeLoadPackageObject<T>((path, objectName));
 
         private T? SafeLoadPackageObject<T>(ValueTuple<string, string> pathName) where T : UObject
@@ -796,16 +796,16 @@ namespace CUE4Parse.FileProvider
             }
         }
 
-        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        [MethodImpl(CUE4Parse.Globals.MethodOptions)]
         public async Task<UObject?> SafeLoadPackageObjectAsync(string path) => await SafeLoadPackageObjectAsync<UObject>(path).ConfigureAwait(false);
 
-        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        [MethodImpl(CUE4Parse.Globals.MethodOptions)]
         public async Task<T?> SafeLoadPackageObjectAsync<T>(string path) where T : UObject => await SafeLoadPackageObjectAsync<T>(GetPathName(path)).ConfigureAwait(false);
 
-        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        [MethodImpl(CUE4Parse.Globals.MethodOptions)]
         public async Task<UObject?> SafeLoadPackageObjectAsync(string path, string objectName) => await SafeLoadPackageObjectAsync<UObject>(path, objectName).ConfigureAwait(false);
 
-        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        [MethodImpl(CUE4Parse.Globals.MethodOptions)]
         public async Task<T?> SafeLoadPackageObjectAsync<T>(string path, string objectName) where T : UObject => await SafeLoadPackageObjectAsync<T>((path, objectName)).ConfigureAwait(false);
 
         protected async Task<T?> SafeLoadPackageObjectAsync<T>(ValueTuple<string, string> pathName) where T : UObject
@@ -820,10 +820,10 @@ namespace CUE4Parse.FileProvider
             }
         }
 
-        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        [MethodImpl(CUE4Parse.Globals.MethodOptions)]
         public bool TryLoadPackageObject(string path, [MaybeNullWhen(false)] out UObject export) => TryLoadPackageObject<UObject>(path, out export);
 
-        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        [MethodImpl(CUE4Parse.Globals.MethodOptions)]
         public bool TryLoadPackageObject<T>(string path, [MaybeNullWhen(false)] out T export) where T : UObject
         {
             export = SafeLoadPackageObject<T>(path);
@@ -831,7 +831,7 @@ namespace CUE4Parse.FileProvider
         }
 
         [Obsolete("use LoadPackage().GetExports() instead")]
-        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        [MethodImpl(CUE4Parse.Globals.MethodOptions)]
         public IEnumerable<UObject> LoadPackageObjects(string path)
         {
             var package = LoadPackage(path);
@@ -839,7 +839,7 @@ namespace CUE4Parse.FileProvider
         }
 
         [Obsolete("use LoadPackageAsync().GetExports() instead")]
-        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        [MethodImpl(CUE4Parse.Globals.MethodOptions)]
         public async Task<IEnumerable<UObject>> LoadPackageObjectsAsync(string path)
         {
             var package = await LoadPackageAsync(path).ConfigureAwait(false);

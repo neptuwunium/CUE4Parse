@@ -123,7 +123,7 @@ namespace CUE4Parse.UE4.VirtualFileSystem
 
         protected const int MAX_MOUNTPOINT_TEST_LENGTH = 128;
 
-        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        [MethodImpl(CUE4Parse.Globals.MethodOptions)]
         public static bool IsValidIndex(byte[] testBytes) => IsValidIndex(new FByteArchive(string.Empty, testBytes));
         public static bool IsValidIndex(FArchive reader)
         {

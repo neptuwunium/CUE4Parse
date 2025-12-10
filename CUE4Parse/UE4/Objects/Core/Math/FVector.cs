@@ -95,7 +95,7 @@ namespace CUE4Parse.UE4.Objects.Core.Math
         /// <param name="p">Int Point used to set X and Y coordinates, Z is set to zero.</param>
         public FVector(FIntPoint p) : this(p.X, p.Y, 0f) { }
 
-        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        [MethodImpl(CUE4Parse.Globals.MethodOptions)]
         public FVector Set(FVector other)
         {
             X = other.X;
@@ -104,7 +104,7 @@ namespace CUE4Parse.UE4.Objects.Core.Math
             return this;
         }
 
-        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        [MethodImpl(CUE4Parse.Globals.MethodOptions)]
         public FVector Set(float x, float y, float z)
         {
             X = x;
@@ -113,7 +113,7 @@ namespace CUE4Parse.UE4.Objects.Core.Math
             return this;
         }
 
-        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        [MethodImpl(CUE4Parse.Globals.MethodOptions)]
         public FVector GetSignVector() => new()
         {
             //FloatSelect: return Comparand >= 0.f ? ValueGEZero : ValueLTZero;
@@ -134,10 +134,10 @@ namespace CUE4Parse.UE4.Objects.Core.Math
             Z *= scale.Z;
         }
 
-        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        [MethodImpl(CUE4Parse.Globals.MethodOptions)]
         public static FVector operator +(FVector a) => a;
 
-        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        [MethodImpl(CUE4Parse.Globals.MethodOptions)]
         public static FVector operator -(FVector a) => new(-a.X, -a.Y, -a.Z);
 
         /// <summary>
@@ -146,7 +146,7 @@ namespace CUE4Parse.UE4.Objects.Core.Math
         /// <param name="a">First vector</param>
         /// <param name="b">Second vector</param>
         /// <returns>The cross product</returns>
-        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        [MethodImpl(CUE4Parse.Globals.MethodOptions)]
         public static FVector operator ^(FVector a, FVector b) => new(
             a.Y * b.Z - a.Z * b.Y,
             a.Z * b.X - a.X * b.Z,
@@ -159,34 +159,34 @@ namespace CUE4Parse.UE4.Objects.Core.Math
         /// <param name="a">First vector</param>
         /// <param name="b">Second vector</param>
         /// <returns>The dot product</returns>
-        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        [MethodImpl(CUE4Parse.Globals.MethodOptions)]
         public static float operator |(FVector a, FVector b) => a.X * b.X + a.Y * b.Y + a.Z * b.Z;
 
-        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        [MethodImpl(CUE4Parse.Globals.MethodOptions)]
         public static FVector operator +(FVector a, FVector b) => new(a.X + b.X, a.Y + b.Y, a.Z + b.Z);
 
-        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        [MethodImpl(CUE4Parse.Globals.MethodOptions)]
         public static FVector operator +(FVector a, FIntVector b) => new(a.X + b.X, a.Y + b.Y, a.Z + b.Z);
 
-        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        [MethodImpl(CUE4Parse.Globals.MethodOptions)]
         public static FVector operator +(FVector a, float bias) => new(a.X + bias, a.Y + bias, a.Z + bias);
 
-        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        [MethodImpl(CUE4Parse.Globals.MethodOptions)]
         public static FVector operator -(FVector a, FVector b) => new(a.X - b.X, a.Y - b.Y, a.Z - b.Z);
 
-        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        [MethodImpl(CUE4Parse.Globals.MethodOptions)]
         public static FVector operator -(FVector a, FIntVector b) => new(a.X - b.X, a.Y - b.Y, a.Z - b.Z);
 
-        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        [MethodImpl(CUE4Parse.Globals.MethodOptions)]
         public static FVector operator -(FVector a, float bias) => new(a.X - bias, a.Y - bias, a.Z - bias);
 
-        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        [MethodImpl(CUE4Parse.Globals.MethodOptions)]
         public static FVector operator *(FVector a, FVector b) => new(a.X * b.X, a.Y * b.Y, a.Z * b.Z);
 
-        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        [MethodImpl(CUE4Parse.Globals.MethodOptions)]
         public static FVector operator *(FVector a, FIntVector b) => new(a.X * b.X, a.Y * b.Y, a.Z * b.Z);
 
-        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        [MethodImpl(CUE4Parse.Globals.MethodOptions)]
         public static FVector operator *(FVector a, float scale) => new(a.X * scale, a.Y * scale, a.Z * scale);
 
         public static FVector operator *(FVector v, FQuat q)
@@ -199,29 +199,29 @@ namespace CUE4Parse.UE4.Objects.Core.Math
                      + 2.0f * s * CrossProduct(u, v);
         }
 
-        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        [MethodImpl(CUE4Parse.Globals.MethodOptions)]
         public static FVector operator *(float scale, FVector a) => a * scale;
 
-        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        [MethodImpl(CUE4Parse.Globals.MethodOptions)]
         public static FVector operator /(FVector a, FVector b) => new(a.X / b.X, a.Y / b.Y, a.Z / b.Z);
 
-        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        [MethodImpl(CUE4Parse.Globals.MethodOptions)]
         public static FVector operator /(FVector a, FIntVector b) => new(a.X / b.X, a.Y / b.Y, a.Z / b.Z);
 
-        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        [MethodImpl(CUE4Parse.Globals.MethodOptions)]
         public static FVector operator /(FVector a, float scale)
         {
             var rScale = 1f / scale;
             return new FVector(a.X * rScale, a.Y * rScale, a.Z * rScale);
         }
 
-        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        [MethodImpl(CUE4Parse.Globals.MethodOptions)]
         public static FVector operator /(float scale, FVector a) => a / scale;
 
-        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        [MethodImpl(CUE4Parse.Globals.MethodOptions)]
         public static bool operator ==(FVector a, FVector b) => a.X == b.X && a.Y == b.Y && a.Z == b.Z;
 
-        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        [MethodImpl(CUE4Parse.Globals.MethodOptions)]
         public static bool operator !=(FVector a, FVector b) => a.X != b.X || a.Y != b.Y || a.Z != b.Z;
 
         public float this[int i]
@@ -262,7 +262,7 @@ namespace CUE4Parse.UE4.Objects.Core.Math
         /// <param name="v">The vector to check against.</param>
         /// <param name="tolerance">Error tolerance.</param>
         /// <returns>true if the vectors are equal within tolerance limits, false otherwise.</returns>
-        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        [MethodImpl(CUE4Parse.Globals.MethodOptions)]
         public readonly bool Equals(FVector v, float tolerance) => MathF.Abs(X - v.X) <= tolerance && MathF.Abs(Y - v.Y) <= tolerance && MathF.Abs(Z - v.Z) <= tolerance;
 
         /// <summary>
@@ -277,43 +277,43 @@ namespace CUE4Parse.UE4.Objects.Core.Math
         /// </summary>
         /// <param name="tolerance">Error tolerance.</param>
         /// <returns>true if the vectors are equal within tolerance limits, false otherwise.</returns>
-        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        [MethodImpl(CUE4Parse.Globals.MethodOptions)]
         public bool AllComponentsEqual(float tolerance = UnrealMath.KindaSmallNumber) => MathF.Abs(X - Y) <= tolerance && MathF.Abs(X - Z) <= tolerance && MathF.Abs(Y - Z) <= tolerance;
 
-        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        [MethodImpl(CUE4Parse.Globals.MethodOptions)]
         public float Max() => MathF.Max(MathF.Max(X, Y), Z);
 
-        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        [MethodImpl(CUE4Parse.Globals.MethodOptions)]
         public float AbsMax() => MathF.Max(MathF.Max(MathF.Abs(X), MathF.Abs(Y)), MathF.Abs(Z));
 
-        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        [MethodImpl(CUE4Parse.Globals.MethodOptions)]
         public float Min() => MathF.Min(MathF.Min(X, Y), Z);
 
-        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        [MethodImpl(CUE4Parse.Globals.MethodOptions)]
         public float AbsMin() => MathF.Min(MathF.Min(MathF.Abs(X), MathF.Abs(Y)), MathF.Abs(Z));
 
-        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        [MethodImpl(CUE4Parse.Globals.MethodOptions)]
         public FVector ComponentMax(FVector other) => new(MathF.Max(X, other.X), MathF.Max(Y, other.Y), MathF.Max(Z, other.Z));
 
-        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        [MethodImpl(CUE4Parse.Globals.MethodOptions)]
         public FVector ComponentMin(FVector other) => new(MathF.Min(X, other.X), MathF.Min(Y, other.Y), MathF.Min(Z, other.Z));
 
-        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        [MethodImpl(CUE4Parse.Globals.MethodOptions)]
         public FVector Abs() => new(MathF.Abs(X), MathF.Abs(Y), MathF.Abs(Z));
 
-        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        [MethodImpl(CUE4Parse.Globals.MethodOptions)]
         public float Size() => MathF.Sqrt(X * X + Y * Y + Z * Z);
 
-        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        [MethodImpl(CUE4Parse.Globals.MethodOptions)]
         public float SizeSquared() => X * X + Y * Y + Z * Z;
 
-        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        [MethodImpl(CUE4Parse.Globals.MethodOptions)]
         public float Size2D() => MathF.Sqrt(X * X + Y * Y);
 
-        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        [MethodImpl(CUE4Parse.Globals.MethodOptions)]
         public float SizeSquared2D() => X * X + Y * Y;
 
-        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        [MethodImpl(CUE4Parse.Globals.MethodOptions)]
         public bool ContainsNaN() => !float.IsFinite(X) || !float.IsFinite(Y) || !float.IsFinite(Z);
 
         /// <summary>
@@ -321,14 +321,14 @@ namespace CUE4Parse.UE4.Objects.Core.Math
         /// </summary>
         /// <param name="tolerance">Error tolerance.</param>
         /// <returns>true if the vector is near to zero, false otherwise.</returns>
-        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        [MethodImpl(CUE4Parse.Globals.MethodOptions)]
         public bool IsNearlyZero(float tolerance = UnrealMath.KindaSmallNumber) => MathF.Abs(X) <= tolerance && MathF.Abs(Y) <= tolerance && MathF.Abs(Z) <= tolerance;
 
         /// <summary>
         /// Checks whether all components of the vector are exactly zero.
         /// </summary>
         /// <returns>true if the vector is exactly zero, false otherwise.</returns>
-        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        [MethodImpl(CUE4Parse.Globals.MethodOptions)]
         public bool IsZero() => X == 0 && Y == 0 && Z == 0;
 
         /// <summary>
@@ -336,14 +336,14 @@ namespace CUE4Parse.UE4.Objects.Core.Math
         /// </summary>
         /// <param name="lengthSquaredTolerance">Tolerance against squared length.</param>
         /// <returns>true if the vector is a unit vector within the specified tolerance.</returns>
-        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        [MethodImpl(CUE4Parse.Globals.MethodOptions)]
         public bool IsUnit(float lengthSquaredTolerance = UnrealMath.KindaSmallNumber) => MathF.Abs(1f - SizeSquared()) < lengthSquaredTolerance;
 
         /// <summary>
         /// Checks whether vector is normalized.
         /// </summary>
         /// <returns>true if normalized, false otherwise.</returns>
-        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        [MethodImpl(CUE4Parse.Globals.MethodOptions)]
         public bool IsNormalized() => MathF.Abs(1f - SizeSquared()) < ThreshVectorNormalized;
 
         /// <summary>
@@ -369,7 +369,7 @@ namespace CUE4Parse.UE4.Objects.Core.Math
         /// <summary>
         /// Create a copy of this vector, with its maximum magnitude clamped to MaxSize.
         /// </summary>
-        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        [MethodImpl(CUE4Parse.Globals.MethodOptions)]
         public FVector GetClampedToMaxSize(float maxSize)
         {
             if (maxSize < UnrealMath.KindaSmallNumber)
@@ -387,7 +387,7 @@ namespace CUE4Parse.UE4.Objects.Core.Math
             return new FVector(X, Y, Z);
         }
 
-        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        [MethodImpl(CUE4Parse.Globals.MethodOptions)]
         public FVector GetSafeNormal(float tolerance = UnrealMath.SmallNumber)
         {
             var squareSum = X * X + Y * Y + Z * Z;
@@ -407,7 +407,7 @@ namespace CUE4Parse.UE4.Objects.Core.Math
             return new FVector(X * scale, Y * scale, Z * scale);
         }
 
-        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        [MethodImpl(CUE4Parse.Globals.MethodOptions)]
         public FVector GetSafeNormal2D(float tolerance = UnrealMath.SmallNumber)
         {
             var squareSum = X * X + Y * Y;
@@ -427,7 +427,7 @@ namespace CUE4Parse.UE4.Objects.Core.Math
             return new FVector(X * scale, Y * scale, 0.0f);
         }
 
-        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        [MethodImpl(CUE4Parse.Globals.MethodOptions)]
         public float CosineAngle2D(FVector b)
         {
             var a = this;
@@ -438,13 +438,13 @@ namespace CUE4Parse.UE4.Objects.Core.Math
             return a | b;
         }
 
-        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        [MethodImpl(CUE4Parse.Globals.MethodOptions)]
         public FVector ProjectOnTo(FVector a) => a * ((this | a) / (a | a));
 
-        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        [MethodImpl(CUE4Parse.Globals.MethodOptions)]
         public FVector ProjectOnToNormal(FVector normal) => normal * (this | normal);
 
-        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        [MethodImpl(CUE4Parse.Globals.MethodOptions)]
         public FRotator ToOrientationRotator()
         {
             return new FRotator
@@ -458,7 +458,7 @@ namespace CUE4Parse.UE4.Objects.Core.Math
             };
         }
 
-        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        [MethodImpl(CUE4Parse.Globals.MethodOptions)]
         public FQuat ToOrientationQuat()
         {
             // Essentially an optimized Vector->Rotator->Quat made possible by knowing Roll == 0, and avoiding radians->degrees->radians.
@@ -479,7 +479,7 @@ namespace CUE4Parse.UE4.Objects.Core.Math
             };
         }
 
-        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        [MethodImpl(CUE4Parse.Globals.MethodOptions)]
         public FRotator Rotation() => ToOrientationRotator();
 
         public override string ToString() => $"X={X,3:F3} Y={Y,3:F3} Z={Z,3:F3}";
@@ -490,7 +490,7 @@ namespace CUE4Parse.UE4.Objects.Core.Math
         /// <param name="a">The first vector.</param>
         /// <param name="b">The second vector.</param>
         /// <returns>The cross product</returns>
-        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        [MethodImpl(CUE4Parse.Globals.MethodOptions)]
         public static FVector CrossProduct(FVector a, FVector b) => a ^ b;
 
         /// <summary>
@@ -499,7 +499,7 @@ namespace CUE4Parse.UE4.Objects.Core.Math
         /// <param name="a">The first vector.</param>
         /// <param name="b">The second vector.</param>
         /// <returns>The dot product</returns>
-        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        [MethodImpl(CUE4Parse.Globals.MethodOptions)]
         public static float DotProduct(FVector a, FVector b) => a | b;
 
         /// <summary>
@@ -509,7 +509,7 @@ namespace CUE4Parse.UE4.Objects.Core.Math
         /// <param name="maxs">3D Point defining the higher values of the axis of the bound box</param>
         /// <param name="point">3D position of interest</param>
         /// <returns>the distance from the Point to the bounding box.</returns>
-        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        [MethodImpl(CUE4Parse.Globals.MethodOptions)]
         public static float ComputeSquaredDistanceFromBoxToPoint(FVector mins, FVector maxs, FVector point)
         {
             // Accumulates the distance as we iterate axis
@@ -547,10 +547,10 @@ namespace CUE4Parse.UE4.Objects.Core.Math
             return distSquared;
         }
 
-        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        [MethodImpl(CUE4Parse.Globals.MethodOptions)]
         public static float PointPlaneDist(FVector point, FVector planeBase, FVector planeNormal) => (point - planeBase) | planeNormal;
 
-        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        [MethodImpl(CUE4Parse.Globals.MethodOptions)]
         public static FVector PointPlaneProject(FVector point, FVector planeBase, FVector planeNormal)
         {
             // Find the distance of X from the plane
@@ -558,10 +558,10 @@ namespace CUE4Parse.UE4.Objects.Core.Math
             return point - PointPlaneDist(point, planeBase, planeNormal) * planeNormal;
         }
 
-        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        [MethodImpl(CUE4Parse.Globals.MethodOptions)]
         public static FVector VectorPlaneProject(FVector delta, FVector normal) => delta - delta.ProjectOnToNormal(normal);
 
-        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        [MethodImpl(CUE4Parse.Globals.MethodOptions)]
         public static float DistSquared(FVector v1, FVector v2) => (v2.X - v1.X).Square() + (v2.Y - v1.Y).Square() + (v2.Z - v1.Z).Square();
 
         public void Serialize(FArchiveWriter Ar)

@@ -26,7 +26,7 @@ public static class ArrayUtils
         return false;
     }
 
-    [MethodImpl(MethodImplOptions.AggressiveInlining)]
+    [MethodImpl(CUE4Parse.Globals.MethodOptions)]
     public static bool GetOrFalse(this BitArray array, int index) =>
         index >= 0 && index < array.Length && array[index];
 

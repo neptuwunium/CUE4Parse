@@ -85,7 +85,7 @@ namespace CUE4Parse_Conversion.Animations.PSA
             else if (scaKeysCount > 0) dstScale = KeyScale[scaX];
         }
 
-        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        [MethodImpl(CUE4Parse.Globals.MethodOptions)]
         public bool HasKeys() => KeyQuat.Length + KeyPos.Length + KeyScale.Length > 0;
 
         // In:  KeyTime, Frame, NumFrames, Loop

@@ -64,7 +64,7 @@ namespace CUE4Parse.UE4.Objects.Core.Math
             return (byte) value8;
         }
 
-        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        [MethodImpl(CUE4Parse.Globals.MethodOptions)]
         public int ToPackedARGB() => (A << 24) | (R << 16) | (G << 8) | (B << 0);
     }
 }

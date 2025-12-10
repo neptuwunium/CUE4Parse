@@ -172,7 +172,7 @@ namespace CUE4Parse.UE4.Objects.Core.Math
             return Unsafe.As<FQuat, Vector128<float>>(ref value);
         }
 
-        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        [MethodImpl(CUE4Parse.Globals.MethodOptions)]
         public static FQuat operator *(FQuat a, FQuat b)
         {
             // both yield different results idk why
@@ -200,7 +200,7 @@ namespace CUE4Parse.UE4.Objects.Core.Math
             return r;
         }
 
-        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        [MethodImpl(CUE4Parse.Globals.MethodOptions)]
         public static FVector operator *(FQuat a, FVector b) => a.RotateVector(b);
 
         public void Normalize(float tolerance = UnrealMath.SmallNumber)
@@ -262,7 +262,7 @@ namespace CUE4Parse.UE4.Objects.Core.Math
 
         public FQuat Inverse() => IsNormalized ? new FQuat(-X, -Y, -Z, W) : GetNormalized().Inverse();
 
-        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        [MethodImpl(CUE4Parse.Globals.MethodOptions)]
         public void Conjugate() // public FQuat Inverse()
         {
             X = -X;
@@ -357,7 +357,7 @@ namespace CUE4Parse.UE4.Objects.Core.Math
             Ar.Write(W);
         }
 
-        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        [MethodImpl(CUE4Parse.Globals.MethodOptions)]
         public static FQuat FastLerp(FQuat q1, FQuat q2, float alpha)
         {
             float doResult = q1 | q2;
@@ -404,7 +404,7 @@ namespace CUE4Parse.UE4.Objects.Core.Math
             };
         }
 
-        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        [MethodImpl(CUE4Parse.Globals.MethodOptions)]
         public static FQuat Slerp(FQuat quat1, FQuat quat2, float slerp) => Slerp_NotNormalized(quat1, quat2, slerp).GetNormalized();
 
         public static float operator |(FQuat a, FQuat b) => a.X * b.X + a.Y * b.Y + a.Z * b.Z + a.W * b.W;

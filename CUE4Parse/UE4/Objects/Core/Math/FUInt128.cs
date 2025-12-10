@@ -29,7 +29,7 @@ namespace CUE4Parse.UE4.Objects.Core.Math
             Lo = ((ulong)C << 32) | D;
         }
 
-        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        [MethodImpl(CUE4Parse.Globals.MethodOptions)]
         public void SetQuadPart(uint part, uint value)
         {
             switch (part)
@@ -42,7 +42,7 @@ namespace CUE4Parse.UE4.Objects.Core.Math
             }
         }
 
-        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        [MethodImpl(CUE4Parse.Globals.MethodOptions)]
         public uint GetQuadPart(uint part)
         {
             switch (part)
@@ -56,7 +56,7 @@ namespace CUE4Parse.UE4.Objects.Core.Math
             return 0;
         }
 
-        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        [MethodImpl(CUE4Parse.Globals.MethodOptions)]
         public uint DivideInternal(uint dividend, uint divisor, ref uint remainder)
         {
             ulong value = ((ulong)remainder << 32) | dividend;
@@ -64,7 +64,7 @@ namespace CUE4Parse.UE4.Objects.Core.Math
             return (uint)(value / divisor);
         }
 
-        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        [MethodImpl(CUE4Parse.Globals.MethodOptions)]
         public bool IsGreater(FUInt128 other)
         {
             if (Hi == other.Hi)
@@ -74,7 +74,7 @@ namespace CUE4Parse.UE4.Objects.Core.Math
             return Hi > other.Hi;
         }
 
-        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        [MethodImpl(CUE4Parse.Globals.MethodOptions)]
         public bool IsLess(FUInt128 other)
         {
             if (Hi == other.Hi)
@@ -84,7 +84,7 @@ namespace CUE4Parse.UE4.Objects.Core.Math
             return Hi < other.Hi;
         }
 
-        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        [MethodImpl(CUE4Parse.Globals.MethodOptions)]
         public FUInt128 Divide(uint divisor, out uint remainder)
         {
             remainder = 0;

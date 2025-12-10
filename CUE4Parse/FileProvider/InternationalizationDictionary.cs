@@ -149,24 +149,24 @@ public class InternationalizationDictionary : IReadOnlyDictionary<string, IReadO
         }
     }
 
-    [MethodImpl(MethodImplOptions.AggressiveInlining)]
+    [MethodImpl(CUE4Parse.Globals.MethodOptions)]
     public void Clear()
     {
         _collection.Clear();
     }
 
-    [MethodImpl(MethodImplOptions.AggressiveInlining)]
+    [MethodImpl(CUE4Parse.Globals.MethodOptions)]
     public IEnumerator<KeyValuePair<string, IReadOnlyDictionary<string, string>>> GetEnumerator() => _collection.GetEnumerator();
 
-    [MethodImpl(MethodImplOptions.AggressiveInlining)]
+    [MethodImpl(CUE4Parse.Globals.MethodOptions)]
     IEnumerator IEnumerable.GetEnumerator() => GetEnumerator();
 
     public int Count => _collection.Sum(x => x.Value.Count);
 
-    [MethodImpl(MethodImplOptions.AggressiveInlining)]
+    [MethodImpl(CUE4Parse.Globals.MethodOptions)]
     public bool ContainsKey(string @namespace) => _collection.ContainsKey(@namespace);
 
-    [MethodImpl(MethodImplOptions.AggressiveInlining)]
+    [MethodImpl(CUE4Parse.Globals.MethodOptions)]
     public bool TryGetValue(string @namespace, [MaybeNullWhen(false)] out IReadOnlyDictionary<string, string> value) => _collection.TryGetValue(@namespace, out value);
 
     public IReadOnlyDictionary<string, string> this[string @namespace] => _collection[@namespace];

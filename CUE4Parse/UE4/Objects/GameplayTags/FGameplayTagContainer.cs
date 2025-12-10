@@ -77,13 +77,13 @@ public readonly struct FGameplayTagContainer : IUStruct, IEnumerable<FGameplayTa
         return GameplayTags.Length == 0;
     }
 
-    [MethodImpl(MethodImplOptions.AggressiveInlining)]
+    [MethodImpl(CUE4Parse.Globals.MethodOptions)]
     public FName? GetValue(string category) => GameplayTags.FirstOrDefault(it => it.TagName.Text.StartsWith(category)).TagName;
 
-    [MethodImpl(MethodImplOptions.AggressiveInlining)]
+    [MethodImpl(CUE4Parse.Globals.MethodOptions)]
     public IEnumerator<FGameplayTag> GetEnumerator() => ((IEnumerable<FGameplayTag>) GameplayTags).GetEnumerator();
 
-    [MethodImpl(MethodImplOptions.AggressiveInlining)]
+    [MethodImpl(CUE4Parse.Globals.MethodOptions)]
     IEnumerator IEnumerable.GetEnumerator() => GameplayTags.GetEnumerator();
 
     public override string ToString() => string.Join(", ", GameplayTags);

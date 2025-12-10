@@ -45,7 +45,7 @@ public unsafe class Detex : IDisposable
         DetexDecompressTextureLinear = (delegate* unmanaged<detexTexture*, byte*, uint, bool>)decompressTextureAddress;
     }
 
-    [MethodImpl(MethodImplOptions.AggressiveInlining)]
+    [MethodImpl(CUE4Parse.Globals.MethodOptions)]
     public bool DecodeDetexLinear(byte[] inp, byte[] dst, int width, int height, DetexTextureFormat inputFormat, DetexPixelFormat outputPixelFormat)
     {
         fixed (byte* inpPtr = inp, dstPtr = dst)

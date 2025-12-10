@@ -23,7 +23,7 @@ public class FBitArchive : FArchive
         Length = _data.Length;
     }
 
-    [MethodImpl(MethodImplOptions.AggressiveInlining)]
+    [MethodImpl(CUE4Parse.Globals.MethodOptions)]
     public int Read(uint length)
     {
         if (length == 0) return 0;
@@ -47,13 +47,13 @@ public class FBitArchive : FArchive
         return (int)value;
     }
 
-    [MethodImpl(MethodImplOptions.AggressiveInlining)]
+    [MethodImpl(CUE4Parse.Globals.MethodOptions)]
     public FIntVector ReadIntVector(TIntVector3<uint> bits)
     {
         return new FIntVector(Read(bits.X), Read(bits.Y), Read(bits.Z));
     }
 
-    [MethodImpl(MethodImplOptions.AggressiveInlining)]
+    [MethodImpl(CUE4Parse.Globals.MethodOptions)]
     public override int Read(byte[] buffer, int offset, int count)
     {
         Position = _bitIndex >> 3;
@@ -67,7 +67,7 @@ public class FBitArchive : FArchive
         return n;
     }
 
-    [MethodImpl(MethodImplOptions.AggressiveInlining)]
+    [MethodImpl(CUE4Parse.Globals.MethodOptions)]
     public override long Seek(long offset, SeekOrigin origin)
     {
         Position = origin switch

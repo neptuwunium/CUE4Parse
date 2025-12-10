@@ -26,26 +26,26 @@ public abstract partial class AbstractAesVfsReader : AbstractVfsReader, IAesVfsR
         // yes
     }
 
-    [MethodImpl(MethodImplOptions.AggressiveInlining)]
+    [MethodImpl(CUE4Parse.Globals.MethodOptions)]
     public bool TestAesKey(FAesKey key) => !IsEncrypted || TestAesKey(MountPointCheckBytes(), key);
 
-    [MethodImpl(MethodImplOptions.AggressiveInlining)]
+    [MethodImpl(CUE4Parse.Globals.MethodOptions)]
     public bool TestAesKeyCustom(FAesKey key) => !IsEncrypted || TestAesKeyCustom(MountPointCheckBytes(), key);
 
     public abstract byte[] MountPointCheckBytes();
 
-    [MethodImpl(MethodImplOptions.AggressiveInlining)]
+    [MethodImpl(CUE4Parse.Globals.MethodOptions)]
     public static bool TestAesKey(byte[] bytes, FAesKey key)
     {
         return IsValidIndex(bytes.Decrypt(key));
     }
 
-    [MethodImpl(MethodImplOptions.AggressiveInlining)]
+    [MethodImpl(CUE4Parse.Globals.MethodOptions)]
     public bool TestAesKeyCustom(byte[] bytes, FAesKey key) {
         return IsValidIndex(CustomEncryption != null ? CustomEncryption(bytes, 0, bytes.Length, true, this) : bytes.Decrypt(key));
     }
 
-    [MethodImpl(MethodImplOptions.AggressiveInlining)]
+    [MethodImpl(CUE4Parse.Globals.MethodOptions)]
     protected byte[] Decrypt(byte[] bytes, FAesKey? key, bool bypassMountPointCheck = false)
     {
         if (bDecrypted)
@@ -61,10 +61,10 @@ public abstract partial class AbstractAesVfsReader : AbstractVfsReader, IAesVfsR
         throw new InvalidAesKeyException("Reading encrypted data requires a valid aes key");
     }
 
-    [MethodImpl(MethodImplOptions.AggressiveInlining)]
+    [MethodImpl(CUE4Parse.Globals.MethodOptions)]
     protected byte[] DecryptIfEncrypted(byte[] bytes) => DecryptIfEncrypted(bytes, IsEncrypted);
 
-    [MethodImpl(MethodImplOptions.AggressiveInlining)]
+    [MethodImpl(CUE4Parse.Globals.MethodOptions)]
     protected byte[] DecryptIfEncrypted(byte[] bytes, int beginOffset, int count) =>
         DecryptIfEncrypted(bytes, beginOffset, count, IsEncrypted);
 
@@ -90,20 +90,20 @@ public abstract partial class AbstractAesVfsReader : AbstractVfsReader, IAesVfsR
         return Decrypt(bytes, AesKey, bypassMountPointCheck);
     }
 
-    [MethodImpl(MethodImplOptions.AggressiveInlining)]
+    [MethodImpl(CUE4Parse.Globals.MethodOptions)]
     protected abstract byte[] ReadAndDecrypt(int length);
 
-    [MethodImpl(MethodImplOptions.AggressiveInlining)]
+    [MethodImpl(CUE4Parse.Globals.MethodOptions)]
     protected virtual byte[] ReadAndDecryptIndex(int length) => ReadAndDecrypt(length);
 
-    [MethodImpl(MethodImplOptions.AggressiveInlining)]
+    [MethodImpl(CUE4Parse.Globals.MethodOptions)]
     protected byte[] ReadAndDecrypt(int length, FArchive reader, bool isEncrypted) =>
         DecryptIfEncrypted(reader.ReadBytes(length), isEncrypted);
 
     protected byte[] ReadAndDecryptAt(long position, int length, FArchive reader, bool isEncrypted) =>
         DecryptIfEncrypted(reader.ReadBytesAt(position, length), isEncrypted);
 
-    [MethodImpl(MethodImplOptions.AggressiveInlining)]
+    [MethodImpl(CUE4Parse.Globals.MethodOptions)]
     protected byte[] ReadAndDecryptIndex(int length, FArchive reader, bool isEncrypted) =>
         DecryptIfEncrypted(reader.ReadBytes(length), isEncrypted, true);
 

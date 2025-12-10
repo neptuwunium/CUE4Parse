@@ -198,10 +198,10 @@ public class FAEPakEntry : FPakEntry
         }
     }
 
-    [MethodImpl(MethodImplOptions.AggressiveInlining)]
+    [MethodImpl(CUE4Parse.Globals.MethodOptions)]
     public override byte[] Read() => Vfs.Extract(this);
 
-    [MethodImpl(MethodImplOptions.AggressiveInlining)]
+    [MethodImpl(CUE4Parse.Globals.MethodOptions)]
     public override FArchive CreateReader() => new FByteArchive(Path, Read(), Vfs.Versions);
 }
 
@@ -223,7 +223,7 @@ public class AEPakFileReader : AbstractAesVfsReader
     public override bool IsEncrypted { get => false; }
     public override long Length { get; set; }
 
-    [MethodImpl(MethodImplOptions.AggressiveInlining)]
+    [MethodImpl(CUE4Parse.Globals.MethodOptions)]
     string FixFilePath(string path)
     {
         return path.StartsWith("Engine", StringComparison.OrdinalIgnoreCase) ? path : string.Concat("GateUS/", path);

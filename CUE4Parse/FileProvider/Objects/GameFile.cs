@@ -74,7 +74,7 @@ public abstract class GameFile
     public abstract byte[] Read();
     public abstract FArchive CreateReader();
 
-    [MethodImpl(MethodImplOptions.AggressiveInlining)]
+    [MethodImpl(CUE4Parse.Globals.MethodOptions)]
     public bool TryRead([MaybeNullWhen(false)] out byte[] data)
     {
         try
@@ -89,7 +89,7 @@ public abstract class GameFile
         return data != null;
     }
 
-    [MethodImpl(MethodImplOptions.AggressiveInlining)]
+    [MethodImpl(CUE4Parse.Globals.MethodOptions)]
     public bool TryCreateReader([MaybeNullWhen(false)] out FArchive reader)
     {
         try
@@ -104,14 +104,14 @@ public abstract class GameFile
         return reader != null;
     }
 
-    [MethodImpl(MethodImplOptions.AggressiveInlining)]
+    [MethodImpl(CUE4Parse.Globals.MethodOptions)]
     public byte[]? SafeRead()
     {
         TryRead(out var data);
         return data;
     }
 
-    [MethodImpl(MethodImplOptions.AggressiveInlining)]
+    [MethodImpl(CUE4Parse.Globals.MethodOptions)]
     public FArchive? SafeCreateReader()
     {
         TryCreateReader(out var reader);
@@ -120,21 +120,21 @@ public abstract class GameFile
 
     // No ConfigureAwait(false) here since the context is needed handling exceptions
 
-    [MethodImpl(MethodImplOptions.AggressiveInlining)]
+    [MethodImpl(CUE4Parse.Globals.MethodOptions)]
     public async Task<byte[]> ReadAsync() => await Task.Run(Read);
 
-    [MethodImpl(MethodImplOptions.AggressiveInlining)]
+    [MethodImpl(CUE4Parse.Globals.MethodOptions)]
     public async Task<FArchive> CreateReaderAsync() => await Task.Run(CreateReader);
 
-    [MethodImpl(MethodImplOptions.AggressiveInlining)]
+    [MethodImpl(CUE4Parse.Globals.MethodOptions)]
     public async Task<byte[]?> SafeReadAsync() => await Task.Run(SafeRead);
 
-    [MethodImpl(MethodImplOptions.AggressiveInlining)]
+    [MethodImpl(CUE4Parse.Globals.MethodOptions)]
     public async Task<FArchive?> SafeCreateReaderAsync() => await Task.Run(SafeCreateReader);
 
     public override string ToString() => Path;
     
-    [MethodImpl(MethodImplOptions.AggressiveInlining)]
+    [MethodImpl(CUE4Parse.Globals.MethodOptions)]
     private static string InternExtension(string extension)
     {
         if (InternedExtensions.TryGetValue(extension, out var interned))

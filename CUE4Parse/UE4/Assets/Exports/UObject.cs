@@ -22,25 +22,25 @@ public interface IPropertyHolder
 {
     public List<FPropertyTag> Properties { get; }
 
-    [MethodImpl(MethodImplOptions.AggressiveInlining)]
+    [MethodImpl(CUE4Parse.Globals.MethodOptions)]
     public T GetOrDefault<T>(string name, T defaultValue = default!, StringComparison comparisonType = StringComparison.Ordinal);
 
-    [MethodImpl(MethodImplOptions.AggressiveInlining)]
+    [MethodImpl(CUE4Parse.Globals.MethodOptions)]
     public Lazy<T> GetOrDefaultLazy<T>(string name, T defaultValue = default!, StringComparison comparisonType = StringComparison.Ordinal);
 
-    [MethodImpl(MethodImplOptions.AggressiveInlining)]
+    [MethodImpl(CUE4Parse.Globals.MethodOptions)]
     public T Get<T>(string name, StringComparison comparisonType = StringComparison.Ordinal);
 
-    [MethodImpl(MethodImplOptions.AggressiveInlining)]
+    [MethodImpl(CUE4Parse.Globals.MethodOptions)]
     public Lazy<T> GetLazy<T>(string name, StringComparison comparisonType = StringComparison.Ordinal);
 
-    [MethodImpl(MethodImplOptions.AggressiveInlining)]
+    [MethodImpl(CUE4Parse.Globals.MethodOptions)]
     public T GetByIndex<T>(int index);
 
-    [MethodImpl(MethodImplOptions.AggressiveInlining)]
+    [MethodImpl(CUE4Parse.Globals.MethodOptions)]
     public bool TryGetValue<T>(out T obj, params string[] names);
 
-    [MethodImpl(MethodImplOptions.AggressiveInlining)]
+    [MethodImpl(CUE4Parse.Globals.MethodOptions)]
     public bool TryGetAllValues<T>(out T[] obj, string name);
 }
 
@@ -572,7 +572,7 @@ public static class PropertyUtil
         return defaultValue;
     }
 
-    [MethodImpl(MethodImplOptions.AggressiveInlining)]
+    [MethodImpl(CUE4Parse.Globals.MethodOptions)]
     public static Lazy<T> GetOrDefaultLazy<T>(IPropertyHolder holder, string name, T defaultValue = default!, StringComparison comparisonType = StringComparison.Ordinal)
         => new(() => GetOrDefault(holder, name, defaultValue, comparisonType));
 
@@ -592,11 +592,11 @@ public static class PropertyUtil
         throw new NullReferenceException($"Couldn't get property '{name}' of type {typeof(T).Name} in {holder.GetType().Name}");
     }
 
-    [MethodImpl(MethodImplOptions.AggressiveInlining)]
+    [MethodImpl(CUE4Parse.Globals.MethodOptions)]
     public static Lazy<T> GetLazy<T>(IPropertyHolder holder, string name, StringComparison comparisonType = StringComparison.Ordinal)
         => new(() => Get<T>(holder, name, comparisonType));
 
-    [MethodImpl(MethodImplOptions.AggressiveInlining)]
+    [MethodImpl(CUE4Parse.Globals.MethodOptions)]
     public static T GetByIndex<T>(IPropertyHolder holder, int index)
     {
         var tag = holder.Properties[index]?.Tag;

@@ -18,13 +18,13 @@ public readonly struct FPackageId : IEquatable<FPackageId>
         this.id = id;
     }
 
-    [MethodImpl(MethodImplOptions.AggressiveInlining)]
+    [MethodImpl(CUE4Parse.Globals.MethodOptions)]
     public bool Equals(FPackageId other) => id == other.id;
 
-    [MethodImpl(MethodImplOptions.AggressiveInlining)]
+    [MethodImpl(CUE4Parse.Globals.MethodOptions)]
     public override bool Equals(object? obj) => obj is FPackageId other && Equals(other);
 
-    [MethodImpl(MethodImplOptions.AggressiveInlining)]
+    [MethodImpl(CUE4Parse.Globals.MethodOptions)]
     public override int GetHashCode() => id.GetHashCode();
 
     public override string ToString() => id.ToString();
@@ -40,7 +40,7 @@ public readonly struct FPackageId : IEquatable<FPackageId>
         return new FPackageId(hash);
     }
 
-    [MethodImpl(MethodImplOptions.AggressiveInlining)]
+    [MethodImpl(CUE4Parse.Globals.MethodOptions)]
     public static char ToLower(char input)
     {
         return (char) ((uint) input + ((((uint) input - 'A' < 26u) ? 1 : 0) << 5));

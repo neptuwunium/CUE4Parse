@@ -8,14 +8,14 @@ namespace CUE4Parse.MappingsProvider.Usmap
     {
         private const int InvalidNameIndex = -1;
 
-        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        [MethodImpl(CUE4Parse.Globals.MethodOptions)]
         public static string? ReadName(this FArchive Ar, IReadOnlyList<string> nameLut)
         {
             var idx = Ar.ReadNameEntry();
             return idx != InvalidNameIndex ? nameLut[idx] : null;
         }
 
-        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        [MethodImpl(CUE4Parse.Globals.MethodOptions)]
         public static int ReadNameEntry(this FArchive Ar)
         {
             return Ar.Read<int>();

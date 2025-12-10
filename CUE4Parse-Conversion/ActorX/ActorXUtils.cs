@@ -7,14 +7,14 @@ namespace CUE4Parse_Conversion.ActorX
 {
     public static class ActorXUtils
     {
-        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        [MethodImpl(CUE4Parse.Globals.MethodOptions)]
         public static void SerializeChunkHeader(this FArchiveWriter Ar, VChunkHeader header, string name)
         {
             header.ChunkId = name;
             header.Serialize(Ar);
         }
 
-        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        [MethodImpl(CUE4Parse.Globals.MethodOptions)]
         public static void Write(this FArchiveWriter Ar, string value, int len)
         {
             var padded = new byte[len];

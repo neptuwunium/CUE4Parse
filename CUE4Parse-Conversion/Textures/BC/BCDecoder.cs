@@ -85,10 +85,10 @@ namespace CUE4Parse_Conversion.Textures.BC
         }
 
 
-        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        [MethodImpl(CUE4Parse.Globals.MethodOptions)]
         private static int GetPixelLoc(int width, int height, int x, int y, int z, int bpp, int off) => (z * width * height * bpp) + (y * width * bpp) + (x * bpp) + off;
 
-        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        [MethodImpl(CUE4Parse.Globals.MethodOptions)]
         public static byte GetZNormal(byte x, byte y)
         {
             var xf = (x / 127.5f) - 1;
@@ -99,7 +99,7 @@ namespace CUE4Parse_Conversion.Textures.BC
             return (byte)((zval * 127) + 128);
         }
 
-        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        [MethodImpl(CUE4Parse.Globals.MethodOptions)]
         private static unsafe void Read(byte* destPtr, byte* srcPtr, ref int index, int length)
         {
             Unsafe.CopyBlockUnaligned(ref destPtr[0], ref srcPtr[index], (uint)length);

@@ -77,7 +77,7 @@ namespace CUE4Parse.FileProvider.Vfs
             uptnls = uptnlList.AsReadOnly();
         }
 
-        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        [MethodImpl(CUE4Parse.Globals.MethodOptions)]
         public void AddFiles(IReadOnlyDictionary<string, GameFile> newFiles, long readOrder = 0)
         {
             foreach (var file in newFiles.Values)
@@ -92,14 +92,14 @@ namespace CUE4Parse.FileProvider.Vfs
             _indicesBag.Add(new KeyValuePair<long, IReadOnlyDictionary<string, GameFile>>(readOrder, newFiles));
         }
 
-        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        [MethodImpl(CUE4Parse.Globals.MethodOptions)]
         public void Clear()
         {
             _indicesBag.Clear();
             _byId.Clear();
         }
 
-        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        [MethodImpl(CUE4Parse.Globals.MethodOptions)]
         public bool ContainsKey(string key)
         {
             foreach (var files in _indicesBag)
@@ -111,7 +111,7 @@ namespace CUE4Parse.FileProvider.Vfs
             return false;
         }
 
-        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        [MethodImpl(CUE4Parse.Globals.MethodOptions)]
         public bool TryGetValue(string key, [MaybeNullWhen(false)] out GameFile value)
         {
             foreach (var files in _indicesBag.OrderByDescending(kvp => kvp.Key))
@@ -124,7 +124,7 @@ namespace CUE4Parse.FileProvider.Vfs
             return false;
         }
 
-        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        [MethodImpl(CUE4Parse.Globals.MethodOptions)]
         public bool TryGetValues(string key, out List<GameFile> values)
         {
             values = [];
@@ -140,7 +140,7 @@ namespace CUE4Parse.FileProvider.Vfs
 
         public GameFile this[string path] => TryGetValue(path, out var value) ? value : throw new KeyNotFoundException();
 
-        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        [MethodImpl(CUE4Parse.Globals.MethodOptions)]
         public IEnumerator<KeyValuePair<string, GameFile>> GetEnumerator()
         {
             foreach (var index in _indicesBag.OrderByDescending(kvp => kvp.Key))
@@ -152,7 +152,7 @@ namespace CUE4Parse.FileProvider.Vfs
             }
         }
 
-        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        [MethodImpl(CUE4Parse.Globals.MethodOptions)]
         IEnumerator IEnumerable.GetEnumerator() => GetEnumerator();
 
         public int Count => _indicesBag.Sum(it => it.Value.Count);

@@ -51,13 +51,13 @@ namespace CUE4Parse.UE4.Objects.Core.Math
             Roll = Ar.ReadFReal();
         }
 
-        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        [MethodImpl(CUE4Parse.Globals.MethodOptions)]
         public static FRotator operator +(FRotator a, FRotator b) => new(a.Pitch + b.Pitch, a.Yaw + b.Yaw, a.Roll + b.Roll);
 
-        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        [MethodImpl(CUE4Parse.Globals.MethodOptions)]
         public static FRotator operator -(FRotator a, FRotator b) => new(a.Pitch - b.Pitch, a.Yaw - b.Yaw, a.Roll - b.Roll);
 
-        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        [MethodImpl(CUE4Parse.Globals.MethodOptions)]
         public static FRotator operator *(FRotator r, float scale) => new(r.Pitch * scale, r.Yaw * scale, r.Roll * scale);
 
         public FVector RotateVector(FVector v) => new(new FRotationMatrix(this).TransformVector(v));
@@ -110,7 +110,7 @@ namespace CUE4Parse.UE4.Objects.Core.Math
             Roll = NormalizeAxis(Roll);
         }
 
-        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        [MethodImpl(CUE4Parse.Globals.MethodOptions)]
         public FRotator GetNormalized()
         {
             var rot = this;
@@ -118,7 +118,7 @@ namespace CUE4Parse.UE4.Objects.Core.Math
             return rot;
         }
 
-        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        [MethodImpl(CUE4Parse.Globals.MethodOptions)]
         public static float ClampAxis(float angle)
         {
             // returns Angle in the range (-360,360)
@@ -133,7 +133,7 @@ namespace CUE4Parse.UE4.Objects.Core.Math
             return angle;
         }
 
-        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        [MethodImpl(CUE4Parse.Globals.MethodOptions)]
         public static float NormalizeAxis(float angle)
         {
             // returns Angle in the range [0,360)
@@ -170,7 +170,7 @@ namespace CUE4Parse.UE4.Objects.Core.Math
             return angle * 360.0f / 65536.0f;
         }
 
-        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        [MethodImpl(CUE4Parse.Globals.MethodOptions)]
         public readonly bool Equals(FRotator r, float tolerance) => MathF.Abs(NormalizeAxis(Pitch - r.Pitch)) <= tolerance &&
                                                                     MathF.Abs(NormalizeAxis(Yaw - r.Yaw)) <= tolerance &&
                                                                     MathF.Abs(NormalizeAxis(Roll - r.Roll)) <= tolerance;

@@ -150,7 +150,7 @@ public class FKismetArchive : FArchive
         return expression;
     }
 
-    [MethodImpl(MethodImplOptions.AggressiveInlining)]
+    [MethodImpl(CUE4Parse.Globals.MethodOptions)]
     public string XFERSTRING()
     {
         var eos = Array.IndexOf<byte>(_data, 0, (int)Position);
@@ -158,7 +158,7 @@ public class FKismetArchive : FArchive
         return Encoding.ASCII.GetString(ReadBytes(eos-(int)Position));
     }
 
-    [MethodImpl(MethodImplOptions.AggressiveInlining)]
+    [MethodImpl(CUE4Parse.Globals.MethodOptions)]
     public string XFERUNICODESTRING()
     {
         var pos = (int)Position;
@@ -173,7 +173,7 @@ public class FKismetArchive : FArchive
         return Encoding.Unicode.GetString(ReadBytes(length));
     }
 
-    [MethodImpl(MethodImplOptions.AggressiveInlining)]
+    [MethodImpl(CUE4Parse.Globals.MethodOptions)]
     public KismetExpression[] ReadExpressionArray(EExprToken endToken)
     {
         var newData = new List<KismetExpression>();
@@ -187,7 +187,7 @@ public class FKismetArchive : FArchive
         return newData.ToArray();
     }
 
-    [MethodImpl(MethodImplOptions.AggressiveInlining)]
+    [MethodImpl(CUE4Parse.Globals.MethodOptions)]
     public override FName ReadFName()
     {
         var nameIndex = Read<int>();
@@ -202,7 +202,7 @@ public class FKismetArchive : FArchive
         return new FName(Owner.NameMap[nameIndex], nameIndex, extraIndex);
     }
 
-    [MethodImpl(MethodImplOptions.AggressiveInlining)]
+    [MethodImpl(CUE4Parse.Globals.MethodOptions)]
     public override int Read(byte[] buffer, int offset, int count)
     {
         int n = (int) (Length - Position);
@@ -223,7 +223,7 @@ public class FKismetArchive : FArchive
         return n;
     }
 
-    [MethodImpl(MethodImplOptions.AggressiveInlining)]
+    [MethodImpl(CUE4Parse.Globals.MethodOptions)]
     public override byte[] ReadBytes(int length)
     {
         var result = new byte[length];
@@ -232,7 +232,7 @@ public class FKismetArchive : FArchive
         return result;
     }
 
-    [MethodImpl(MethodImplOptions.AggressiveInlining)]
+    [MethodImpl(CUE4Parse.Globals.MethodOptions)]
     public override long Seek(long offset, SeekOrigin origin)
     {
         Position = origin switch
@@ -250,7 +250,7 @@ public class FKismetArchive : FArchive
     public override long Position { get; set; }
     public override string Name { get; }
 
-    [MethodImpl(MethodImplOptions.AggressiveInlining)]
+    [MethodImpl(CUE4Parse.Globals.MethodOptions)]
     public override T Read<T>()
     {
         var size = Unsafe.SizeOf<T>();

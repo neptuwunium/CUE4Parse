@@ -19,10 +19,10 @@ namespace CUE4Parse.ACL
         public float SampleRate;
         public uint MiscPacked;
 
-        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        [MethodImpl(CUE4Parse.Globals.MethodOptions)]
         public bool GetHasScale() => (MiscPacked & 1) != 0;
 
-        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        [MethodImpl(CUE4Parse.Globals.MethodOptions)]
         public int GetDefaultScale() => (int) (MiscPacked >> 1) & 1;
     }
 }

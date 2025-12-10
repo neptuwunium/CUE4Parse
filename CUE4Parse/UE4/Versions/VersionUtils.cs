@@ -7,7 +7,7 @@ namespace CUE4Parse.UE4.Versions;
 
 public static class VersionUtils
 {
-    [MethodImpl(MethodImplOptions.AggressiveInlining)]
+    [MethodImpl(CUE4Parse.Globals.MethodOptions)]
     public static int CustomVer(this FArchive Ar, FGuid key)
     {
         var overrideCustomVersions = Ar.Versions.CustomVersions;

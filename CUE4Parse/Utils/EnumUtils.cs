@@ -6,7 +6,7 @@ namespace CUE4Parse.Utils;
 
 public static class EnumUtils
 {
-    [MethodImpl(MethodImplOptions.AggressiveInlining)]
+    [MethodImpl(CUE4Parse.Globals.MethodOptions)]
     public static string ToStringBitfield<T>(this T inEnum, bool prefixed = false) where T : Enum
     {
         var outValues = new List<T>();
@@ -22,7 +22,7 @@ public static class EnumUtils
         return c > 0 ? c == 1 && prefixed ? $"{inEnum.GetType().Name}::{outValues[0]}" : string.Join(" | ", outValues) : "0";
     }
 
-    [MethodImpl(MethodImplOptions.AggressiveInlining)]
+    [MethodImpl(CUE4Parse.Globals.MethodOptions)]
     public static T GetValueByName<T>(string name) where T : Enum
     {
         var start = name.IndexOf("::", StringComparison.Ordinal);

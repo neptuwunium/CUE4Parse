@@ -65,9 +65,9 @@ public class FMemoryImageArchive : FArchive
 
     public override long Position
     {
-        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        [MethodImpl(CUE4Parse.Globals.MethodOptions)]
         get => InnerArchive.Position;
-        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        [MethodImpl(CUE4Parse.Globals.MethodOptions)]
         set => InnerArchive.Position = value;
     }
 

@@ -21,11 +21,11 @@ namespace CUE4Parse_Conversion.Textures.ASTC
             QuintValue = 0;
         }
 
-        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        [MethodImpl(CUE4Parse.Globals.MethodOptions)]
         public bool MatchesEncoding(IntegerEncoded Other) => Encoding == Other.Encoding && NumberBits == Other.NumberBits;
         public EIntegerEncoding GetEncoding() => Encoding;
 
-        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        [MethodImpl(CUE4Parse.Globals.MethodOptions)]
         public int GetBitLength(int NumberVals)
         {
             int TotalBits = NumberBits * NumberVals;
@@ -40,7 +40,7 @@ namespace CUE4Parse_Conversion.Textures.ASTC
             return TotalBits;
         }
 
-        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        [MethodImpl(CUE4Parse.Globals.MethodOptions)]
         public static IntegerEncoded CreateEncoding(int MaxVal)
         {
             while (MaxVal > 0)

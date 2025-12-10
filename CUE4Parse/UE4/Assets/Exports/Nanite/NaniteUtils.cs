@@ -167,7 +167,7 @@ public class NaniteUtils
     public static uint UnpackByte2(uint v) => (v >> 16) & 0xff;
     public static uint UnpackByte3(uint v) => v >> 24;
 
-    [MethodImpl(MethodImplOptions.AggressiveInlining)]
+    [MethodImpl(CUE4Parse.Globals.MethodOptions)]
     public static int DecodeZigZag(uint data)
     {
         return (int)(data >> 1) ^ -(int)(data & 1);

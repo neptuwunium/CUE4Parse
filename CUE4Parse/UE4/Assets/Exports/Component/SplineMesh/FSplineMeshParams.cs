@@ -56,7 +56,7 @@ public class FSplineMeshParams : IUStruct
         EndOffset = fallback.GetOrDefault<FVector2D>("EndOffset");
     }
 
-    [MethodImpl(MethodImplOptions.AggressiveInlining)]
+    [MethodImpl(CUE4Parse.Globals.MethodOptions)]
     public FVector SplineEvalDir(float a)
     {
         return SplineEvalTangent(a).GetSafeNormal();

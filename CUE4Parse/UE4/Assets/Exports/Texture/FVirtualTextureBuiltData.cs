@@ -134,13 +134,13 @@ public class FVirtualTextureBuiltData
         Chunks = Ar.ReadArray(() => new FVirtualTextureDataChunk(Ar, NumLayers));
     }
 
-    [MethodImpl(MethodImplOptions.AggressiveInlining)]
+    [MethodImpl(CUE4Parse.Globals.MethodOptions)]
     public bool IsInitialized() => TileSize != 0;
-    [MethodImpl(MethodImplOptions.AggressiveInlining)]
+    [MethodImpl(CUE4Parse.Globals.MethodOptions)]
     public uint GetPhysicalTileSize() => TileSize + TileBorderSize * 2u;
-    [MethodImpl(MethodImplOptions.AggressiveInlining)]
+    [MethodImpl(CUE4Parse.Globals.MethodOptions)]
     public uint GetWidthInTiles() => Width.DivideAndRoundUp(TileSize);
-    [MethodImpl(MethodImplOptions.AggressiveInlining)]
+    [MethodImpl(CUE4Parse.Globals.MethodOptions)]
     public uint GetHeightInTiles() => Height.DivideAndRoundUp(TileSize);
 
     public bool IsLegacyData() => TileOffsetInChunk == null || TileOffsetInChunk.Length > 0;

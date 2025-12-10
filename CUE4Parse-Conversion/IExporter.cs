@@ -15,6 +15,7 @@ using CUE4Parse_Conversion.Meshes;
 using CUE4Parse_Conversion.PoseAsset;
 using CUE4Parse_Conversion.Textures;
 using CUE4Parse_Conversion.UEFormat.Enums;
+using CUE4Parse.UE4.Assets;
 using CUE4Parse.UE4.Assets.Exports.Actor;
 using CUE4Parse.UE4.Assets.Exports.Nanite;
 
@@ -87,20 +88,20 @@ namespace CUE4Parse_Conversion
         public abstract bool TryWriteToZip(out byte[] zipFile);
         public abstract void AppendToZip();
 
-        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        [MethodImpl(CUE4Parse.Globals.MethodOptions)]
         protected string GetExportSavePath()
         {
             return GetExportSavePath(PackagePath, ExportName);
         }
 
-        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        [MethodImpl(CUE4Parse.Globals.MethodOptions)]
         public static string GetExportSavePath(string packagePath, string exportName)
         {
             var path = packagePath.SubstringAfterLast('/').Equals(exportName, StringComparison.InvariantCulture) ? packagePath : packagePath + '/' + exportName;
             return path[0] == '/' ? path[1..] : path;
         }
 
-        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        [MethodImpl(CUE4Parse.Globals.MethodOptions)]
         public static string GetExportSavePath(UObject? export)
         {
             if (export == null) {
@@ -109,6 +110,19 @@ namespace CUE4Parse_Conversion
             
             var p = export.GetPathName();
             var packagePath = (export.Owner?.Provider?.FixPath(p) ?? p).SubstringBeforeLast('.');
+            var exportName = p.SubstringAfterLast('.');
+            return GetExportSavePath(packagePath, exportName);
+        }
+
+        [MethodImpl(CUE4Parse.Globals.MethodOptions)]
+        public static string GetExportSavePath(ResolvedObject? export)
+        {
+            if (export == null) {
+                return "None";
+            }
+            
+            var p = export.GetPathName();
+            var packagePath = (export.Package.Provider?.FixPath(p) ?? p).SubstringBeforeLast('.');
             var exportName = p.SubstringAfterLast('.');
             return GetExportSavePath(packagePath, exportName);
         }

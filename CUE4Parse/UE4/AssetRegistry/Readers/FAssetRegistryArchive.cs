@@ -29,11 +29,11 @@ namespace CUE4Parse.UE4.AssetRegistry.Readers
             return Header.Version >= FAssetRegistryVersionType.MarshalledTextAsUTF8String ? baseArchive.ReadFUtf8String() : baseArchive.ReadFString();
         }
 
-        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        [MethodImpl(CUE4Parse.Globals.MethodOptions)]
         public override int Read(byte[] buffer, int offset, int count)
             => baseArchive.Read(buffer, offset, count);
 
-        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        [MethodImpl(CUE4Parse.Globals.MethodOptions)]
         public override long Seek(long offset, SeekOrigin origin)
             => baseArchive.Seek(offset, origin);
 
@@ -41,31 +41,31 @@ namespace CUE4Parse.UE4.AssetRegistry.Readers
         public override long Length => baseArchive.Length;
         public override long Position
         {
-            [MethodImpl(MethodImplOptions.AggressiveInlining)]
+            [MethodImpl(CUE4Parse.Globals.MethodOptions)]
             get => baseArchive.Position;
-            [MethodImpl(MethodImplOptions.AggressiveInlining)]
+            [MethodImpl(CUE4Parse.Globals.MethodOptions)]
             set => baseArchive.Position = value;
         }
 
         public override string Name => baseArchive.Name;
 
-        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        [MethodImpl(CUE4Parse.Globals.MethodOptions)]
         public override T Read<T>()
             => baseArchive.Read<T>();
 
-        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        [MethodImpl(CUE4Parse.Globals.MethodOptions)]
         public override byte[] ReadBytes(int length)
             => baseArchive.ReadBytes(length);
 
-        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        [MethodImpl(CUE4Parse.Globals.MethodOptions)]
         public override unsafe void Serialize(byte* ptr, int length)
             => baseArchive.Serialize(ptr, length);
 
-        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        [MethodImpl(CUE4Parse.Globals.MethodOptions)]
         public override T[] ReadArray<T>(int length)
             => baseArchive.ReadArray<T>(length);
 
-        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        [MethodImpl(CUE4Parse.Globals.MethodOptions)]
         public override void ReadArray<T>(T[] array)
             => baseArchive.ReadArray(array);
     }

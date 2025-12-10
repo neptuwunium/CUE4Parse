@@ -165,7 +165,7 @@ public class FByteBulkData
         return true;
     }
 
-    [MethodImpl(MethodImplOptions.AggressiveInlining)]
+    [MethodImpl(CUE4Parse.Globals.MethodOptions)]
     private bool TryGetBulkPayload(FAssetArchive Ar, PayloadType type, [MaybeNullWhen(false)] out FAssetArchive payloadAr)
     {
         payloadAr = null;
@@ -184,7 +184,7 @@ public class FByteBulkData
         return payloadAr != null;
     }
 
-    [MethodImpl(MethodImplOptions.AggressiveInlining)]
+    [MethodImpl(CUE4Parse.Globals.MethodOptions)]
     public int GetDataSize() => Header.ElementCount;
 
     public bool TryCombineBulkData(FAssetArchive Ar, out byte[] combinedData)

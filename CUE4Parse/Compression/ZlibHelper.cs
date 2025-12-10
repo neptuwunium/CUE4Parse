@@ -21,15 +21,14 @@ public class ZlibException : ParserException
 public static class ZlibHelper
 {
     public const string DOWNLOAD_URL = "https://github.com/NotOfficer/Zlib-ng.NET/releases/download/1.0.0/zlib-ng2.dll";
-    public const string DLL_NAME = "zlib-ng2.dll";
+    public const string DLL_NAME = "libz-ng.dll";
 
     public static Zlibng? Instance { get; private set; }
 
     public static void Initialize(string path)
     {
         Instance?.Dispose();
-        if (File.Exists(path))
-            Instance = new Zlibng(path);
+        Instance = new Zlibng(path);
     }
 
     public static void Initialize(Zlibng instance)
@@ -40,6 +39,9 @@ public static class ZlibHelper
 
     public static bool DownloadDll(string? path = null, string? url = null)
     {
+        if (!OperatingSystem.IsWindows()) {
+            return true;
+        }
         if (File.Exists(path ?? DLL_NAME)) return true;
         return DownloadDllAsync(path, url).GetAwaiter().GetResult();
     }

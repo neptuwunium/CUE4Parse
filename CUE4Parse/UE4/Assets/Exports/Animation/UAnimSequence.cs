@@ -337,7 +337,7 @@ namespace CUE4Parse.UE4.Assets.Exports.Animation
             }
         }
 
-        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        [MethodImpl(CUE4Parse.Globals.MethodOptions)]
         private static byte[] ReadSerializedByteStream(FAssetArchive Ar)
         {
             var numBytes = Ar.Read<int>();
@@ -441,7 +441,7 @@ namespace CUE4Parse.UE4.Assets.Exports.Animation
 
                     // Copy data
 
-                    [MethodImpl(MethodImplOptions.AggressiveInlining)]
+                    [MethodImpl(CUE4Parse.Globals.MethodOptions)]
                     void Copy(int size)
                     {
                         Buffer.BlockCopy(compressedData.CompressedByteStream, srcOffset, dst, dstOffset, size);

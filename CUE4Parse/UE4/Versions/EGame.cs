@@ -206,7 +206,7 @@ public static class GameUtils
     public const int GameUe4Base = 0x4000000;
     public const int GameUe5Base = 0x5000000;
 
-    [MethodImpl(MethodImplOptions.AggressiveInlining)]
+    [MethodImpl(CUE4Parse.Globals.MethodOptions)]
     public static int GAME_UE4(int x)
     {
         return GameUe4Base + (x << 16);

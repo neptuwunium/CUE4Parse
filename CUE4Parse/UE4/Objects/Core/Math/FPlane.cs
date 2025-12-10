@@ -72,7 +72,7 @@ namespace CUE4Parse.UE4.Objects.Core.Math
             W = Ar.ReadFReal();
         }
 
-        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        [MethodImpl(CUE4Parse.Globals.MethodOptions)]
         public float PlaneDot(FVector p) => X * p.X + Y * p.Y + Z * p.Z - W;
 
         public readonly bool Equals(FPlane v, float tolerance) => Vector.Equals(v.Vector, tolerance) && Abs(W - v.W) <= tolerance;

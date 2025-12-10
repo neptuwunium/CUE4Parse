@@ -45,7 +45,7 @@ public abstract class UTexture : UUnrealMaterial, IAssetUserData
     private UTextureAllMipDataProviderFactory? _mipDataProvider;
     public UTextureAllMipDataProviderFactory? MipDataProvider
     {
-        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        [MethodImpl(CUE4Parse.Globals.MethodOptions)]
         get
         {
             if (_mipDataProvider is null)
@@ -179,16 +179,16 @@ public abstract class UTexture : UUnrealMaterial, IAssetUserData
         }
     }
 
-    [MethodImpl(MethodImplOptions.AggressiveInlining)]
+    [MethodImpl(CUE4Parse.Globals.MethodOptions)]
     public FTexture2DMipMap? GetMip(int index) =>
         index >= 0 && index < PlatformData.Mips.Length && PlatformData.Mips[index].EnsureValidBulkData(MipDataProvider, index)
             ? PlatformData.Mips[index]
             : null;
 
-    [MethodImpl(MethodImplOptions.AggressiveInlining)]
+    [MethodImpl(CUE4Parse.Globals.MethodOptions)]
     public FTexture2DMipMap? GetFirstMip() => PlatformData.Mips.Where((t, i) => t.EnsureValidBulkData(MipDataProvider, i)).FirstOrDefault();
 
-    [MethodImpl(MethodImplOptions.AggressiveInlining)]
+    [MethodImpl(CUE4Parse.Globals.MethodOptions)]
     public int GetFirstMipIndex()
     {
         for (var i = 0; i < PlatformData.Mips.Length; i++)
@@ -229,7 +229,7 @@ public abstract class UTexture : UUnrealMaterial, IAssetUserData
         return GetFirstMipIndex();
     }
 
-    [MethodImpl(MethodImplOptions.AggressiveInlining)]
+    [MethodImpl(CUE4Parse.Globals.MethodOptions)]
     public FTexture2DMipMap? GetMipByMaxSize(int maxSize)
     {
         for (var i = 0; i < PlatformData.Mips.Length; i++)
@@ -242,7 +242,7 @@ public abstract class UTexture : UUnrealMaterial, IAssetUserData
         return GetFirstMip();
     }
 
-    [MethodImpl(MethodImplOptions.AggressiveInlining)]
+    [MethodImpl(CUE4Parse.Globals.MethodOptions)]
     public FTexture2DMipMap? GetMipBySize(int sizeX, int sizeY)
     {
         for (var i = 0; i < PlatformData.Mips.Length; i++)

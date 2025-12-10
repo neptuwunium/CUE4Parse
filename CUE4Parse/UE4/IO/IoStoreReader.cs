@@ -179,7 +179,7 @@ public partial class IoStoreReader : AbstractAesVfsReader
         return TryResolveImperfect(chunkId, out outOffsetLength);
     }
 
-    [MethodImpl(MethodImplOptions.AggressiveInlining)]
+    [MethodImpl(CUE4Parse.Globals.MethodOptions)]
     private bool TryResolveImperfect(FIoChunkId chunkId, out FIoOffsetAndLength outOffsetLength)
     {
         if (TocImperfectHashMapFallback != null)

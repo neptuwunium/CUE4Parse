@@ -34,7 +34,7 @@ public class FPakEntry : VfsEntry
 
     public FPakEntry(IVfsReader vfs, string path, long size = 0) : base(vfs, path) { }
 
-    [MethodImpl(MethodImplOptions.AggressiveInlining)]
+    [MethodImpl(CUE4Parse.Globals.MethodOptions)]
     public FPakEntry(PakFileReader reader, string path, FArchive Ar) : base(reader, path)
     {
         // FPakEntry is duplicated before each stored file, without a filename. So,
@@ -141,7 +141,7 @@ public class FPakEntry : VfsEntry
     }
 
     [Obsolete("use GenericBufferReader instead")]
-    [MethodImpl(MethodImplOptions.AggressiveInlining)]
+    [MethodImpl(CUE4Parse.Globals.MethodOptions)]
     public unsafe FPakEntry(PakFileReader reader, string path, byte* data) : base(reader, path)
     {
         // UE4 reference: FPakFile::DecodePakEntry()
@@ -294,7 +294,7 @@ public class FPakEntry : VfsEntry
         }
     }
 
-    [MethodImpl(MethodImplOptions.AggressiveInlining)]
+    [MethodImpl(CUE4Parse.Globals.MethodOptions)]
     public FPakEntry(PakFileReader reader, string path, GenericBufferReader Ar, int offset) : base(reader, path)
     {
         // UE4 reference: FPakFile::DecodePakEntry()
@@ -442,17 +442,17 @@ public class FPakEntry : VfsEntry
 
     public PakFileReader PakFileReader
     {
-        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        [MethodImpl(CUE4Parse.Globals.MethodOptions)]
         get => (PakFileReader) Vfs;
     }
 
-    [MethodImpl(MethodImplOptions.AggressiveInlining)]
+    [MethodImpl(CUE4Parse.Globals.MethodOptions)]
     public override byte[] Read() => Vfs.Extract(this);
 
-    [MethodImpl(MethodImplOptions.AggressiveInlining)]
+    [MethodImpl(CUE4Parse.Globals.MethodOptions)]
     public override FArchive CreateReader() => new FByteArchive(Path, Read(), Vfs.Versions);
 
-    [MethodImpl(MethodImplOptions.AggressiveInlining)]
+    [MethodImpl(CUE4Parse.Globals.MethodOptions)]
     public FPakEntry(PakFileReader reader, string path, FArchive Ar, EGame game) : base(reader, path)
     {
         var startOffset = Ar.Position;

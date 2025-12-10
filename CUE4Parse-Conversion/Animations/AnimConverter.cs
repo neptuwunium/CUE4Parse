@@ -301,7 +301,7 @@ namespace CUE4Parse_Conversion.Animations
             return animSeq;
         }
 
-        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        [MethodImpl(CUE4Parse.Globals.MethodOptions)]
         private static void AdjustSequenceBySkeleton(FReferenceSkeleton skeleton, FTransform[] transforms, CAnimSequence anim)
         {
             if (skeleton.FinalRefBoneInfo.Length == 0 ||
@@ -351,7 +351,7 @@ namespace CUE4Parse_Conversion.Animations
             Ar.Position = Ar.Position.Align(4);
         }
 
-        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        [MethodImpl(CUE4Parse.Globals.MethodOptions)]
         private static void ReadPerTrackQuatData(FArchive Ar, string trackKind, ref FQuat[] dstKeys, ref float[] dstTimeKeys, int numFrames)
         {
             var packedInfo = Ar.Read<uint>();
@@ -402,7 +402,7 @@ namespace CUE4Parse_Conversion.Animations
                 ReadTimeArray(Ar, numKeys, out dstTimeKeys, numFrames);
         }
 
-        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        [MethodImpl(CUE4Parse.Globals.MethodOptions)]
         private static void ReadPerTrackVectorData(FArchive Ar, string trackKind, ref FVector[] dstKeys, ref float[] dstTimeKeys, int numFrames)
         {
             var packedInfo = Ar.Read<uint>();
@@ -487,7 +487,7 @@ namespace CUE4Parse_Conversion.Animations
                 ReadTimeArray(Ar, numKeys, out dstTimeKeys, numFrames);
         }
 
-        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        [MethodImpl(CUE4Parse.Globals.MethodOptions)]
         private static void ReadPerTrackData(FArchive reader, UAnimSequence animSequence, CAnimTrack track, int trackIndex)
         {
             var compressedData = (FUECompressedAnimData) animSequence.CompressedDataStructure;
@@ -534,7 +534,7 @@ namespace CUE4Parse_Conversion.Animations
             }
         }
 
-        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        [MethodImpl(CUE4Parse.Globals.MethodOptions)]
         private static void ReadKeyLerpData(FArchive reader, UAnimSequence animSequence, CAnimTrack track, int trackIndex, bool hasTimeTracks)
         {
             var compressedData = (FUECompressedAnimData) animSequence.CompressedDataStructure;

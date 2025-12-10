@@ -34,7 +34,7 @@ namespace CUE4Parse.UE4.Assets.Readers
             AbsoluteOffset = absoluteOffset;
         }
 
-        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        [MethodImpl(CUE4Parse.Globals.MethodOptions)]
         public override FName ReadFName()
         {
             var nameIndex = Read<int>();
@@ -48,7 +48,7 @@ namespace CUE4Parse.UE4.Assets.Readers
             return new FName(Owner.NameMap[nameIndex], nameIndex, extraIndex);
         }
 
-        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        [MethodImpl(CUE4Parse.Globals.MethodOptions)]
         public bool TestReadFName()
         {
             if (HasUnversionedProperties) return false;
@@ -146,7 +146,7 @@ namespace CUE4Parse.UE4.Assets.Readers
             });
         }
 
-        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        [MethodImpl(CUE4Parse.Globals.MethodOptions)]
         public override int Read(byte[] buffer, int offset, int count)
             => _baseArchive.Read(buffer, offset, count);
 
@@ -157,11 +157,11 @@ namespace CUE4Parse.UE4.Assets.Readers
         public override ValueTask<int> ReadAtAsync(long position, Memory<byte> memory, CancellationToken cancellationToken = default)
             => _baseArchive.ReadAtAsync(position, memory, cancellationToken);
 
-        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        [MethodImpl(CUE4Parse.Globals.MethodOptions)]
         public override long Seek(long offset, SeekOrigin origin)
             => _baseArchive.Seek(offset, origin);
 
-        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        [MethodImpl(CUE4Parse.Globals.MethodOptions)]
         public long SeekAbsolute(long offset, SeekOrigin origin)
             => _baseArchive.Seek(offset - AbsoluteOffset, origin);
 
@@ -170,31 +170,31 @@ namespace CUE4Parse.UE4.Assets.Readers
         public long AbsolutePosition => AbsoluteOffset + Position;
         public override long Position
         {
-            [MethodImpl(MethodImplOptions.AggressiveInlining)]
+            [MethodImpl(CUE4Parse.Globals.MethodOptions)]
             get => _baseArchive.Position;
-            [MethodImpl(MethodImplOptions.AggressiveInlining)]
+            [MethodImpl(CUE4Parse.Globals.MethodOptions)]
             set => _baseArchive.Position = value;
         }
 
         public override string Name => _baseArchive.Name;
 
-        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        [MethodImpl(CUE4Parse.Globals.MethodOptions)]
         public override T Read<T>()
             => _baseArchive.Read<T>();
 
-        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        [MethodImpl(CUE4Parse.Globals.MethodOptions)]
         public override byte[] ReadBytes(int length)
             => _baseArchive.ReadBytes(length);
 
-        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        [MethodImpl(CUE4Parse.Globals.MethodOptions)]
         public override unsafe void Serialize(byte* ptr, int length)
             => _baseArchive.Serialize(ptr, length);
 
-        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        [MethodImpl(CUE4Parse.Globals.MethodOptions)]
         public override T[] ReadArray<T>(int length)
             => _baseArchive.ReadArray<T>(length);
 
-        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        [MethodImpl(CUE4Parse.Globals.MethodOptions)]
         public override void ReadArray<T>(T[] array)
             => _baseArchive.ReadArray(array);
 

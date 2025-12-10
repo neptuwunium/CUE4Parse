@@ -24,7 +24,7 @@ namespace CUE4Parse.UE4.IO.Objects
             if (replacedIoChunkHashWithIoHash) Ar.Position += 3;
         }
 
-        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        [MethodImpl(CUE4Parse.Globals.MethodOptions)]
         public override string ToString()
         {
             unsafe

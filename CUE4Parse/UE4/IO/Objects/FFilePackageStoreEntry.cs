@@ -35,7 +35,7 @@ namespace CUE4Parse.UE4.IO.Objects
             }
         }
 
-        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        [MethodImpl(CUE4Parse.Globals.MethodOptions)]
         private static T[] ReadCArrayView<T>(FArchive Ar) where T : struct
         {
             var initialPos = Ar.Position;
@@ -53,7 +53,7 @@ namespace CUE4Parse.UE4.IO.Objects
             return result;
         }
 
-        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        [MethodImpl(CUE4Parse.Globals.MethodOptions)]
         private static T[] ReadCArrayView<T>(FArchive Ar, Func<T> getter)
         {
             var initialPos = Ar.Position;

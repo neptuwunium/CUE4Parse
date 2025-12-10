@@ -112,7 +112,7 @@ namespace CUE4Parse.UE4.Objects.Core.Math
             }
         }
 
-        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        [MethodImpl(CUE4Parse.Globals.MethodOptions)]
         public static FMatrix operator *(FMatrix a, FMatrix b) => new(
             a.M00 * b.M00 + a.M01 * b.M10 + a.M02 * b.M20 + a.M03 * b.M30,
             a.M00 * b.M01 + a.M01 * b.M11 + a.M02 * b.M21 + a.M03 * b.M31,
@@ -179,7 +179,7 @@ namespace CUE4Parse.UE4.Objects.Core.Math
             }
         }
 
-        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        [MethodImpl(CUE4Parse.Globals.MethodOptions)]
         public FVector4 TransformFVector4(FVector4 p) => new(
             p.X * M00 + p.Y * M10 + p.Z * M20 + p.W * M30,
             p.X * M01 + p.Y * M11 + p.Z * M21 + p.W * M31,
@@ -187,20 +187,20 @@ namespace CUE4Parse.UE4.Objects.Core.Math
             p.X * M03 + p.Y * M13 + p.Z * M23 + p.W * M33
         );
 
-        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        [MethodImpl(CUE4Parse.Globals.MethodOptions)]
         public FVector4 TransformPosition(FVector v) => TransformFVector4(new FVector4(v.X, v.Y, v.Z, 1.0f));
 
-        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        [MethodImpl(CUE4Parse.Globals.MethodOptions)]
         public FVector InverseTransformPosition(FVector v)
         {
             var invSelf = InverseFast();
             return (FVector) invSelf.TransformPosition(v);
         }
 
-        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        [MethodImpl(CUE4Parse.Globals.MethodOptions)]
         public FVector4 TransformVector(FVector v) => TransformFVector4(new FVector4(v.X, v.Y, v.Z, 0.0f));
 
-        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        [MethodImpl(CUE4Parse.Globals.MethodOptions)]
         public FMatrix GetTransposed() => new(
             M00, M10, M20, M30,
             M01, M11, M21, M31,
@@ -208,7 +208,7 @@ namespace CUE4Parse.UE4.Objects.Core.Math
             M03, M13, M23, M33
         );
 
-        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        [MethodImpl(CUE4Parse.Globals.MethodOptions)]
         public float Determinant() =>
             M00 * (
                 M11 * (M22 * M33 - M23 * M32) -
@@ -231,13 +231,13 @@ namespace CUE4Parse.UE4.Objects.Core.Math
                 M21 * (M02 * M13 - M03 * M12)
             );
 
-        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        [MethodImpl(CUE4Parse.Globals.MethodOptions)]
         public float RotDeterminant() =>
             M00 * (M11 * M22 - M12 * M21) -
             M10 * (M01 * M22 - M02 * M21) +
             M20 * (M01 * M12 - M02 * M11);
 
-        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        [MethodImpl(CUE4Parse.Globals.MethodOptions)]
         public FMatrix InverseFast()
         {
             var result = new FMatrix();
@@ -320,7 +320,7 @@ namespace CUE4Parse.UE4.Objects.Core.Math
             return result;
         }
 
-        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        [MethodImpl(CUE4Parse.Globals.MethodOptions)]
         public FMatrix Inverse()
         {
             // Check for zero scale matrix to invert
@@ -336,7 +336,7 @@ namespace CUE4Parse.UE4.Objects.Core.Math
             return det == 0.0f ? Identity : InverseFast();
         }
 
-        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        [MethodImpl(CUE4Parse.Globals.MethodOptions)]
         public void RemoveScaling(float tolerance = UnrealMath.SmallNumber)
         {
             // For each row, find magnitude, and if its non-zero re-scale so its unit length.
@@ -360,7 +360,7 @@ namespace CUE4Parse.UE4.Objects.Core.Math
             M22 *= scale2;
         }
 
-        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        [MethodImpl(CUE4Parse.Globals.MethodOptions)]
         public FVector ExtractScaling(float tolerance = UnrealMath.SmallNumber)
         {
             // For each row, find magnitude, and if its non-zero re-scale so its unit length.
@@ -415,7 +415,7 @@ namespace CUE4Parse.UE4.Objects.Core.Math
             return scale3D;
         }
 
-        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        [MethodImpl(CUE4Parse.Globals.MethodOptions)]
         public float GetMaximumAxisScale()
         {
             var maxRowScaleSquared = MathF.Max(
@@ -428,10 +428,10 @@ namespace CUE4Parse.UE4.Objects.Core.Math
             return MathF.Sqrt(maxRowScaleSquared);
         }
 
-        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        [MethodImpl(CUE4Parse.Globals.MethodOptions)]
         public FVector GetOrigin() => new(M30, M31, M32);
 
-        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        [MethodImpl(CUE4Parse.Globals.MethodOptions)]
         public FVector GetScaledAxis(EAxis axis) => axis switch
         {
             EAxis.X => new FVector(M00, M01, M02),
@@ -440,7 +440,7 @@ namespace CUE4Parse.UE4.Objects.Core.Math
             _ => FVector.ZeroVector
         };
 
-        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        [MethodImpl(CUE4Parse.Globals.MethodOptions)]
         public void SetAxis(int i, FVector axis)
         {
             switch (i)
@@ -486,7 +486,7 @@ namespace CUE4Parse.UE4.Objects.Core.Math
             return rotator;
         }
 
-        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        [MethodImpl(CUE4Parse.Globals.MethodOptions)]
         public FVector GetScaleVector(float tolerance = UnrealMath.SmallNumber)
         {
             var Scale3D = new FVector(1, 1, 1);
@@ -504,10 +504,10 @@ namespace CUE4Parse.UE4.Objects.Core.Math
             return Scale3D;
         }
 
-        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        [MethodImpl(CUE4Parse.Globals.MethodOptions)]
         public FQuat ToQuat() => new(this);
 
-        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        [MethodImpl(CUE4Parse.Globals.MethodOptions)]
         public bool MakeFrustumPlane(float A, float B, float C, float D, out FPlane plane)
         {
             var	LengthSquared = A * A + B * B + C * C;
@@ -522,22 +522,22 @@ namespace CUE4Parse.UE4.Objects.Core.Math
             return false;
         }
 
-        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        [MethodImpl(CUE4Parse.Globals.MethodOptions)]
         public bool GetFrustumNearPlane(out FPlane plane) => MakeFrustumPlane(M03 - M02, M13 - M12, M23 - M22, M33 - M32, out plane);
 
-        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        [MethodImpl(CUE4Parse.Globals.MethodOptions)]
         public bool GetFrustumFarPlane(out FPlane plane) => MakeFrustumPlane(M02, M12, M22, M32, out plane);
 
-        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        [MethodImpl(CUE4Parse.Globals.MethodOptions)]
         public bool GetFrustumLeftPlane(out FPlane plane) => MakeFrustumPlane(M03 + M00, M13 + M10, M23 + M20, M33 + M30, out plane);
 
-        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        [MethodImpl(CUE4Parse.Globals.MethodOptions)]
         public bool GetFrustumRightPlane(out FPlane plane) => MakeFrustumPlane(M03 - M00, M13 - M10, M23 - M20, M33 - M30, out plane);
 
-        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        [MethodImpl(CUE4Parse.Globals.MethodOptions)]
         public bool GetFrustumTopPlane(out FPlane plane) => MakeFrustumPlane(M03 - M01, M13 - M11, M23 - M21, M33 - M31, out plane);
 
-        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        [MethodImpl(CUE4Parse.Globals.MethodOptions)]
         public bool GetFrustumBottomPlane(out FPlane plane) => MakeFrustumPlane(M03 + M01, M13 + M11, M23 + M21, M33 + M31, out plane);
 
         public override string ToString() => $"[{M00:F1} {M01:F1} {M02:F1} {M03:F1}] [{M10:F1} {M11:F1} {M12:F1} {M13:F1}] [{M20:F1} {M21:F1} {M22:F1} {M23:F1}] [{M30:F1} {M31:F1} {M32:F1} {M33:F1}]";

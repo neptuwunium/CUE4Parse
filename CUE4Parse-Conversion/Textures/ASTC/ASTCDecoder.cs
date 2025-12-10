@@ -291,9 +291,9 @@ namespace CUE4Parse_Conversion.Textures.ASTC
             return true;
         }
 
-        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        [MethodImpl(CUE4Parse.Globals.MethodOptions)]
         private static int Select2DPartition(int Seed, int X, int Y, int PartitionCount, bool IsSmallBlock) => SelectPartition(Seed, X, Y, 0, PartitionCount, IsSmallBlock);
-        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        [MethodImpl(CUE4Parse.Globals.MethodOptions)]
         private static int SelectPartition(int Seed, int X, int Y, int Z, int PartitionCount, bool IsSmallBlock)
         {
             if (PartitionCount == 1)
@@ -366,7 +366,7 @@ namespace CUE4Parse_Conversion.Textures.ASTC
             return 3;
         }
 
-        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        [MethodImpl(CUE4Parse.Globals.MethodOptions)]
         private static int Hash52(uint Val)
         {
             Val ^= Val >> 15; Val -= Val << 17; Val += Val << 7; Val += Val << 4;
@@ -560,14 +560,14 @@ namespace CUE4Parse_Conversion.Textures.ASTC
             return Result;
         }
 
-        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        [MethodImpl(CUE4Parse.Globals.MethodOptions)]
         private static byte ReverseByte(byte b)
         {
             // Taken from http://graphics.stanford.edu/~seander/bithacks.html#ReverseByteWith64Bits
             return (byte)((((b) * 0x80200802L) & 0x0884422110L) * 0x0101010101L >> 32);
         }
 
-        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        [MethodImpl(CUE4Parse.Globals.MethodOptions)]
         private static uint[] ReadUintColorValues(int Number, int[] ColorValues, ref int ColorValuesPosition)
         {
             uint[] Ret = new uint[Number];
@@ -578,7 +578,7 @@ namespace CUE4Parse_Conversion.Textures.ASTC
             return Ret;
         }
 
-        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        [MethodImpl(CUE4Parse.Globals.MethodOptions)]
         private static int[] ReadIntColorValues(int Number, int[] ColorValues, ref int ColorValuesPosition)
         {
             int[] Ret = new int[Number];
@@ -881,7 +881,7 @@ namespace CUE4Parse_Conversion.Textures.ASTC
             }
         }
 
-        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        [MethodImpl(CUE4Parse.Globals.MethodOptions)]
         private static void FillVoidExtentLDR(BitArrayStream BitStream, int[] OutputBuffer, int BlockWidth, int BlockHeight)
         {
             // Don't actually care about the void extent, just read the bits...

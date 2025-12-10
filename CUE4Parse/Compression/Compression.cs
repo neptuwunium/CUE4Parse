@@ -18,7 +18,7 @@ namespace CUE4Parse.Compression
 
         public static byte[] Decompress(byte[] compressed, int uncompressedSize, CompressionMethod method, FArchive? reader = null) =>
             Decompress(compressed, 0, compressed.Length, uncompressedSize, method, reader);
-        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        [MethodImpl(CUE4Parse.Globals.MethodOptions)]
         public static byte[] Decompress(byte[] compressed, int compressedOffset, int compressedCount, int uncompressedSize, CompressionMethod method, FArchive? reader = null)
         {
             var uncompressed = new byte[uncompressedSize];
@@ -26,7 +26,7 @@ namespace CUE4Parse.Compression
             return uncompressed;
         }
 
-        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        [MethodImpl(CUE4Parse.Globals.MethodOptions)]
         public static void Decompress(byte[] compressed, byte[] dst, CompressionMethod method, FArchive? reader = null) =>
             Decompress(compressed, 0, compressed.Length, dst, 0, dst.Length, method, reader);
         public static void Decompress(byte[] compressed, int compressedOffset, int compressedSize, byte[] uncompressed, int uncompressedOffset, int uncompressedSize, CompressionMethod method, FArchive? reader = null)

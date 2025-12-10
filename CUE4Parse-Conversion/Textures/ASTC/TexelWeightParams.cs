@@ -12,7 +12,7 @@ namespace CUE4Parse_Conversion.Textures.ASTC
         public bool VoidExtentLDR;
         public bool VoidExtentHDR;
 
-        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        [MethodImpl(CUE4Parse.Globals.MethodOptions)]
         public int GetPackedBitSize()
         {
             int Indices = Height * Width;
@@ -25,7 +25,7 @@ namespace CUE4Parse_Conversion.Textures.ASTC
             return IntEncoded.GetBitLength(Indices);
         }
 
-        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        [MethodImpl(CUE4Parse.Globals.MethodOptions)]
         public int GetNumWeightValues()
         {
             int Ret = Width * Height;

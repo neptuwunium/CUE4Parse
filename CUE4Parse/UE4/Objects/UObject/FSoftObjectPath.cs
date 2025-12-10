@@ -84,11 +84,11 @@ public readonly struct FSoftObjectPath : IUStruct
     }
 
     #region Loading Methods
-    [MethodImpl(MethodImplOptions.AggressiveInlining)]
+    [MethodImpl(CUE4Parse.Globals.MethodOptions)]
     public UExport Load() =>
         Load(Owner?.Provider ?? throw new ParserException("Package was loaded without a IFileProvider"));
 
-    [MethodImpl(MethodImplOptions.AggressiveInlining)]
+    [MethodImpl(CUE4Parse.Globals.MethodOptions)]
     public bool TryLoad([MaybeNullWhen(false)] out UExport export)
     {
         var provider = Owner?.Provider;
@@ -100,11 +100,11 @@ public readonly struct FSoftObjectPath : IUStruct
         return TryLoad(provider, out export);
     }
 
-    [MethodImpl(MethodImplOptions.AggressiveInlining)]
+    [MethodImpl(CUE4Parse.Globals.MethodOptions)]
     public T Load<T>() where T : UExport =>
         Load<T>(Owner?.Provider ?? throw new ParserException("Package was loaded without a IFileProvider"));
 
-    [MethodImpl(MethodImplOptions.AggressiveInlining)]
+    [MethodImpl(CUE4Parse.Globals.MethodOptions)]
     public bool TryLoad<T>([MaybeNullWhen(false)] out T export) where T : UExport
     {
         var provider = Owner?.Provider;
@@ -116,10 +116,10 @@ public readonly struct FSoftObjectPath : IUStruct
         return TryLoad(provider, out export);
     }
 
-    [MethodImpl(MethodImplOptions.AggressiveInlining)]
+    [MethodImpl(CUE4Parse.Globals.MethodOptions)]
     public async Task<UExport> LoadAsync() => await LoadAsync(Owner?.Provider ?? throw new ParserException("Package was loaded without a IFileProvider"));
 
-    [MethodImpl(MethodImplOptions.AggressiveInlining)]
+    [MethodImpl(CUE4Parse.Globals.MethodOptions)]
     public async Task<UExport?> TryLoadAsync()
     {
         var provider = Owner?.Provider;
@@ -127,10 +127,10 @@ public readonly struct FSoftObjectPath : IUStruct
         return await TryLoadAsync(provider).ConfigureAwait(false);
     }
 
-    [MethodImpl(MethodImplOptions.AggressiveInlining)]
+    [MethodImpl(CUE4Parse.Globals.MethodOptions)]
     public async Task<T> LoadAsync<T>() where T : UExport => await LoadAsync<T>(Owner?.Provider ?? throw new ParserException("Package was loaded without a IFileProvider"));
 
-    [MethodImpl(MethodImplOptions.AggressiveInlining)]
+    [MethodImpl(CUE4Parse.Globals.MethodOptions)]
     public async Task<T?> TryLoadAsync<T>() where T : UExport
     {
         var provider = Owner?.Provider;
@@ -138,11 +138,11 @@ public readonly struct FSoftObjectPath : IUStruct
         return await TryLoadAsync<T>(provider).ConfigureAwait(false);
     }
 
-    [MethodImpl(MethodImplOptions.AggressiveInlining)]
+    [MethodImpl(CUE4Parse.Globals.MethodOptions)]
     public T Load<T>(IFileProvider provider) where T : UExport =>
         Load(provider) as T ?? throw new ParserException("Loaded SoftObjectProperty but it was of wrong type");
 
-    [MethodImpl(MethodImplOptions.AggressiveInlining)]
+    [MethodImpl(CUE4Parse.Globals.MethodOptions)]
     public bool TryLoad<T>(IFileProvider provider, [MaybeNullWhen(false)] out T export) where T : UExport
     {
         if (!TryLoad(provider, out var genericExport) || !(genericExport is T cast))
@@ -155,17 +155,17 @@ public readonly struct FSoftObjectPath : IUStruct
         return true;
     }
 
-    [MethodImpl(MethodImplOptions.AggressiveInlining)]
+    [MethodImpl(CUE4Parse.Globals.MethodOptions)]
     public async Task<T> LoadAsync<T>(IFileProvider provider) where T : UExport => await LoadAsync(provider) as T ??
                                                                                    throw new ParserException("Loaded SoftObjectProperty but it was of wrong type");
 
-    [MethodImpl(MethodImplOptions.AggressiveInlining)]
+    [MethodImpl(CUE4Parse.Globals.MethodOptions)]
     public async Task<T?> TryLoadAsync<T>(IFileProvider provider) where T : UExport => await TryLoadAsync(provider) as T;
 
-    [MethodImpl(MethodImplOptions.AggressiveInlining)]
+    [MethodImpl(CUE4Parse.Globals.MethodOptions)]
     public UExport Load(IFileProvider provider) => provider.LoadPackageObject(AssetPathName.Text);
 
-    [MethodImpl(MethodImplOptions.AggressiveInlining)]
+    [MethodImpl(CUE4Parse.Globals.MethodOptions)]
     public bool TryLoad(IFileProvider provider, [MaybeNullWhen(false)] out UExport export)
     {
         if (!provider.TryLoadPackageObject(AssetPathName.Text, out var asset))
@@ -177,14 +177,14 @@ public readonly struct FSoftObjectPath : IUStruct
         return TryResolveSubObject(asset, out export);
     }
 
-    [MethodImpl(MethodImplOptions.AggressiveInlining)]
+    [MethodImpl(CUE4Parse.Globals.MethodOptions)]
     public async Task<UExport?> LoadAsync(IFileProvider provider)
     {
         var asset = await provider.LoadPackageObjectAsync(AssetPathName.Text);
         return TryResolveSubObject(asset, out var export) ? export : null;
     }
 
-    [MethodImpl(MethodImplOptions.AggressiveInlining)]
+    [MethodImpl(CUE4Parse.Globals.MethodOptions)]
     public async Task<UExport?> TryLoadAsync(IFileProvider provider)
     {
         // TODO: this aint a "Try"

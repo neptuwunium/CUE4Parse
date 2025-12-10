@@ -21,9 +21,9 @@ public /*private*/ struct FCurveDesc
 
     public float ConstantValue
     {
-        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        [MethodImpl(CUE4Parse.Globals.MethodOptions)]
         get => BitConverter.Int32BitsToSingle(NumKeys);
-        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        [MethodImpl(CUE4Parse.Globals.MethodOptions)]
         set => NumKeys = BitConverter.SingleToInt32Bits(value);
     }
 }

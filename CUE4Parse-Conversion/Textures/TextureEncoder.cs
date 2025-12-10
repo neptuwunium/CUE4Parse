@@ -325,19 +325,19 @@ public static class TextureEncoder
         return InstallPixels(dataSpan, convertedData, info);
     }
 
-    [MethodImpl(MethodImplOptions.AggressiveInlining)]
+    [MethodImpl(CUE4Parse.Globals.MethodOptions)]
     private static byte Convert16To8(ushort value)
     {
         return FColor.Requantize16to8(value);
     }
 
-    [MethodImpl(MethodImplOptions.AggressiveInlining)]
+    [MethodImpl(CUE4Parse.Globals.MethodOptions)]
     private static byte ConvertFloatTo8(float value)
     {
         return (byte)Math.Clamp(value * 255.0f, 0, byte.MaxValue);
     }
 
-    [MethodImpl(MethodImplOptions.AggressiveInlining)]
+    [MethodImpl(CUE4Parse.Globals.MethodOptions)]
     private static byte ConvertHalfTo8(Half value)
     {
         return (byte)Math.Clamp((float)value * 255.0f, 0, byte.MaxValue);

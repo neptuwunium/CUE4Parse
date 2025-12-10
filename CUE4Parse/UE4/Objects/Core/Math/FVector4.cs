@@ -55,10 +55,10 @@ public struct FVector4 : IUStruct, IEquatable<FVector4>
     public static explicit operator FVector(FVector4 v) => new FVector(v.X, v.Y, v.Z);
     public static explicit operator Vector4(FVector4 v) => new Vector4(v.X, v.Y, v.Z, v.W);
 
-    [MethodImpl(MethodImplOptions.AggressiveInlining)]
+    [MethodImpl(CUE4Parse.Globals.MethodOptions)]
     public static bool operator == (FVector4 v1, FVector4 v2) => v1.X == v2.X && v1.Y == v2.Y && v1.Z == v2.Z && v1.W == v2.W;
 
-    [MethodImpl(MethodImplOptions.AggressiveInlining)]
+    [MethodImpl(CUE4Parse.Globals.MethodOptions)]
     public static bool operator !=(FVector4 v1, FVector4 v2) => !(v1 == v2);
 
     public static ref FVector AsFVector(ref FVector4 v) => ref Unsafe.As<FVector4, FVector>(ref v);

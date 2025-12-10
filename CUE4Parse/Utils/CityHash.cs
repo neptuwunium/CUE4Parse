@@ -127,25 +127,25 @@ namespace CUE4Parse.Utils
             return b + x;
         }
 
-        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        [MethodImpl(CUE4Parse.Globals.MethodOptions)]
         private static uint Fetch32(byte* p)
         {
             return *(uint*) p;
         }
 
-        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        [MethodImpl(CUE4Parse.Globals.MethodOptions)]
         private static ulong Fetch64(byte* p)
         {
             return *(ulong*) p;
         }
 
-        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        [MethodImpl(CUE4Parse.Globals.MethodOptions)]
         private static ulong Rotate(ulong val, int shift)
         {
             return shift == 0 ? val : val >> shift | val << 64 - shift;
         }
 
-        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        [MethodImpl(CUE4Parse.Globals.MethodOptions)]
         private static ulong ShiftMix(ulong val)
         {
             return val ^ val >> 47;
@@ -161,7 +161,7 @@ namespace CUE4Parse.Utils
             return b;
         }
 
-        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        [MethodImpl(CUE4Parse.Globals.MethodOptions)]
         private static ulong Bswap_64(ulong value)
         {
             value = value << 8 & 0xFF00FF00FF00FF00 | value >> 8 & 0x00FF00FF00FF00FF;
@@ -180,19 +180,19 @@ namespace CUE4Parse.Utils
             return (a + z, b + c);
         }
 
-        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        [MethodImpl(CUE4Parse.Globals.MethodOptions)]
         private static (ulong, ulong) WeakHashLen32WithSeeds(byte* s, ulong a, ulong b)
         {
             return WeakHashLen32WithSeeds(Fetch64(s), Fetch64(s + 8), Fetch64(s + 16), Fetch64(s + 24), a, b);
         }
 
-        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        [MethodImpl(CUE4Parse.Globals.MethodOptions)]
         private static ulong HashLen16(ulong u, ulong v)
         {
             return Hash128To64((u, v));
         }
 
-        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        [MethodImpl(CUE4Parse.Globals.MethodOptions)]
         private static ulong Hash128To64((ulong, ulong) x)
         {
             const ulong kMul = 0x9ddfea08eb382d69;
@@ -204,13 +204,13 @@ namespace CUE4Parse.Utils
             return b;
         }
 
-        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        [MethodImpl(CUE4Parse.Globals.MethodOptions)]
         private static ulong Uint128Low64((ulong, ulong) x)
         {
             return x.Item1;
         }
 
-        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        [MethodImpl(CUE4Parse.Globals.MethodOptions)]
         private static ulong Uint128High64((ulong, ulong) x)
         {
             return x.Item2;

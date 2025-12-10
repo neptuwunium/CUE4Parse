@@ -25,7 +25,7 @@ namespace CUE4Parse_Conversion.Textures.ASTC
             }
         }
 
-        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        [MethodImpl(CUE4Parse.Globals.MethodOptions)]
         public void ClampByte()
         {
             R = Math.Min(Math.Max(R, (short)0), (short)255);
@@ -34,7 +34,7 @@ namespace CUE4Parse_Conversion.Textures.ASTC
             A = Math.Min(Math.Max(A, (short)0), (short)255);
         }
 
-        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        [MethodImpl(CUE4Parse.Globals.MethodOptions)]
         public short GetComponent(int Index)
         {
             return Index switch
@@ -47,7 +47,7 @@ namespace CUE4Parse_Conversion.Textures.ASTC
             };
         }
 
-        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        [MethodImpl(CUE4Parse.Globals.MethodOptions)]
         public void SetComponent(int Index, int Value)
         {
             switch (Index)
@@ -67,7 +67,7 @@ namespace CUE4Parse_Conversion.Textures.ASTC
             }
         }
 
-        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        [MethodImpl(CUE4Parse.Globals.MethodOptions)]
         public void ChangeBitDepth(byte[] Depth)
         {
             for (int i = 0; i < 4; i++)
@@ -79,7 +79,7 @@ namespace CUE4Parse_Conversion.Textures.ASTC
             }
         }
 
-        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        [MethodImpl(CUE4Parse.Globals.MethodOptions)]
         short ChangeBitDepth(short Value, byte OldDepth, byte NewDepth)
         {
             if (OldDepth == NewDepth)
@@ -115,7 +115,7 @@ namespace CUE4Parse_Conversion.Textures.ASTC
             }
         }
 
-        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        [MethodImpl(CUE4Parse.Globals.MethodOptions)]
         public int Pack()
         {
             ASTCPixel NewPixel = new ASTCPixel(A, R, G, B);
@@ -129,7 +129,7 @@ namespace CUE4Parse_Conversion.Textures.ASTC
                    (byte)NewPixel.R << 0;
         }
 
-        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        [MethodImpl(CUE4Parse.Globals.MethodOptions)]
         public static ASTCPixel BlueContract(int a, int r, int g, int b)
         {
             return new ASTCPixel((short)(a),

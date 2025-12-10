@@ -45,7 +45,7 @@ public class FMaterialResourceProxyReader : FArchive
         public readonly EMaterialQualityLevel QualityLevel;
     }
 
-    [MethodImpl(MethodImplOptions.AggressiveInlining)]
+    [MethodImpl(CUE4Parse.Globals.MethodOptions)]
     public override FName ReadFName()
     {
         var nameIndex = InnerArchive.Read<int>();
@@ -62,11 +62,11 @@ public class FMaterialResourceProxyReader : FArchive
     public string ReadFString(bool bReadNameMap) => bReadNameMap ? ReadFName().PlainText : base.ReadFString();
     public override string ReadFString() => ReadFString(_readNameMap);
 
-    [MethodImpl(MethodImplOptions.AggressiveInlining)]
+    [MethodImpl(CUE4Parse.Globals.MethodOptions)]
     public override int Read(byte[] buffer, int offset, int count)
         => InnerArchive.Read(buffer, offset, count);
 
-    [MethodImpl(MethodImplOptions.AggressiveInlining)]
+    [MethodImpl(CUE4Parse.Globals.MethodOptions)]
     public override long Seek(long offset, SeekOrigin origin)
         => InnerArchive.Seek(offset, origin);
 
@@ -75,31 +75,31 @@ public class FMaterialResourceProxyReader : FArchive
 
     public override long Position
     {
-        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        [MethodImpl(CUE4Parse.Globals.MethodOptions)]
         get => InnerArchive.Position;
-        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        [MethodImpl(CUE4Parse.Globals.MethodOptions)]
         set => InnerArchive.Position = value;
     }
 
     public override string Name => InnerArchive.Name;
 
-    [MethodImpl(MethodImplOptions.AggressiveInlining)]
+    [MethodImpl(CUE4Parse.Globals.MethodOptions)]
     public override T Read<T>()
         => InnerArchive.Read<T>();
 
-    [MethodImpl(MethodImplOptions.AggressiveInlining)]
+    [MethodImpl(CUE4Parse.Globals.MethodOptions)]
     public override byte[] ReadBytes(int length)
         => InnerArchive.ReadBytes(length);
 
-    [MethodImpl(MethodImplOptions.AggressiveInlining)]
+    [MethodImpl(CUE4Parse.Globals.MethodOptions)]
     public override unsafe void Serialize(byte* ptr, int length)
         => InnerArchive.Serialize(ptr, length);
 
-    [MethodImpl(MethodImplOptions.AggressiveInlining)]
+    [MethodImpl(CUE4Parse.Globals.MethodOptions)]
     public override T[] ReadArray<T>(int length)
         => InnerArchive.ReadArray<T>(length);
 
-    [MethodImpl(MethodImplOptions.AggressiveInlining)]
+    [MethodImpl(CUE4Parse.Globals.MethodOptions)]
     public override void ReadArray<T>(T[] array)
         => InnerArchive.ReadArray(array);
 

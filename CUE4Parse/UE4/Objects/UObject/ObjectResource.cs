@@ -114,10 +114,10 @@ namespace CUE4Parse.UE4.Objects.UObject
         }
 
         #region Loading Methods
-        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        [MethodImpl(CUE4Parse.Globals.MethodOptions)]
         public T? Load<T>() where T : UExport => Owner?.FindObject(this)?.Value as T;
 
-        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        [MethodImpl(CUE4Parse.Globals.MethodOptions)]
         public bool TryLoad<T>([MaybeNullWhen(false)] out T export) where T : UExport
         {
             if (!TryLoad(out var genericExport) || genericExport is not T cast)
@@ -130,17 +130,17 @@ namespace CUE4Parse.UE4.Objects.UObject
             return true;
         }
 
-        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        [MethodImpl(CUE4Parse.Globals.MethodOptions)]
         public async Task<T> LoadAsync<T>() where T : UExport =>
             await LoadAsync() as T ?? throw new ParserException($"Loaded {ToString()} but it was of wrong type");
 
-        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        [MethodImpl(CUE4Parse.Globals.MethodOptions)]
         public async Task<T?> TryLoadAsync<T>() where T : UExport => await TryLoadAsync() as T;
 
-        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        [MethodImpl(CUE4Parse.Globals.MethodOptions)]
         public UExport? Load() => ResolvedObject?.Load();
 
-        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        [MethodImpl(CUE4Parse.Globals.MethodOptions)]
         public bool TryLoad([MaybeNullWhen(false)] out UExport export)
         {
             if (ResolvedObject != null)
@@ -150,7 +150,7 @@ namespace CUE4Parse.UE4.Objects.UObject
             return false;
         }
 
-        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        [MethodImpl(CUE4Parse.Globals.MethodOptions)]
         public async Task<UExport?> LoadAsync()
         {
             if (ResolvedObject != null)
@@ -158,7 +158,7 @@ namespace CUE4Parse.UE4.Objects.UObject
             throw new ParserException($"{ToString()} could not be loaded");
         }
 
-        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        [MethodImpl(CUE4Parse.Globals.MethodOptions)]
         public async Task<UExport?> TryLoadAsync()
         {
             if (ResolvedObject != null)

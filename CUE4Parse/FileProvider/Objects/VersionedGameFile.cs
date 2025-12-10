@@ -13,7 +13,7 @@ namespace CUE4Parse.FileProvider.Objects
             Versions = versions;
         }
 
-        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        [MethodImpl(CUE4Parse.Globals.MethodOptions)]
         public override FArchive CreateReader() => new FByteArchive(Path, Read(), Versions);
     }
 }

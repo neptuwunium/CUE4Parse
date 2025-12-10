@@ -132,7 +132,7 @@ namespace CUE4Parse.UE4.Readers
         public override void SetLength(long value) { throw new InvalidOperationException(); }
         public override void Write(byte[] buffer, int offset, int count) { throw new InvalidOperationException(); }
 
-        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        [MethodImpl(CUE4Parse.Globals.MethodOptions)]
         public void ReadArray<T>(T[] array, Func<T> getter)
         {
             // array is a reference type
@@ -142,7 +142,7 @@ namespace CUE4Parse.UE4.Readers
             }
         }
 
-        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        [MethodImpl(CUE4Parse.Globals.MethodOptions)]
         public T[] ReadArray<T>(int length, Func<T> getter)
         {
             if (length == 0) return [];
@@ -152,21 +152,21 @@ namespace CUE4Parse.UE4.Readers
             return result;
         }
 
-        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        [MethodImpl(CUE4Parse.Globals.MethodOptions)]
         public virtual T[] ReadArray<T>(Func<T> getter)
         {
             var length = Read<int>();
             return ReadArray(length, getter);
         }
 
-        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        [MethodImpl(CUE4Parse.Globals.MethodOptions)]
         public virtual T[] ReadArray<T>() where T : struct
         {
             var length = Read<int>();
             return length > 0 ? ReadArray<T>(length) : [];
         }
 
-        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        [MethodImpl(CUE4Parse.Globals.MethodOptions)]
         public T[] ReadBulkArray<T>(int elementSize, int elementCount, Func<T> getter)
         {
             var pos = Position;
@@ -190,7 +190,7 @@ namespace CUE4Parse.UE4.Readers
             return array;
         }
 
-        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        [MethodImpl(CUE4Parse.Globals.MethodOptions)]
         public T[] ReadBulkArray<T>(Func<T> getter)
         {
             var elementSize = Read<int>();
@@ -198,7 +198,7 @@ namespace CUE4Parse.UE4.Readers
             return ReadBulkArray(elementSize, elementCount, getter);
         }
 
-        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        [MethodImpl(CUE4Parse.Globals.MethodOptions)]
         public void SkipBulkArrayData()
         {
             var elementSize = Read<int>();
@@ -206,14 +206,14 @@ namespace CUE4Parse.UE4.Readers
             Position += elementSize * elementCount;
         }
 
-        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        [MethodImpl(CUE4Parse.Globals.MethodOptions)]
         public void SkipFixedArray(int size = -1)
         {
             var num = Read<int>();
             Position += num * size;
         }
 
-        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        [MethodImpl(CUE4Parse.Globals.MethodOptions)]
         public Dictionary<TKey, TValue> ReadMap<TKey, TValue>(int length, Func<(TKey, TValue)> getter) where TKey : notnull
         {
             var res = new Dictionary<TKey, TValue>(length);
@@ -226,7 +226,7 @@ namespace CUE4Parse.UE4.Readers
             return res;
         }
 
-        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        [MethodImpl(CUE4Parse.Globals.MethodOptions)]
         public Dictionary<TKey, TValue> ReadMap<TKey, TValue>(int length, Func<TKey> keyGetter, Func<TValue> valueGetter) where TKey : notnull
         {
             var res = new Dictionary<TKey, TValue>(length);
@@ -238,21 +238,21 @@ namespace CUE4Parse.UE4.Readers
             return res;
         }
 
-        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        [MethodImpl(CUE4Parse.Globals.MethodOptions)]
         public Dictionary<TKey, TValue> ReadMap<TKey, TValue>(Func<TKey> keyGetter, Func<TValue> valueGetter) where TKey : notnull
         {
             var length = Read<int>();
             return ReadMap(length, keyGetter, valueGetter);
         }
 
-        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        [MethodImpl(CUE4Parse.Globals.MethodOptions)]
         public Dictionary<TKey, TValue> ReadMap<TKey, TValue>(Func<(TKey, TValue)> getter) where TKey : notnull
         {
             var length = Read<int>();
             return ReadMap(length, getter);
         }
 
-        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        [MethodImpl(CUE4Parse.Globals.MethodOptions)]
         public bool ReadBoolean()
         {
             var i = Read<int>();
@@ -264,7 +264,7 @@ namespace CUE4Parse.UE4.Readers
             };
         }
 
-        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        [MethodImpl(CUE4Parse.Globals.MethodOptions)]
         public bool ReadFlag()
         {
             var i = Read<byte>();
@@ -302,7 +302,7 @@ namespace CUE4Parse.UE4.Readers
             }
         }
 
-        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        [MethodImpl(CUE4Parse.Globals.MethodOptions)]
         public int Read7BitEncodedInt()
         {
             int count = 0, shift = 0;
@@ -319,7 +319,7 @@ namespace CUE4Parse.UE4.Readers
             return count;
         }
 
-        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        [MethodImpl(CUE4Parse.Globals.MethodOptions)]
         public virtual string ReadString()
         {
             var length = Read7BitEncodedInt();
@@ -334,7 +334,7 @@ namespace CUE4Parse.UE4.Readers
             }
         }
 
-        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        [MethodImpl(CUE4Parse.Globals.MethodOptions)]
         public void SkipFString()
         {
             var length = Read<int>();
@@ -583,7 +583,7 @@ namespace CUE4Parse.UE4.Readers
             }
         }
 
-        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        [MethodImpl(CUE4Parse.Globals.MethodOptions)]
         private static ulong BYTESWAP_ORDER64(ulong value)
         {
             value = ((value << 8) & 0xFF00FF00FF00FF00UL) | ((value >> 8) & 0x00FF00FF00FF00FFUL);

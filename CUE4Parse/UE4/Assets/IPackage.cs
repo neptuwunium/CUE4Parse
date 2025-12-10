@@ -30,36 +30,36 @@ public interface IPackage
     public int GetExportIndex(string name, StringComparison comparisonType = StringComparison.Ordinal);
     public ResolvedObject? ResolvePackageIndex(FPackageIndex? index);
 
-    [MethodImpl(MethodImplOptions.AggressiveInlining)]
+    [MethodImpl(CUE4Parse.Globals.MethodOptions)]
     public UObject? GetExportOrNull(string name, StringComparison comparisonType = StringComparison.Ordinal)
         => GetExport(GetExportIndex(name, comparisonType));
 
-    [MethodImpl(MethodImplOptions.AggressiveInlining)]
+    [MethodImpl(CUE4Parse.Globals.MethodOptions)]
     public T? GetExportOrNull<T>(string name, StringComparison comparisonType = StringComparison.Ordinal) where T : UObject
         => GetExportOrNull(name, comparisonType) as T;
 
-    [MethodImpl(MethodImplOptions.AggressiveInlining)]
+    [MethodImpl(CUE4Parse.Globals.MethodOptions)]
     public UObject GetExport(string name, StringComparison comparisonType = StringComparison.Ordinal)
         => GetExportOrNull(name, comparisonType) ??
            throw new NullReferenceException($"Package '{Name}' does not have an export with the name '{name}'");
 
-    [MethodImpl(MethodImplOptions.AggressiveInlining)]
+    [MethodImpl(CUE4Parse.Globals.MethodOptions)]
     public T GetExport<T>(string name, StringComparison comparisonType = StringComparison.Ordinal) where T : UObject
         => GetExportOrNull<T>(name, comparisonType) ??
            throw new NullReferenceException($"Package '{Name}' does not have an export with the name '{name} and type {typeof(T).Name}'");
 
-    [MethodImpl(MethodImplOptions.AggressiveInlining)]
+    [MethodImpl(CUE4Parse.Globals.MethodOptions)]
     public Lazy<UObject>? FindObject(FPackageIndex? index) => ResolvePackageIndex(index)?.Object;
 
-    [MethodImpl(MethodImplOptions.AggressiveInlining)]
+    [MethodImpl(CUE4Parse.Globals.MethodOptions)]
     public Lazy<T>? FindObject<T>(FPackageIndex? index) where T : UObject => FindObject(index) as Lazy<T>;
 
-    [MethodImpl(MethodImplOptions.AggressiveInlining)]
+    [MethodImpl(CUE4Parse.Globals.MethodOptions)]
     public UObject? GetExport(int index) => index >= 0 && index < ExportsLazy.Length ? ExportsLazy[index].Value : null;
 
-    [MethodImpl(MethodImplOptions.AggressiveInlining)]
+    [MethodImpl(CUE4Parse.Globals.MethodOptions)]
     public IEnumerable<UObject> GetExports(int start, int count) => ExportsLazy.Skip(start).Take(count).Select(export => export.Value);
 
-    [MethodImpl(MethodImplOptions.AggressiveInlining)]
+    [MethodImpl(CUE4Parse.Globals.MethodOptions)]
     public IEnumerable<UObject> GetExports() => ExportsLazy.Select(export => export.Value);
 }

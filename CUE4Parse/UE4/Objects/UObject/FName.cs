@@ -23,7 +23,7 @@ namespace CUE4Parse.UE4.Objects.UObject
         public string Text => Number == 0 ? PlainText : $"{PlainText}_{Number - 1}";
         public string PlainText
         {
-            [MethodImpl(MethodImplOptions.AggressiveInlining)]
+            [MethodImpl(CUE4Parse.Globals.MethodOptions)]
             get => _name.Name ?? "None";
         }
         public bool IsNone => Text == "None";
@@ -50,10 +50,10 @@ namespace CUE4Parse.UE4.Objects.UObject
 
         public FName(FMappedName mappedName, FNameEntrySerialized[] nameMap, FNameComparisonMethod compare = FNameComparisonMethod.Index) : this(nameMap, (int) mappedName.NameIndex, (int) mappedName.ExtraIndex, compare) { }
 
-        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        [MethodImpl(CUE4Parse.Globals.MethodOptions)]
         public static implicit operator FName(string s) => new(s);
 
-        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        [MethodImpl(CUE4Parse.Globals.MethodOptions)]
         public static bool operator ==(FName a, FName b) => a.ComparisonMethod switch
         {
             FNameComparisonMethod.Index => a.Index == b.Index && a.Number == b.Number,
@@ -61,19 +61,19 @@ namespace CUE4Parse.UE4.Objects.UObject
             _ => throw new ArgumentOutOfRangeException()
         };
 
-        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        [MethodImpl(CUE4Parse.Globals.MethodOptions)]
         public static bool operator !=(FName a, FName b) => !(a == b);
 
-        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        [MethodImpl(CUE4Parse.Globals.MethodOptions)]
         public static bool operator ==(FName a, int b) => a.Index == b;
 
-        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        [MethodImpl(CUE4Parse.Globals.MethodOptions)]
         public static bool operator !=(FName a, int b) => a.Index != b;
 
-        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        [MethodImpl(CUE4Parse.Globals.MethodOptions)]
         public static bool operator ==(FName a, uint b) => a.Index == b;
 
-        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        [MethodImpl(CUE4Parse.Globals.MethodOptions)]
         public static bool operator !=(FName a, uint b) => a.Index != b;
 
         public override bool Equals(object? obj) => obj is FName other && this == other;

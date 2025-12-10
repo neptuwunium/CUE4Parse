@@ -391,9 +391,9 @@ namespace CUE4Parse.UE4.Pak
             Files = files;
         }
 
-        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        [MethodImpl(CUE4Parse.Globals.MethodOptions)]
         protected override byte[] ReadAndDecrypt(int length) => ReadAndDecrypt(length, Ar, IsEncrypted);
-        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        [MethodImpl(CUE4Parse.Globals.MethodOptions)]
         protected override byte[] ReadAndDecryptIndex(int length) => ReadAndDecryptIndex(length, Ar, IsEncrypted);
 
         public override byte[] MountPointCheckBytes()

@@ -310,7 +310,7 @@ namespace CUE4Parse.UE4.Assets
             IsFullyLoaded = true;
         }
 
-        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        [MethodImpl(CUE4Parse.Globals.MethodOptions)]
         public FName CreateFNameFromMappedName(FMappedName mappedName) =>
             new(mappedName, mappedName.IsGlobal ? _globalData.GlobalNameMap : NameMap);
 

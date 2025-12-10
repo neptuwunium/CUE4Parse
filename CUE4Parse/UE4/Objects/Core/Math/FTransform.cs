@@ -102,19 +102,19 @@ namespace CUE4Parse.UE4.Objects.Core.Math
             Rotation.Normalize();
         }
 
-        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        [MethodImpl(CUE4Parse.Globals.MethodOptions)]
         public void SetRotation(FQuat rotation) => Rotation = rotation;
 
-        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        [MethodImpl(CUE4Parse.Globals.MethodOptions)]
         public void SetLocation(FVector origin) => Translation = origin;
 
-        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        [MethodImpl(CUE4Parse.Globals.MethodOptions)]
         public void SetScale3D(FVector scale) => Scale3D = scale;
 
-        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        [MethodImpl(CUE4Parse.Globals.MethodOptions)]
         public FRotator Rotator() => Rotation.Rotator();
 
-        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        [MethodImpl(CUE4Parse.Globals.MethodOptions)]
         public float GetDeterminant() => Scale3D.X * Scale3D.Y * Scale3D.Z;
 
         public bool Equals(FTransform other, float tolerance = UnrealMath.KindaSmallNumber) =>
@@ -128,44 +128,44 @@ namespace CUE4Parse.UE4.Objects.Core.Math
             scale3D.X < 0 || scale3D.Y < 0 || scale3D.Z < 0 ||
             otherScale3D.X < 0 || otherScale3D.Y < 0 || otherScale3D.Z < 0;
 
-        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        [MethodImpl(CUE4Parse.Globals.MethodOptions)]
         public void ScaleTranslation(FVector scale3D)
         {
             Translation *= scale3D;
         }
 
-        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        [MethodImpl(CUE4Parse.Globals.MethodOptions)]
         public void ScaleTranslation(float scale)
         {
             Translation *= scale;
         }
 
-        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        [MethodImpl(CUE4Parse.Globals.MethodOptions)]
         public void RemoveScaling(float tolerance = UnrealMath.SmallNumber)
         {
             Scale3D = new FVector(1.0f, 1.0f, 1.0f);
             Rotation.Normalize();
         }
 
-        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        [MethodImpl(CUE4Parse.Globals.MethodOptions)]
         public float GetMaximumAxisScale() => Scale3D.AbsMax();
 
-        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        [MethodImpl(CUE4Parse.Globals.MethodOptions)]
         public float GetMinimumAxisScale() => Scale3D.AbsMin();
 
-        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        [MethodImpl(CUE4Parse.Globals.MethodOptions)]
         public void CopyTranslation(ref FTransform other)
         {
             Translation = other.Translation;
         }
 
-        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        [MethodImpl(CUE4Parse.Globals.MethodOptions)]
         public void CopyRotation(ref FTransform other)
         {
             Rotation = other.Rotation;
         }
 
-        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        [MethodImpl(CUE4Parse.Globals.MethodOptions)]
         public void CopyScale3D(ref FTransform other)
         {
             Scale3D = other.Scale3D;
@@ -259,7 +259,7 @@ namespace CUE4Parse.UE4.Objects.Core.Math
         /**
 	     * Convert this Transform to a transformation matrix with scaling.
 	     */
-        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        [MethodImpl(CUE4Parse.Globals.MethodOptions)]
         public FMatrix ToMatrixWithScale()
         {
             var outMatrix = new FMatrix();
@@ -315,7 +315,7 @@ namespace CUE4Parse.UE4.Objects.Core.Math
         // anymore because you should be instead of showing gigantic infinite mesh
         // also returning BIG_NUMBER causes sequential NaN issues by multiplying
         // so we hardcode as 0
-        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        [MethodImpl(CUE4Parse.Globals.MethodOptions)]
         public static FVector GetSafeScaleReciprocal(FVector scale, float tolerance = UnrealMath.SmallNumber)
         {
             var safeReciprocalScale = new FVector();
@@ -381,31 +381,31 @@ namespace CUE4Parse.UE4.Objects.Core.Math
             ConstructTransformFromMatrixWithDesiredScale(a.ToMatrixWithScale(), b.ToMatrixWithScale(), a.Scale3D * b.Scale3D, ref outTransform);
         }
 
-        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        [MethodImpl(CUE4Parse.Globals.MethodOptions)]
         public FVector TransformPosition(FVector v) => Rotation.RotateVector(Scale3D * v) + Translation;
 
-        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        [MethodImpl(CUE4Parse.Globals.MethodOptions)]
         public FVector TransformPositionNoScale(FVector v) => Rotation.RotateVector(v) + Translation;
 
-        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        [MethodImpl(CUE4Parse.Globals.MethodOptions)]
         public FVector InverseTransformPosition(FVector v) => Rotation.UnrotateVector(v - Translation) * GetSafeScaleReciprocal(Scale3D);
 
-        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        [MethodImpl(CUE4Parse.Globals.MethodOptions)]
         public FVector InverseTransformPositionNoScale(FVector v) => Rotation.UnrotateVector(v - Translation);
 
-        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        [MethodImpl(CUE4Parse.Globals.MethodOptions)]
         public FVector TransformVector(FVector v) => Rotation.RotateVector(Scale3D * v);
 
-        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        [MethodImpl(CUE4Parse.Globals.MethodOptions)]
         public FVector TransformVectorNoScale(FVector v) => Rotation.RotateVector(v);
 
-        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        [MethodImpl(CUE4Parse.Globals.MethodOptions)]
         public FQuat TransformRotation(FQuat q) => Rotation * q;
 
-        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        [MethodImpl(CUE4Parse.Globals.MethodOptions)]
         public FQuat InverseTransformRotation(FQuat q) => Rotation.Inverse() * q;
 
-        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        [MethodImpl(CUE4Parse.Globals.MethodOptions)]
         public FTransform GetScaled(float scale)
         {
             var a = this;
@@ -413,7 +413,7 @@ namespace CUE4Parse.UE4.Objects.Core.Math
             return a;
         }
 
-        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        [MethodImpl(CUE4Parse.Globals.MethodOptions)]
         public FTransform GetScaled(FVector scale)
         {
             var a = this;
@@ -421,7 +421,7 @@ namespace CUE4Parse.UE4.Objects.Core.Math
             return a;
         }
 
-        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        [MethodImpl(CUE4Parse.Globals.MethodOptions)]
         public FVector GetScaledAxis(EAxis axis) => axis switch
         {
             EAxis.X => TransformVector(new FVector(1.0f, 0.0f, 0.0f)),
@@ -429,7 +429,7 @@ namespace CUE4Parse.UE4.Objects.Core.Math
             _ => TransformVector(new FVector(0.0f, 0.0f, 1.0f))
         };
 
-        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        [MethodImpl(CUE4Parse.Globals.MethodOptions)]
         public FVector GetUnitAxis(EAxis axis) => axis switch
         {
             EAxis.X => TransformVectorNoScale(new FVector(1.0f, 0.0f, 0.0f)),

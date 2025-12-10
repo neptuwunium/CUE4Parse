@@ -181,7 +181,7 @@ namespace CUE4Parse.MappingsProvider
             }
         }
 
-        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        [MethodImpl(CUE4Parse.Globals.MethodOptions)]
         private void ApplyEnum(FProperty prop, FPackageIndex enumIndex)
         {
             var enumObj = enumIndex.ResolvedObject;

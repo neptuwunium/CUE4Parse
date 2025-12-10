@@ -10,19 +10,19 @@ namespace CUE4Parse.UE4.Objects.Core.Math
         public const float SmallNumber = 1e-8f;
         public const float KindaSmallNumber = 1e-4f;
 
-        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        [MethodImpl(CUE4Parse.Globals.MethodOptions)]
         public static float Min3(float a, float b, float c) => MathF.Min(a, MathF.Min(b, c));
 
-        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        [MethodImpl(CUE4Parse.Globals.MethodOptions)]
         public static float Max3(float a, float b, float c) => MathF.Max(a, MathF.Max(b, c));
 
-        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        [MethodImpl(CUE4Parse.Globals.MethodOptions)]
         public static bool IsNearlyEqual(float a, float b, float err = SmallNumber) => MathF.Abs(a - b) <= err;
 
-        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        [MethodImpl(CUE4Parse.Globals.MethodOptions)]
         public static bool IsNearlyZero(float x, float tolerance = KindaSmallNumber) => MathF.Abs(x) <= tolerance;
 
-        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        [MethodImpl(CUE4Parse.Globals.MethodOptions)]
         public static bool IsNearlyZero(double x, double tolerance = KindaSmallNumber) => System.Math.Abs(x) <= tolerance;
 
         public static float Fmod(float x, float y)
@@ -42,7 +42,7 @@ namespace CUE4Parse.UE4.Objects.Core.Math
             return res.Clamp(-absY, absY);
         }
 
-        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        [MethodImpl(CUE4Parse.Globals.MethodOptions)]
         public static int CountBits(ulong bits)
         {
             // https://en.wikipedia.org/wiki/Hamming_weight
@@ -52,7 +52,7 @@ namespace CUE4Parse.UE4.Objects.Core.Math
             return (int)((bits * 0x0101010101010101) >> 56);
         }
 
-        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        [MethodImpl(CUE4Parse.Globals.MethodOptions)]
         public static T Lerp<T>(T a, T b, float alpha) where T : 
             IMultiplyOperators<T,float,T>, IMultiplyOperators<T,T,T>, 
             ISubtractionOperators<T,T,T>, IAdditionOperators<T,T,T> // welp

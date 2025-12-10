@@ -41,13 +41,13 @@ namespace CUE4Parse.UE4.IO.Objects
 
         public IoStoreReader IoStoreReader
         {
-            [MethodImpl(MethodImplOptions.AggressiveInlining)]
+            [MethodImpl(CUE4Parse.Globals.MethodOptions)]
             get => (IoStoreReader) Vfs;
         }
 
         public override byte[] Read() => Vfs.Extract(this);
 
-        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        [MethodImpl(CUE4Parse.Globals.MethodOptions)]
         public override FArchive CreateReader() => new FByteArchive(Path, Read(), Vfs.Versions);
     }
 }

@@ -19,7 +19,7 @@ namespace CUE4Parse.UE4.Readers
             Length = _data.Length;
         }
 
-        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        [MethodImpl(CUE4Parse.Globals.MethodOptions)]
         public override int Read(byte[] buffer, int offset, int count)
         {
             int n = (int) (Length - Position);
@@ -64,7 +64,7 @@ namespace CUE4Parse.UE4.Readers
             return Task.FromResult(ReadAt(position, buffer, offset, count));
         }
 
-        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        [MethodImpl(CUE4Parse.Globals.MethodOptions)]
         public override long Seek(long offset, SeekOrigin origin)
         {
             Position = origin switch
@@ -81,7 +81,7 @@ namespace CUE4Parse.UE4.Readers
         public override long Length { get; }
         public override long Position { get; set; }
         public override string Name { get; }
-        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        [MethodImpl(CUE4Parse.Globals.MethodOptions)]
         public override T Read<T>()
         {
             var size = Unsafe.SizeOf<T>();
@@ -90,14 +90,14 @@ namespace CUE4Parse.UE4.Readers
             return result;
         }
 
-        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        [MethodImpl(CUE4Parse.Globals.MethodOptions)]
         public override unsafe void Serialize(byte* ptr, int length)
         {
             Unsafe.CopyBlockUnaligned(ref ptr[0], ref _data[Position], (uint) length);
             Position += length;
         }
 
-        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        [MethodImpl(CUE4Parse.Globals.MethodOptions)]
         public override T[] ReadArray<T>(int length)
         {
             var size = length * Unsafe.SizeOf<T>();
@@ -108,7 +108,7 @@ namespace CUE4Parse.UE4.Readers
             return result;
         }
 
-        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        [MethodImpl(CUE4Parse.Globals.MethodOptions)]
         public override void ReadArray<T>(T[] array)
         {
             if (array.Length == 0) return;

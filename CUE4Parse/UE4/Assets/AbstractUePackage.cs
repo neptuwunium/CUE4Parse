@@ -76,7 +76,7 @@ public abstract class AbstractUePackage : UObject, IPackage
         return obj;
     }
 
-    [MethodImpl(MethodImplOptions.AggressiveInlining)]
+    [MethodImpl(CUE4Parse.Globals.MethodOptions)]
     protected void DeserializeObject(UObject obj, FAssetArchive Ar, long serialSize)
     {
         var serialOffset = Ar.Position;
@@ -117,10 +117,10 @@ public abstract class AbstractUePackage : UObject, IPackage
 
     public override bool IsNameStableForNetworking() => true;   // For now, assume all packages have stable net names
 
-    [MethodImpl(MethodImplOptions.AggressiveInlining)]
+    [MethodImpl(CUE4Parse.Globals.MethodOptions)]
     public bool HasFlags(EPackageFlags flags) => Summary.PackageFlags.HasFlag(flags);
 
-    [MethodImpl(MethodImplOptions.AggressiveInlining)]
+    [MethodImpl(CUE4Parse.Globals.MethodOptions)]
     public abstract int GetExportIndex(string name, StringComparison comparisonType = StringComparison.Ordinal);
 
     public abstract ResolvedObject? ResolvePackageIndex(FPackageIndex? index);
@@ -186,13 +186,13 @@ public abstract class ResolvedObject : IObject
         resultString.Append(Name);
     }
 
-    [MethodImpl(MethodImplOptions.AggressiveInlining)]
+    [MethodImpl(CUE4Parse.Globals.MethodOptions)]
     public T? Load<T>() where T : UObject => Object?.Value as T;
 
-    [MethodImpl(MethodImplOptions.AggressiveInlining)]
+    [MethodImpl(CUE4Parse.Globals.MethodOptions)]
     public UObject? Load() => Object?.Value;
 
-    [MethodImpl(MethodImplOptions.AggressiveInlining)]
+    [MethodImpl(CUE4Parse.Globals.MethodOptions)]
     public bool TryLoad(out UObject export)
     {
         try
@@ -207,10 +207,10 @@ public abstract class ResolvedObject : IObject
         }
     }
 
-    [MethodImpl(MethodImplOptions.AggressiveInlining)]
+    [MethodImpl(CUE4Parse.Globals.MethodOptions)]
     public async Task<UObject?> LoadAsync() => await Task.FromResult(Object?.Value);
 
-    [MethodImpl(MethodImplOptions.AggressiveInlining)]
+    [MethodImpl(CUE4Parse.Globals.MethodOptions)]
     public async Task<UObject?> TryLoadAsync()
     {
         try
@@ -223,14 +223,14 @@ public abstract class ResolvedObject : IObject
         }
     }
 
-    [MethodImpl(MethodImplOptions.AggressiveInlining)]
+    [MethodImpl(CUE4Parse.Globals.MethodOptions)]
     public bool Equals(ResolvedObject? other)
         => other != null && ExportIndex == other.ExportIndex && Name == other.Name && Package == other.Package;
 
-    [MethodImpl(MethodImplOptions.AggressiveInlining)]
+    [MethodImpl(CUE4Parse.Globals.MethodOptions)]
     public override bool Equals(object? obj) => obj is ResolvedObject other && Equals(other);
 
-    [MethodImpl(MethodImplOptions.AggressiveInlining)]
+    [MethodImpl(CUE4Parse.Globals.MethodOptions)]
     public override int GetHashCode()
     {
         return HashCode.Combine(ExportIndex, Name.GetHashCode(), Package.GetHashCode());
