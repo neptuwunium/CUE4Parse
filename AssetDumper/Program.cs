@@ -82,12 +82,8 @@ public static class Program {
 
 		OodleHelper.LoadOodleDll(Environment.CurrentDirectory);
 		switch (Environment.OSVersion.Platform) {
-			case PlatformID.MacOSX:
-				ZlibHelper.Initialize("libz-ng.dylib");
-				break;
-			case PlatformID.Unix:
-				ZlibHelper.Initialize("libz-ng.so");
-				break;
+			case PlatformID.MacOSX: ZlibHelper.Initialize("libz-ng.dylib"); break;
+			case PlatformID.Unix: ZlibHelper.Initialize("libz-ng.so"); break;
 			default:
 				ZlibHelper.DownloadDll();
 				ZlibHelper.Initialize("libz-ng.dll");
@@ -185,7 +181,7 @@ public static class Program {
 						if (!valid) {
 							continue;
 						}
-						
+
 						Log.Information("Validated Key {Guid}={Key}", reader.EncryptionKeyGuid, key);
 						foundKeys[reader.EncryptionKeyGuid] = key;
 					}
@@ -245,6 +241,8 @@ public static class Program {
 		var wwiseRename = new Dictionary<string, string>();
 		var wemList = new List<string>();
 		var bnkList = new List<string>();
+		flags.WwiseEventRoot ??= flags.WwiseMediaRoot;
+		flags.WwiseMediaRoot ??= flags.WwiseEventRoot;
 
 		var filesEnumerable = Provider.Files.Where(x => x.Value is VfsEntry).Where(x => x.Value.Extension is not ("ubulk" or "uexp" or "uptnl")).DistinctBy(x => x.Key);
 		if (flags.Filters.Count > 0) {
@@ -283,7 +281,7 @@ public static class Program {
 					if (!Provider.Files.TryGetValue(gameFile.PathWithoutExtension + "." + subType, out var subFile)) {
 						continue;
 					}
-					
+
 					var rawPath = Path.Combine(target, "Raw", Path.ChangeExtension(normalizedGamePath, subType));
 					rawPath.EnsureDirectoryExists();
 					var data = await subFile.ReadAsync();
@@ -370,16 +368,25 @@ public static class Program {
 						if (Provider.TrySaveAsset(path, out var data)) {
 							targetGameFile.EnsureDirectoryExists();
 							if (ext == "wem" && flags.ConvertWwiseSounds) {
-								unsafe {
-									fixed (byte* dataPin = &data[0]) {
-										using var memoryStream = new UnmanagedMemoryStream(dataPin, data.Length);
-										using var codec = WemHelper.GetDecoder(memoryStream);
-										var newExt = codec.Format.ToString("G").ToLower();
-										targetGameFile = Path.ChangeExtension(targetGameFile, newExt);
-										normalizedGamePath = Path.ChangeExtension(normalizedGamePath, newExt);
-										using var stream = new FileStream(targetGameFile, FileMode.Create, FileAccess.ReadWrite);
-										codec.Decode(stream);
+								try {
+									unsafe {
+										fixed (byte* dataPin = &data[0]) {
+											using var memoryStream = new UnmanagedMemoryStream(dataPin, data.Length);
+											using var codec = WemHelper.GetDecoder(memoryStream);
+											var newExt = codec.Format.ToString("G").ToLower();
+											targetGameFile = Path.ChangeExtension(targetGameFile, newExt);
+											normalizedGamePath = Path.ChangeExtension(normalizedGamePath, newExt);
+											using var stream = new FileStream(targetGameFile, FileMode.Create, FileAccess.ReadWrite);
+											codec.Decode(stream);
+										}
 									}
+								} catch (Exception e) {
+									Log.Error(e, "Failed converting wem");
+									File.Delete(targetGameFile);
+									targetGameFile = Path.ChangeExtension(targetGameFile, "wem");
+									normalizedGamePath = Path.ChangeExtension(normalizedGamePath, "wem");
+									await using var stream = new FileStream(targetGameFile, FileMode.Create, FileAccess.ReadWrite);
+									await stream.WriteAsync(data, CancellationToken.None);
 								}
 							} else {
 								await using var stream = new FileStream(targetGameFile, FileMode.Create, FileAccess.ReadWrite);
@@ -462,10 +469,16 @@ public static class Program {
 
 							for (var exportIndex = 0; exportIndex < exports.Length; exportIndex++) {
 								var export = exports[exportIndex];
+								var eventPath = ExporterBase.GetExportSavePath(export);
 								var targetPath = Path.Combine(target, "Content", ExporterBase.GetExportSavePath(export));
 
 								if (export is UAkAudioEvent akAudioEvent) {
 									wwiseNames.Add(export.Name);
+
+									var eventRoot = string.Empty;
+									if (!string.IsNullOrEmpty(flags.WwiseEventRoot) && eventPath.StartsWith(flags.WwiseEventRoot)) {
+										eventRoot = eventPath[flags.WwiseEventRoot.Length..];
+									}
 
 									if (flags.RenameWwiseAudio || flags.TrackWwiseEvents) {
 										if (akAudioEvent.EventCookedData is { } eventData) {
@@ -477,7 +490,7 @@ public static class Program {
 												if (_entry is not { } entry) {
 													continue;
 												}
-												
+
 												if (flags.TrackWwiseEvents) {
 													var allDebug = entry.Media.Select(x => x.DebugName.PlainText)
 																		.Concat(entry.ExternalSources.Select(x => x.DebugName.PlainText))
@@ -494,9 +507,18 @@ public static class Program {
 												if (!flags.RenameWwiseAudio) {
 													continue;
 												}
-													
+
+												var mediaEventRoot = eventRoot;
+												if (!string.IsNullOrEmpty(mediaEventRoot)) {
+													if (entry.Media.Length == 1) {
+														mediaEventRoot = Path.GetDirectoryName(mediaEventRoot);
+													}
+
+													mediaEventRoot += "/";
+												}
+
 												foreach (var media in entry.Media) {
-													wwiseRename[media.MediaPathName.PlainText] = locale.LanguageName.PlainText + "/" + media.DebugName.PlainText.Replace('\\', '/').Replace(':', '_').Replace("..", "_", StringComparison.Ordinal);
+													wwiseRename[flags.WwiseMediaRoot + media.MediaPathName.PlainText] = locale.LanguageName.PlainText + "/" + mediaEventRoot + media.DebugName.PlainText.Replace('\\', '/').Replace(':', '_').Replace("..", "_", StringComparison.Ordinal);
 												}
 											}
 										}
@@ -609,7 +631,7 @@ public static class Program {
 													break;
 												}
 
-												var targetBpPath = Path.Combine(target, "Blueprint", normalizedGamePath + $".json");
+												var targetBpPath = Path.Combine(target, "Blueprint", normalizedGamePath + ".json");
 												targetBpPath.EnsureDirectoryExists();
 												var merged = BlueprintConstructor.GetMergedStruct(export);
 												await File.WriteAllTextAsync(targetBpPath, JsonConvert.SerializeObject(merged, Formatting.Indented, new JsonSerializerSettings { StringEscapeHandling = StringEscapeHandling.EscapeNonAscii, Converters = { new StringEnumConverter() } }));
@@ -663,13 +685,19 @@ public static class Program {
 						using var rented = bnk.RentSound(audioId, out var size);
 
 						if (flags.ConvertWwiseSounds) {
-							unsafe {
-								using var pinned = rented.Memory.Pin();
-								using var memoryStream = new UnmanagedMemoryStream((byte*) pinned.Pointer, Math.Min(size, rented.Memory.Length));
-								using var codec = WemHelper.GetDecoder(memoryStream);
-								var newExt = codec.Format.ToString("G").ToLower();
-								using var stream = new FileStream(Path.ChangeExtension(mediaName, newExt), FileMode.Create, FileAccess.ReadWrite);
-								codec.Decode(stream);
+							try {
+								unsafe {
+									using var pinned = rented.Memory.Pin();
+									using var memoryStream = new UnmanagedMemoryStream((byte*) pinned.Pointer, Math.Min(size, rented.Memory.Length));
+									using var codec = WemHelper.GetDecoder(memoryStream);
+									var newExt = codec.Format.ToString("G").ToLower();
+									using var stream = new FileStream(Path.ChangeExtension(mediaName, newExt), FileMode.Create, FileAccess.ReadWrite);
+									codec.Decode(stream);
+								}
+							} catch(Exception e) {
+								Log.Error(e, "Failed converting wem");
+								await using var output = new FileStream(Path.ChangeExtension(mediaName, "wem"), FileMode.Create, FileAccess.ReadWrite);
+								output.Write(rented.Memory.Span[..size]);
 							}
 						} else {
 							await using var output = new FileStream(Path.ChangeExtension(mediaName, "wem"), FileMode.Create, FileAccess.ReadWrite);

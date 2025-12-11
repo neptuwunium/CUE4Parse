@@ -29,6 +29,15 @@ public record Flags : CommandLineFlags {
     [Flag("wwise-no-revorb", Help = "Do not Revorb Wwise WEMs")]
     public bool NoRevorb { get; set; }
 
+    [Flag("wwise-convert", OldAliases = ["convert-wwise"], Help = "Convert Wwise to usable formats")]
+    public bool ConvertWwiseSounds { get; set; }
+
+    [Flag("wwise-event-root", Help = "Wwise folder path root to preserve paths")]
+    public string? WwiseEventRoot { get; set; }
+
+    [Flag("wwise-media-root", Help = "Wwise folder path root to preserve paths")]
+    public string? WwiseMediaRoot { get; set; }
+
     [Flag("no-problematic", Help = "Suppress Problematic classes")]
     public bool SkipProblematicClasses { get; set; }
 
@@ -49,9 +58,6 @@ public record Flags : CommandLineFlags {
 
     [Flag("no-sounds", Help = "Suppress Sound conversion")]
     public bool NoSounds { get; set; }
-
-    [Flag("convert-wwise", Help = "Convert Wwise to usable formats")]
-    public bool ConvertWwiseSounds { get; set; }
 
     [Flag("no-meshes", Help = "Suppress Mesh conversion")]
     public bool NoMeshes { get; set; }
