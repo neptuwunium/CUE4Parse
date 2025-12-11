@@ -24,8 +24,8 @@ namespace CUE4Parse_Conversion.Animations
             return new CAnimSet(skeleton);
         }
 
-        public static CAnimSet ConvertAnims(this USkeleton skeleton, UAnimComposite? animComposite)
-        {
+        public static CAnimSet ConvertAnims(this USkeleton skeleton, UAnimComposite? animComposite, HashSet<string>? seen = null) {
+            seen ??= [];
             var animSet = skeleton.ConvertToAnimSet();
             if (animComposite == null) return animSet;
 
@@ -34,7 +34,7 @@ namespace CUE4Parse_Conversion.Animations
                 if (!segment.AnimReference.TryLoad(out UAnimSequence animSequence))
                     continue;
 
-                var seq = animSequence.ConvertSequence(skeleton);
+                var seq = animSequence.ConvertSequence(skeleton, seen);
                 seq.StartPos = segment.StartPos;
                 seq.AnimEndTime = segment.AnimEndTime;
                 seq.LoopingCount = segment.LoopingCount;
@@ -45,8 +45,8 @@ namespace CUE4Parse_Conversion.Animations
             return animSet;
         }
 
-        public static CAnimSet ConvertAnims(this USkeleton skeleton, UAnimMontage? animMontage)
-        {
+        public static CAnimSet ConvertAnims(this USkeleton skeleton, UAnimMontage? animMontage, HashSet<string>? seen = null) {
+            seen ??= [];
             var animSet = skeleton.ConvertToAnimSet();
             if (animMontage == null) return animSet;
 
@@ -57,7 +57,7 @@ namespace CUE4Parse_Conversion.Animations
                     if (!segment.AnimReference.TryLoad(out UAnimSequence animSequence))
                         continue;
 
-                    var seq = animSequence.ConvertSequence(skeleton);
+                    var seq = animSequence.ConvertSequence(skeleton, seen);
                     seq.Name = slotAnimTrack.SlotName.Text;
                     seq.StartPos = segment.StartPos;
                     seq.AnimEndTime = segment.AnimEndTime;
@@ -102,8 +102,8 @@ namespace CUE4Parse_Conversion.Animations
             return animSet;
         }
 
-        public static CAnimSet ConvertAnims(this USkeleton skeleton, UAnimSequence? animSequence)
-        {
+        public static CAnimSet ConvertAnims(this USkeleton skeleton, UAnimSequence? animSequence, HashSet<string>? seen = null) {
+            seen ??= [];
             var animSet = skeleton.ConvertToAnimSet();
             if (animSequence == null) return animSet;
 
@@ -111,12 +111,12 @@ namespace CUE4Parse_Conversion.Animations
             //OriginalAnims.Add(animSequence);
 
             // Create CAnimSequence
-            animSet.Sequences.Add(animSequence.ConvertSequence(skeleton));
+            animSet.Sequences.Add(animSequence.ConvertSequence(skeleton, seen));
             animSet.TotalAnimTime = animSequence.SequenceLength;
             return animSet;
         }
 
-        private static CAnimSequence ConvertSequence(this UAnimSequence animSequence, USkeleton skeleton)
+        private static CAnimSequence ConvertSequence(this UAnimSequence animSequence, USkeleton skeleton, HashSet<string> seen)
         {
             var animSeq = new CAnimSequence(animSequence, skeleton);
 
@@ -226,14 +226,17 @@ namespace CUE4Parse_Conversion.Animations
             }
 
             // ok?
-            if (animSequence.IsValidAdditive()) animSeq = animSeq.ConvertAdditive(skeleton);
+            if (seen.Add(animSeq.OriginalSequence.GetFullName())) {
+                if (animSequence.IsValidAdditive()) animSeq = animSeq.ConvertAdditive(skeleton, seen);
+            }
+
             AdjustSequenceBySkeleton(skeleton.ReferenceSkeleton, animSeq.RetargetBasePose ?? skeleton.ReferenceSkeleton.FinalRefBonePose, animSeq);
             return animSeq;
         }
 
-        private static CAnimSequence ConvertAdditive(this CAnimSequence animSeq, USkeleton skeleton)
-            => animSeq.ConvertAdditive(animSeq.OriginalSequence.RefPoseSeq?.Load<UAnimSequence>(), skeleton);
-        public static CAnimSequence ConvertAdditive(this CAnimSequence animSeq, UAnimSequence? refPoseSeq, USkeleton skeleton)
+        private static CAnimSequence ConvertAdditive(this CAnimSequence animSeq, USkeleton skeleton, HashSet<string> seen)
+            => animSeq.ConvertAdditive(animSeq.OriginalSequence.RefPoseSeq?.Load<UAnimSequence>(), skeleton, seen);
+        public static CAnimSequence ConvertAdditive(this CAnimSequence animSeq, UAnimSequence? refPoseSeq, USkeleton skeleton, HashSet<string> seen)
         {
             var refFrameIndex = animSeq.OriginalSequence.RefFrameIndex;
             var refPoseType = animSeq.OriginalSequence.RefPoseType;
@@ -251,7 +254,7 @@ namespace CUE4Parse_Conversion.Animations
                 default:
                 {
                     var refPoseSkel = refPoseSeq?.Skeleton.Load<USkeleton>() ?? skeleton;
-                    refAnimSet = refPoseSkel.ConvertAnims(refPoseSeq);
+                    refAnimSet = refPoseSkel.ConvertAnims(refPoseSeq, seen);
 
                     referencePoses = refPoseType switch
                     {
