@@ -20,6 +20,9 @@ namespace CUE4Parse.UE4.Versions
                 _game = value;
                 InitOptions();
                 InitMapStructTypes();
+                if (!bExplicitVer) {
+                    _ver = _game.GetVersion();
+                }
             }
         }
 
