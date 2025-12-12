@@ -27,7 +27,8 @@ namespace CUE4Parse.UE4.Assets.Exports.Animation
             CurveTypeFlags = data.GetOrDefault<int>(nameof(CurveTypeFlags));
         }
     }
-
+    
+    [StructFallback]
     public class FFloatCurve : FAnimCurveBase
     {
         public FRichCurve FloatCurve;
@@ -39,7 +40,8 @@ namespace CUE4Parse.UE4.Assets.Exports.Animation
             FloatCurve = data.GetOrDefault<FRichCurve>(nameof(FloatCurve));
         }
     }
-
+    
+    [StructFallback]
     public struct FRawCurveTracks
     {
         public FFloatCurve[]? FloatCurves;

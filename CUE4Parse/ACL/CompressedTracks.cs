@@ -4,7 +4,7 @@ using static CUE4Parse.ACL.ACLNative;
 
 namespace CUE4Parse.ACL
 {
-    public class CompressedTracks
+    public sealed class CompressedTracks : IDisposable
     {
         public IntPtr Handle { get; private set; }
         private readonly int _bufferLength;
@@ -13,6 +13,7 @@ namespace CUE4Parse.ACL
         {
             _bufferLength = buffer.Length;
             Handle = nAllocate(_bufferLength);
+            GC.AddMemoryPressure(_bufferLength);
             Marshal.Copy(buffer, 0, Handle, buffer.Length);
             var error = IsValid(false);
             if (error != null)
@@ -31,11 +32,19 @@ namespace CUE4Parse.ACL
 
         ~CompressedTracks()
         {
-            if (_bufferLength >= 0 && Handle != IntPtr.Zero)
-            {
-                nDeallocate(Handle, _bufferLength);
-                Handle = IntPtr.Zero;
-            }
+            ReleaseUnmanagedResources();
+        }
+
+        private void ReleaseUnmanagedResources() {
+            if (Handle == nint.Zero) return;
+            
+            nDeallocate(Handle, _bufferLength);
+            GC.RemoveMemoryPressure(_bufferLength);
+        }
+
+        public void Dispose() {
+            ReleaseUnmanagedResources();
+            GC.SuppressFinalize(this);
         }
 
         public string? IsValid(bool checkHash)
