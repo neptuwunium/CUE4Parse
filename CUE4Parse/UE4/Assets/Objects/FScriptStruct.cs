@@ -163,6 +163,7 @@ public class FScriptStruct
             "Vector" => type == ReadType.ZERO ? new FVector() : new FVector(Ar),
             "Vector2D" => type == ReadType.ZERO ? new FVector2D() : new FVector2D(Ar),
             "Vector2f" => type == ReadType.ZERO ? new TIntVector2<float>() : Ar.Read<TIntVector2<float>>(),
+            "Vector2d" => type == ReadType.ZERO ? new TIntVector2<double>() : Ar.Read<TIntVector2<double>>(),
             "DeprecateSlateVector2D" => type == ReadType.ZERO ? new FVector2D() : Ar.Read<FVector2D>(),
             "Vector3f" => type == ReadType.ZERO ? new TIntVector3<float>() : Ar.Read<TIntVector3<float>>(),
             "Vector3d" => type == ReadType.ZERO ? new TIntVector3<double>() : Ar.Read<TIntVector3<double>>(),
