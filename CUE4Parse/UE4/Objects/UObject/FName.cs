@@ -5,11 +5,6 @@ using Newtonsoft.Json;
 
 namespace CUE4Parse.UE4.Objects.UObject
 {
-    public enum FNameComparisonMethod : byte
-    {
-        Text,
-        Index
-    }
 
     [JsonConverter(typeof(FNameConverter))]
     public readonly struct FName : IComparable<FName>
@@ -20,6 +15,8 @@ namespace CUE4Parse.UE4.Objects.UObject
         /** Number portion of the string/number pair (stored internally as 1 more than actual, so zero'd memory will be the default, no-instance case) */
         public readonly int Number;
 
+        public readonly ulong Hash;
+
         public string Text => Number == 0 ? PlainText : $"{PlainText}_{Number - 1}";
         public string PlainText
         {
@@ -28,38 +25,32 @@ namespace CUE4Parse.UE4.Objects.UObject
         }
         public bool IsNone => Text == "None";
 
-        public readonly FNameComparisonMethod ComparisonMethod;
 
-        public FName(string? name, int index = 0, int number = 0, FNameComparisonMethod compare = FNameComparisonMethod.Text)
+        public FName(string? name, int index = 0, int number = 0)
         {
             _name = new FNameEntrySerialized(name);
             Index = index;
             Number = number;
-            ComparisonMethod = compare;
+            Hash = _name.Hash;
         }
 
-        public FName(FNameEntrySerialized name, int index, int number, FNameComparisonMethod compare = FNameComparisonMethod.Index)
+        public FName(FNameEntrySerialized name, int index, int number)
         {
             _name = name;
             Index = index;
             Number = number;
-            ComparisonMethod = compare;
+            Hash = name.Hash;
         }
 
-        public FName(FNameEntrySerialized[] nameMap, int index, int number, FNameComparisonMethod compare = FNameComparisonMethod.Index) : this(nameMap[index], index, number, compare) { }
+        public FName(FNameEntrySerialized[] nameMap, int index, int number) : this(nameMap[index], index, number) { }
 
-        public FName(FMappedName mappedName, FNameEntrySerialized[] nameMap, FNameComparisonMethod compare = FNameComparisonMethod.Index) : this(nameMap, (int) mappedName.NameIndex, (int) mappedName.ExtraIndex, compare) { }
+        public FName(FMappedName mappedName, FNameEntrySerialized[] nameMap) : this(nameMap, (int) mappedName.NameIndex, (int) mappedName.ExtraIndex) { }
 
         [MethodImpl(CUE4Parse.Globals.MethodOptions)]
         public static implicit operator FName(string s) => new(s);
 
         [MethodImpl(CUE4Parse.Globals.MethodOptions)]
-        public static bool operator ==(FName a, FName b) => a.ComparisonMethod switch
-        {
-            FNameComparisonMethod.Index => a.Index == b.Index && a.Number == b.Number,
-            FNameComparisonMethod.Text => string.Equals(a.Text, b.Text, StringComparison.OrdinalIgnoreCase), // Case sensitive in editor, case insensitive in runtime
-            _ => throw new ArgumentOutOfRangeException()
-        };
+        public static bool operator ==(FName a, FName b) => a.Hash == b.Hash && a.Number == b.Number;
 
         [MethodImpl(CUE4Parse.Globals.MethodOptions)]
         public static bool operator !=(FName a, FName b) => !(a == b);
@@ -78,8 +69,8 @@ namespace CUE4Parse.UE4.Objects.UObject
 
         public override bool Equals(object? obj) => obj is FName other && this == other;
 
-        public override int GetHashCode() => ComparisonMethod == FNameComparisonMethod.Text ? StringComparer.OrdinalIgnoreCase.GetHashCode(Text.GetHashCode()) : HashCode.Combine(Index, Number);
-
+        public override int GetHashCode() => HashCode.Combine(Hash, Number);
+        
         public int CompareTo(FName other) => string.Compare(Text, other.Text, StringComparison.OrdinalIgnoreCase);
 
         public override string ToString() => Text;

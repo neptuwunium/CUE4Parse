@@ -7,6 +7,7 @@ using System.Runtime.InteropServices;
 using System.Text;
 using CUE4Parse.UE4.Readers;
 using CUE4Parse.UE4.Versions;
+using CUE4Parse.Utils;
 using Newtonsoft.Json;
 
 namespace CUE4Parse.UE4.Objects.UObject
@@ -14,6 +15,7 @@ namespace CUE4Parse.UE4.Objects.UObject
     public readonly struct FNameEntrySerialized
     {
         public readonly string? Name;
+        public readonly ulong Hash;
         private static Dictionary<string, string>? _pubgNameMap;
 
 #if NAME_HASHES
@@ -48,11 +50,14 @@ namespace CUE4Parse.UE4.Objects.UObject
                 Ar.Position += 4;
 #endif
             }
+
+            Hash = CityHash.CityHash64(Name);
         }
 
         public FNameEntrySerialized(string? name)
         {
             Name = name;
+            Hash = CityHash.CityHash64(Name);
         }
 
         public override string ToString() => Name ?? "None";

@@ -2,6 +2,7 @@ using System;
 using System.Collections.Generic;
 using CUE4Parse.UE4.Assets.Exports.Animation;
 using CUE4Parse.UE4.Objects.Core.Math;
+using Serilog;
 
 namespace CUE4Parse_Conversion.Animations.PSA
 {
@@ -23,23 +24,17 @@ namespace CUE4Parse_Conversion.Animations.PSA
         public CAnimSequence(UAnimSequence animSequence, USkeleton skeleton)
         {
             OriginalSequence = animSequence;
-            var retarget = OriginalSequence.RetargetSource;
-            RetargetBasePose = retarget.IsNone switch
+            RetargetBasePose = OriginalSequence.RetargetSource.IsNone switch
             {
                 true when OriginalSequence.RetargetSourceAssetReferencePose is { Length: > 0 }
                     => OriginalSequence.RetargetSourceAssetReferencePose,
-                false when skeleton.AnimRetargetSources.TryGetValue(retarget, out var refPose)
+                false when skeleton.AnimRetargetSources.TryGetValue(OriginalSequence.RetargetSource, out var refPose)
                     => refPose.ReferencePose,
                 _ => null
             };
 
-            // TryGetValue fails half the time :D
-            if (!retarget.IsNone && RetargetBasePose == null) {
-                foreach (var (key, value) in skeleton.AnimRetargetSources) {
-                    if (key.PlainText.Equals(retarget.PlainText)) {
-                        RetargetBasePose = value.ReferencePose;
-                    }
-                }
+            if (!OriginalSequence.RetargetSource.IsNone && RetargetBasePose == null) {
+                Log.Warning("Animation is retargeting to another base pose, which we could not find.");
             }
 
             Name = OriginalSequence.Name;

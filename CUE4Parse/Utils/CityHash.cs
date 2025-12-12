@@ -1,5 +1,5 @@
-﻿using System;
-using System.Runtime.CompilerServices;
+﻿using System.Runtime.CompilerServices;
+using System.Text;
 
 namespace CUE4Parse.Utils
 {
@@ -10,11 +10,15 @@ namespace CUE4Parse.Utils
         private const ulong K1 = 0xb492b66fbe98f273;
         private const ulong K2 = 0x9ae16a3b2f90404f;
 
-        public static ulong CityHash64(byte[] buffer)
+        public static ulong CityHash64(string? text) {
+            return text == null ? K2 : CityHash64(Encoding.UTF8.GetBytes(text));
+        }
+
+        public static ulong CityHash64(byte[]? buffer)
         {
             if (buffer == null || buffer.Length == 0)
             {
-                throw new ArgumentNullException(nameof(buffer));
+                return K2;
             }
 
             var len = (uint) buffer.Length;
