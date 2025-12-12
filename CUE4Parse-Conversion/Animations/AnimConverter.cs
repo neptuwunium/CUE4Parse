@@ -180,13 +180,15 @@ namespace CUE4Parse_Conversion.Animations
 
                     // Let the native code do its job
                     var atomKeys = new FTransform[animSeq.Tracks.Capacity * numSamples];
-                    unsafe
-                    {
-                        fixed (FTransform* refPosePtr = animSeq.RetargetBasePose ?? skeleton.ReferenceSkeleton.FinalRefBonePose)
-                        fixed (FTrackToSkeletonMap* trackToSkeletonMapPtr = animSequence.GetTrackMap())
-                        fixed (FTransform* atomKeysPtr = atomKeys)
-                        {
-                            nReadACLData(tracks.Handle, refPosePtr, trackToSkeletonMapPtr, atomKeysPtr);
+                    unsafe {
+                        var pose = animSeq.RetargetBasePose ?? skeleton.ReferenceSkeleton.FinalRefBonePose;
+                        var trackMap = animSequence.GetTrackMap();
+                        fixed (FTransform* refPosePtr = pose)
+                        fixed (FTrackToSkeletonMap* trackToSkeletonMapPtr = trackMap)
+                        fixed (FTransform* atomKeysPtr = atomKeys) {
+                            nReadACLData(tracks.Handle, refPosePtr, (nuint) pose.Length,
+                                trackToSkeletonMapPtr, (nuint) trackMap.Length,
+                                atomKeysPtr, (nuint) atomKeys.Length);
                         }
                     }
 
@@ -647,6 +649,6 @@ namespace CUE4Parse_Conversion.Animations
         }
 
         [DllImport(ACLNative.LIB_NAME)]
-        private static extern unsafe void nReadACLData(IntPtr compressedTracks, FTransform* inRefPoses, FTrackToSkeletonMap* inTrackToSkeletonMap, FTransform* outAtom);
+        private static extern unsafe void nReadACLData(IntPtr compressedTracks, FTransform* inRefPoses, nuint inRefPoseSize, FTrackToSkeletonMap* inTrackToSkeletonMap, nuint inTrackToSkeletonSize, FTransform* outAtom, nuint inAtomSize);
     }
 }
