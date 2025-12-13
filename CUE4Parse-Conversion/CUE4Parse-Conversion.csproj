@@ -26,7 +26,7 @@
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\BCDecNet\BCDecNet\BCDecNet.csproj" />
+    <ProjectReference Include="..\External\BCDecNet\BCDecNet\BCDecNet.csproj" />
     <ProjectReference Include="..\CUE4Parse\CUE4Parse.csproj" />
   </ItemGroup>
 

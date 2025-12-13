@@ -1,10 +1,10 @@
 <Solution>
-  <Project Path="BCDecNet/BCDecNet/BCDecNet.csproj" />
+  <Project Path="External/BCDecNet/BCDecNet/BCDecNet.csproj" />
   <Project Path="CUE4Parse-Conversion/CUE4Parse-Conversion.csproj" />
   <Project Path="CUE4Parse.Example/CUE4Parse.Example.csproj" />
   <Project Path="CUE4Parse.Tests/CUE4Parse.Tests.csproj" />
   <Project Path="CUE4Parse/CUE4Parse.csproj" />
   <Project Path="AssetDumper/AssetDumper.csproj" />
-  <Project Path="DragonLib/DragonLib/DragonLib.csproj" />
-  <Project Path="Pepper/Pepper/Pepper.csproj" />
+  <Project Path="External/DragonLib/DragonLib/DragonLib.csproj" />
+  <Project Path="External/Pepper/Pepper/Pepper.csproj" />
 </Solution>

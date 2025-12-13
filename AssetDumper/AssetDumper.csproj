@@ -11,8 +11,8 @@
     <ItemGroup>
       <ProjectReference Include="..\CUE4Parse-Conversion\CUE4Parse-Conversion.csproj" />
       <ProjectReference Include="..\CUE4Parse\CUE4Parse.csproj" />
-      <ProjectReference Include="..\DragonLib\DragonLib\DragonLib.csproj" />
-      <ProjectReference Include="..\Pepper\Pepper\Pepper.csproj" />
+      <ProjectReference Include="..\External\DragonLib\DragonLib\DragonLib.csproj" />
+      <ProjectReference Include="..\External\Pepper\Pepper\Pepper.csproj" />
     </ItemGroup>
 
     <ItemGroup>

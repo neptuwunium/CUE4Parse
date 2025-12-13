@@ -2,11 +2,11 @@
 	path = CUE4Parse-Natives/ACL/external/acl
 	url = https://github.com/nfrechette/acl.git
 [submodule "DragonLib"]
-	path = DragonLib
+	path = External/DragonLib
 	url = https://github.com/yretenai/DragonLib.git
 [submodule "Pepper"]
-	path = Pepper
+	path = External/Pepper
 	url = https://github.com/yretenai/Pepper.git
 [submodule "BCDecNet"]
-	path = BCDecNet
+	path = External/BCDecNet
 	url = https://github.com/yretenai/BCDecNet.git
