@@ -1,4 +1,4 @@
-﻿using CUE4Parse.UE4.Exceptions;
+using CUE4Parse.UE4.Exceptions;
 using CUE4Parse.UE4.Readers;
 using Serilog;
 using System;
