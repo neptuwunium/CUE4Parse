@@ -1,10 +1,12 @@
 ﻿using System;
+using System.Collections.Concurrent;
 using System.Collections.Generic;
 using System.Diagnostics.CodeAnalysis;
 using System.Linq;
 using System.Runtime.CompilerServices;
 using System.Threading.Tasks;
 using CUE4Parse.Compression;
+using CUE4Parse.UE4.Assets.Objects;
 using CUE4Parse.UE4.Readers;
 using CUE4Parse.Utils;
 using Serilog;
@@ -27,7 +29,7 @@ public abstract class GameFile
     public static readonly HashSet<string> UeKnownExtensionsSet = UeKnownExtensions.ToHashSet(StringComparer.OrdinalIgnoreCase);
 
     // so we don't end up with a lot of duplicate "uasset"s in memory
-    private static readonly Dictionary<string, string> InternedExtensions = new(StringComparer.OrdinalIgnoreCase);
+    private static readonly ConcurrentDictionary<string, string> _internedExtensions = new(StringComparer.OrdinalIgnoreCase);
 
     private string _path;
     private string? _directory;
@@ -71,15 +73,15 @@ public abstract class GameFile
     public bool IsUePackage => UePackageExtensionsSet.Contains(Extension);
     public bool IsUePackagePayload => UePackagePayloadExtensionsSet.Contains(Extension);
 
-    public abstract byte[] Read();
-    public abstract FArchive CreateReader();
+    public abstract byte[] Read(FByteBulkDataHeader? header = null);
+    public abstract FArchive CreateReader(FByteBulkDataHeader? header = null);
 
     [MethodImpl(CUE4Parse.Globals.MethodOptions)]
-    public bool TryRead([MaybeNullWhen(false)] out byte[] data)
+    public bool TryRead([MaybeNullWhen(false)] out byte[] data, FByteBulkDataHeader? header = null)
     {
         try
         {
-            data = Read();
+            data = Read(header);
         }
         catch (Exception e)
         {
@@ -90,11 +92,11 @@ public abstract class GameFile
     }
 
     [MethodImpl(CUE4Parse.Globals.MethodOptions)]
-    public bool TryCreateReader([MaybeNullWhen(false)] out FArchive reader)
+    public bool TryCreateReader([MaybeNullWhen(false)] out FArchive reader, FByteBulkDataHeader? header = null)
     {
         try
         {
-            reader = CreateReader();
+            reader = CreateReader(header);
         }
         catch (Exception e)
         {
@@ -105,48 +107,42 @@ public abstract class GameFile
     }
 
     [MethodImpl(CUE4Parse.Globals.MethodOptions)]
-    public byte[]? SafeRead()
+    public byte[]? SafeRead(FByteBulkDataHeader? header = null)
     {
-        TryRead(out var data);
+        TryRead(out var data, header);
         return data;
     }
 
     [MethodImpl(CUE4Parse.Globals.MethodOptions)]
-    public FArchive? SafeCreateReader()
+    public FArchive? SafeCreateReader(FByteBulkDataHeader? header = null)
     {
-        TryCreateReader(out var reader);
+        TryCreateReader(out var reader, header);
         return reader;
     }
 
     // No ConfigureAwait(false) here since the context is needed handling exceptions
 
     [MethodImpl(CUE4Parse.Globals.MethodOptions)]
-    public async Task<byte[]> ReadAsync() => await Task.Run(Read);
+    public async Task<byte[]> ReadAsync() => await Task.Run(() => Read());
 
     [MethodImpl(CUE4Parse.Globals.MethodOptions)]
-    public async Task<FArchive> CreateReaderAsync() => await Task.Run(CreateReader);
+    public async Task<FArchive> CreateReaderAsync() => await Task.Run(() => CreateReader());
 
     [MethodImpl(CUE4Parse.Globals.MethodOptions)]
-    public async Task<byte[]?> SafeReadAsync() => await Task.Run(SafeRead);
+    public async Task<byte[]?> SafeReadAsync() => await Task.Run(() => SafeRead());
 
     [MethodImpl(CUE4Parse.Globals.MethodOptions)]
-    public async Task<FArchive?> SafeCreateReaderAsync() => await Task.Run(SafeCreateReader);
+    public async Task<FArchive?> SafeCreateReaderAsync() => await Task.Run(() => SafeCreateReader());
 
     public override string ToString() => Path;
-    
+
     [MethodImpl(CUE4Parse.Globals.MethodOptions)]
     private static string InternExtension(string extension)
     {
-        if (InternedExtensions.TryGetValue(extension, out var interned))
+        if (_internedExtensions.TryGetValue(extension, out var interned))
             return interned;
-        
-        lock (InternedExtensions)
-        {
-            if (InternedExtensions.TryGetValue(extension, out interned))
-                return interned;
-            
-            InternedExtensions[extension] = extension;
-            return extension;
-        }
+
+        _internedExtensions[extension] = extension;
+        return extension;
     }
 }
