@@ -253,7 +253,7 @@ namespace CUE4Parse.UE4.Readers
         }
 
         [MethodImpl(CUE4Parse.Globals.MethodOptions)]
-        public bool ReadBoolean()
+        public virtual bool ReadBoolean()
         {
             var i = Read<int>();
             return i switch
